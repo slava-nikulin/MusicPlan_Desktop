@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -135,30 +136,36 @@ namespace MusicPlan_Desktop
 
         private void BtnAddStudent_Click(object sender, RoutedEventArgs e)
         {
+            var rep = new StudentRepository();
             var commandParam = ((Button)(sender)).CommandParameter;
             if (commandParam == null)
             {
-                var rep = new ArtCollegeGenericDataRepository<Student>();
+                var instr = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList();
+                var studyYear = 0;
+                if ((ComboBoxItem) ComboStudyYears.SelectedValue != null)
+                {
+                    int.TryParse((string) ((ComboBoxItem) ComboStudyYears.SelectedValue).Content, out studyYear);
+                }
+                
                 var itemToAdd = new Student
                 {
                     FirstName = TxtStudentFirstName.Text,
                     LastName = TxtStudentLastName.Text,
                     MiddleName = TxtStudentMiddleName.Text,
-                    StudyYear = int.Parse((string) ((ComboBoxItem) ComboStudyYears.SelectedValue).Content),
-                    Instruments = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList()
+                    StudyYear = studyYear,
+                    Instruments = instr
                 };
                 rep.Add(itemToAdd);
             }
             else
             {
                 var id = (int)commandParam;
-                var rep = new ArtCollegeGenericDataRepository<Student>();
                 var itemForUpdate = rep.GetSingle(la => la.Id == id);
                 itemForUpdate.FirstName = TxtStudentFirstName.Text;
                 itemForUpdate.LastName = TxtStudentLastName.Text;
                 itemForUpdate.MiddleName = TxtStudentMiddleName.Text;
                 itemForUpdate.StudyYear = (int)ComboStudyYears.SelectedValue;
-                itemForUpdate.Instruments = (ICollection<Instrument>) LstBoxStudentInstruments.SelectedItems;
+                itemForUpdate.Instruments = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList();
                 rep.Update(itemForUpdate);
             }
 
