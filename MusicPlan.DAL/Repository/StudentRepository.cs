@@ -48,12 +48,32 @@ namespace MusicPlan.DAL.Repository
             {
                 foreach (var item in items)
                 {
-                    //todo:
-                    context.Entry(item).State = EntityState.Modified;
-                    foreach (var instrument in item.Instruments)
+                    var originalItem = context.Students.SingleOrDefault(la => la.Id == item.Id);
+                    if (originalItem != null)
                     {
-                        context.Entry(instrument).State = instrument.Id > 0 ? EntityState.Unchanged : EntityState.Added;
+
+                        var lstInstrToRemove =
+                            originalItem.Instruments.Where(
+                                origInstrument => item.Instruments.All(la => la.Id != origInstrument.Id)).ToList();
+
+                        var lstInstrToAdd =
+                            item.Instruments.Where(newItem => originalItem.Instruments.All(la => la.Id != newItem.Id))
+                                .ToList();
+
+                        foreach (var instrumentToRemove in lstInstrToRemove)
+                        {
+                            originalItem.Instruments.Remove(instrumentToRemove);
+                        }
+
+                        foreach (var instrumentToAdd in lstInstrToAdd)
+                        {
+                            originalItem.Instruments.Add(instrumentToAdd);
+                        }
+
+                        item.Instruments.Clear();
+                        context.Entry(item).State = EntityState.Modified;
                     }
+                    
                 }
                 context.SaveChanges();
             }

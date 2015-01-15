@@ -114,13 +114,11 @@ namespace MusicPlan_Desktop
                 TxtStudentLastName.Text = item.LastName;
                 TxtStudentMiddleName.Text = item.MiddleName;
                 ComboStudyYears.SelectedValue = item.StudyYear;
-
-                foreach (ListBoxItem lstItem in LstBoxStudentInstruments.Items)
+                var a = LstBoxStudentInstruments.Items;
+                foreach (var instr in item.Instruments)
                 {
-                    //if (lstItem.)
-                    //{
-
-                    //}
+                    //TODO
+                    //LstBoxStudentInstruments.Items..SelectedItems.Add(instr);
                 }
 
                 BtnAddInstrument.Content = ApplicationResources.ResourceManager.GetString("Edit");
