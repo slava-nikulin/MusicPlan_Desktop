@@ -67,8 +67,6 @@ namespace MusicPlan_Desktop
                 {
                     Name = TxtInstrumentName.Text
                 });
-                BindInstruments();
-                ClearInstrumentFields();
             }
             else
             {
@@ -77,9 +75,10 @@ namespace MusicPlan_Desktop
                 var itemForUpdate = rep.GetSingle(la => la.Id == id);
                 itemForUpdate.Name = TxtInstrumentName.Text;
                 rep.Update(itemForUpdate);
-                BindInstruments();
-                ClearInstrumentFields();
             }
+            BindInstruments();
+            BindStudents();
+            ClearInstrumentFields();
         }
 
         private void BtnCancelInsertInstrument_Click(object sender, RoutedEventArgs e)
