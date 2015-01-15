@@ -21,9 +21,20 @@ namespace MusicPlan.DAL.Repository
             throw new NotImplementedException();
         }
 
-        public Student GetSingle(Func<Student, bool> @where, params Expression<Func<Student, object>>[] navigationProperties)
+        public Student GetSingle(Func<Student, bool> whereClause, params Expression<Func<Student, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            Student item;
+            using (var context = new ArtCollegeContext())
+            {
+                IQueryable<Student> dbQuery = context.Students;
+
+                dbQuery = navigationProperties.Aggregate(dbQuery, (current, navigationProperty) => current.Include(navigationProperty));
+
+                item = dbQuery
+                    .AsNoTracking()
+                    .FirstOrDefault(whereClause);
+            }
+            return item;
         }
 
         public void Add(params Student[] items)
@@ -48,9 +59,13 @@ namespace MusicPlan.DAL.Repository
             {
                 foreach (var item in items)
                 {
-                    var originalItem = context.Students.SingleOrDefault(la => la.Id == item.Id);
+                    var originalItem = context.Students.Include(la=>la.Instruments).SingleOrDefault(la => la.Id == item.Id);
                     if (originalItem != null)
                     {
+                        originalItem.FirstName = item.FirstName;
+                        originalItem.LastName = item.LastName;
+                        originalItem.MiddleName = item.MiddleName;
+                        originalItem.StudyYear = item.StudyYear;
 
                         var lstInstrToRemove =
                             originalItem.Instruments.Where(
@@ -70,8 +85,10 @@ namespace MusicPlan.DAL.Repository
                             originalItem.Instruments.Add(instrumentToAdd);
                         }
 
-                        item.Instruments.Clear();
-                        context.Entry(item).State = EntityState.Modified;
+                        foreach (var instrument in originalItem.Instruments)
+                        {
+                            context.Entry(instrument).State = instrument.Id > 0 ? EntityState.Unchanged : EntityState.Added;
+                        }
                     }
                     
                 }

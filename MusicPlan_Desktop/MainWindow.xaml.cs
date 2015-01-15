@@ -39,6 +39,16 @@ namespace MusicPlan_Desktop
             var rep = new ArtCollegeGenericDataRepository<Student>();
             var instrumentsRep = new ArtCollegeGenericDataRepository<Instrument>();
             LstBoxStudentInstruments.ItemsSource = instrumentsRep.GetAll();
+            ComboStudyYears.Items.Clear();
+            for (var i = 1; i <= 5; i++)
+            {
+                ComboStudyYears.Items.Add(new ComboBoxItem
+                {
+                    Content = i,
+                    Tag = i
+                });
+            }
+
             DgStudents.ItemsSource = rep.GetAll(la => la.Instruments);
         }
 
@@ -54,6 +64,7 @@ namespace MusicPlan_Desktop
             var rep = new ArtCollegeGenericDataRepository<Instrument>();
             rep.Remove(rep.GetSingle(la => la.Id == id));
             BindInstruments();
+            BindStudents();
             ClearInstrumentFields();
         }
 
@@ -113,22 +124,26 @@ namespace MusicPlan_Desktop
                 TxtStudentFirstName.Text = item.FirstName;
                 TxtStudentLastName.Text = item.LastName;
                 TxtStudentMiddleName.Text = item.MiddleName;
-                ComboStudyYears.SelectedValue = item.StudyYear;
-                var a = LstBoxStudentInstruments.Items;
-                foreach (var instr in item.Instruments)
+                ComboStudyYears.SelectedValue = ComboStudyYears.Items.Cast<ComboBoxItem>().SingleOrDefault(la=>(int)la.Tag == item.StudyYear);
+
+                foreach (var lstItem in LstBoxStudentInstruments.Items.Cast<Instrument>()
+                    .Where(lstItem => item.Instruments.Any(la => la.Id == lstItem.Id)))
                 {
-                    //TODO
-                    //LstBoxStudentInstruments.Items..SelectedItems.Add(instr);
+                    LstBoxStudentInstruments.SelectedItems.Add(lstItem);
                 }
 
-                BtnAddInstrument.Content = ApplicationResources.ResourceManager.GetString("Edit");
-                BtnAddInstrument.CommandParameter = item.Id;
+                BtnAddStudent.Content = ApplicationResources.ResourceManager.GetString("Edit");
+                BtnAddStudent.CommandParameter = item.Id;
             }
         }
 
         private void BtnDeleteStudent_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var id = (int)((Button)(sender)).CommandParameter;
+            var rep = new ArtCollegeGenericDataRepository<Student>();
+            rep.Remove(rep.GetSingle(la => la.Id == id));
+            BindStudents();
+            ClearStudentFields();
         }
 
         private void BtnAddStudent_Click(object sender, RoutedEventArgs e)
@@ -137,19 +152,13 @@ namespace MusicPlan_Desktop
             var commandParam = ((Button)(sender)).CommandParameter;
             if (commandParam == null)
             {
-                var instr = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList();
-                var studyYear = 0;
-                if ((ComboBoxItem) ComboStudyYears.SelectedValue != null)
-                {
-                    int.TryParse((string) ((ComboBoxItem) ComboStudyYears.SelectedValue).Content, out studyYear);
-                }
-                
+                var instr = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList();              
                 var itemToAdd = new Student
                 {
                     FirstName = TxtStudentFirstName.Text,
                     LastName = TxtStudentLastName.Text,
                     MiddleName = TxtStudentMiddleName.Text,
-                    StudyYear = studyYear,
+                    StudyYear = (int)((ComboBoxItem)ComboStudyYears.SelectedValue).Content,
                     Instruments = instr
                 };
                 rep.Add(itemToAdd);
@@ -157,11 +166,11 @@ namespace MusicPlan_Desktop
             else
             {
                 var id = (int)commandParam;
-                var itemForUpdate = rep.GetSingle(la => la.Id == id);
+                var itemForUpdate = rep.GetSingle(la => la.Id == id, la=>la.Instruments);
                 itemForUpdate.FirstName = TxtStudentFirstName.Text;
                 itemForUpdate.LastName = TxtStudentLastName.Text;
                 itemForUpdate.MiddleName = TxtStudentMiddleName.Text;
-                itemForUpdate.StudyYear = (int)ComboStudyYears.SelectedValue;
+                itemForUpdate.StudyYear = (int)((ComboBoxItem)ComboStudyYears.SelectedValue).Content;
                 itemForUpdate.Instruments = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList();
                 rep.Update(itemForUpdate);
             }
@@ -183,6 +192,8 @@ namespace MusicPlan_Desktop
             TxtStudentMiddleName.Text = string.Empty;
             ComboStudyYears.SelectedIndex = -1;
             LstBoxStudentInstruments.UnselectAll();
+            BtnAddStudent.Content = ApplicationResources.ResourceManager.GetString("Insert");
+            BtnAddStudent.CommandParameter = null;
         }
     }
 

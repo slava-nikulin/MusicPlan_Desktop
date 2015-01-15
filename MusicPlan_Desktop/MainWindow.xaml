@@ -96,11 +96,6 @@
                                       Margin="0,7,0,0"
                                       VerticalAlignment="Top"
                                       Width="220">
-                                    <ComboBoxItem Content="1" Tag="1" />
-                                    <ComboBoxItem Content="2" Tag="2" />
-                                    <ComboBoxItem Content="3" Tag="3" />
-                                    <ComboBoxItem Content="4" Tag="4" />
-                                    <ComboBoxItem Content="5" Tag="5" />
                                 </ComboBox>
                                 <Label Grid.Row="3" Grid.Column="0" Content="{x:Static resources:ApplicationResources.StudyYear}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=ComboStudyYears}"/>
 
@@ -133,9 +128,6 @@
                                             </Setter>
                                         </Style>
                                     </ListBox.ItemContainerStyle>
-                                    <Style TargetType="{x:Type ListBoxItem}">
-                                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                                    </Style>
 
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
