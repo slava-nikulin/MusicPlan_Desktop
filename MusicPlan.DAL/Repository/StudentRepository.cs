@@ -62,11 +62,7 @@ namespace MusicPlan.DAL.Repository
                     var originalItem = context.Students.Include(la=>la.Instruments).SingleOrDefault(la => la.Id == item.Id);
                     if (originalItem != null)
                     {
-                        originalItem.FirstName = item.FirstName;
-                        originalItem.LastName = item.LastName;
-                        originalItem.MiddleName = item.MiddleName;
-                        originalItem.StudyYear = item.StudyYear;
-
+                        context.Entry(originalItem).CurrentValues.SetValues(item);
                         var lstInstrToRemove =
                             originalItem.Instruments.Where(
                                 origInstrument => item.Instruments.All(la => la.Id != origInstrument.Id)).ToList();

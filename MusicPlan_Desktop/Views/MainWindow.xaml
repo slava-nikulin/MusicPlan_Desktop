@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
         xmlns:main="clr-namespace:MusicPlan_Desktop"
+        xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        xmlns:consts="clr-namespace:MusicPlan_Desktop;assembly=MusicPlan_Desktop"
         Title="MainWindow" Height="auto" Width="auto">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
@@ -30,7 +32,6 @@
                 </TabItem>
                 <TabItem Header="Студенты">
                     <Grid Background="#FFE5E5E5">
-
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
@@ -143,53 +144,8 @@
                         </GroupBox>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Инструменты">
-                    <Grid Background="#FFE5E5E5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"></RowDefinition>
-                            <RowDefinition Height="auto"></RowDefinition>
-                        </Grid.RowDefinitions>
-
-                        <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.InstrumentsList}" Grid.Row="1">
-                            <DataGrid 
-                            
-                            SelectionChanged="DgInstruments_OnSelected" 
-                            SelectionMode="Single" 
-                            Margin="5 10 5 10"
-                            Name="DgInstruments" 
-                            AutoGenerateColumns="False" 
-                            IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.Number}" Binding="{Binding Id}" />
-                                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Instrument}" Binding="{Binding Name}" />
-                                    <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
-                                        <DataGridTemplateColumn.CellTemplate >
-                                            <DataTemplate>
-                                                <Button  Margin="5" Padding="5"  Content="{x:Static resources:ApplicationResources.Delete}" Click="BtnDeleteInstrument_OnClick" CommandParameter="{Binding Id}"></Button>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </GroupBox>
-
-                        <GroupBox Grid.Row="0" Header="{x:Static resources:ApplicationResources.EditInsertInstrument}" HorizontalAlignment="Center" Margin="0,10,0,0" Padding="10" VerticalAlignment="Top" Width="Auto" Height="Auto" >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition ></RowDefinition>
-                                    <RowDefinition ></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="130" />
-                                    <ColumnDefinition Width="230"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtInstrumentName" Margin="0,10,0,0"/>
-                                <Label Grid.Row="0" Grid.Column="0" Content="{x:Static resources:ApplicationResources.Name}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtInstrumentName}"/>
-                                <Button Click="BtnAddInstrument_Click" Grid.Column="0" Grid.Row="1" Name="BtnAddInstrument" Content="{x:Static resources:ApplicationResources.Insert}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Margin="20,39,0,0" Padding="5" />
-                                <Button Click="BtnCancelInsertInstrument_Click" Grid.Column="1" Grid.Row="1" Name="BtnCancelInsertInstrument" Content="{x:Static resources:ApplicationResources.Cancel}" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="82,39,0,0" />
-                            </Grid>
-                        </GroupBox>
-                    </Grid>
+                <TabItem Header="Инструменты" >
+                    <ContentControl x:Name="InstrumentsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.InstrumentsRegion}" />
                 </TabItem>
             </TabControl>
         </Grid>
