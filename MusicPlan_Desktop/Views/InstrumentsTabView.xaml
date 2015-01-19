@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.ignore.com"
         xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
-        mc:Ignorable="d ignore">
+        mc:Ignorable="d ignore"
+        xmlns:prism="http://www.codeplex.com/prism"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
 
     <Grid Background="#FFE5E5E5">
         <Grid.RowDefinitions>
@@ -15,12 +17,23 @@
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.InstrumentsList}" Grid.Row="1">
             <DataGrid 
+                SelectedIndex="{Binding SelectedItemIndex}"
+                ItemsSource="{Binding ItemsList}"
                             SelectionMode="Single" 
                             Margin="5 10 5 10"
                             Name="DgInstruments" 
                             AutoGenerateColumns="False" 
                             IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction
+                                Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
                 <DataGrid.Columns>
+
                     <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.Number}" Binding="{Binding Id}" />
                     <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Instrument}" Binding="{Binding Name}" />
                     <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
@@ -29,8 +42,14 @@
                                 <Button  
                                     Margin="5" 
                                     Padding="5"  
-                                    Content="{x:Static resources:ApplicationResources.Delete}" 
-                                    CommandParameter="{Binding Id}">
+                                    Content="{x:Static resources:ApplicationResources.Delete}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction 
+                                                Command="{Binding Path=DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                 </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -56,14 +75,20 @@
                     <ColumnDefinition Width="130" />
                     <ColumnDefinition Width="230"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtInstrumentName" Margin="0,10,0,0"/>
+                <TextBox 
+                    Text="{Binding SelectedItem.Name}"
+                    Grid.Row="0" Grid.Column="1" 
+                    HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtInstrumentName" Margin="0,10,0,0"/>
                 <Label Grid.Row="0" Grid.Column="0" Content="{x:Static resources:ApplicationResources.Name}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtInstrumentName}"/>
                 <Button 
                     Grid.Column="0" Grid.Row="1" 
                     Name="BtnAddInstrument" 
-                    Content="{x:Static resources:ApplicationResources.Insert}" 
-                    HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Margin="20,39,0,0" Padding="5" />
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Margin="20,39,0,0" Padding="5"
+                    Content="{Binding BtnAddButtonContent}" 
+                    Command="{Binding AddUpdateCommand}"
+                    CommandParameter="{Binding SelectedItem}"/>
                 <Button Grid.Column="1" Grid.Row="1" 
+                        Command="{Binding CancelSelectionCommand}"
                         Name="BtnCancelInsertInstrument" 
                         Content="{x:Static resources:ApplicationResources.Cancel}" 
                         HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="82,39,0,0" />

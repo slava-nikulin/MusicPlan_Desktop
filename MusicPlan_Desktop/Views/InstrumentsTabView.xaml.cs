@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using MusicPlan_Desktop.ViewModels;
+using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 
 namespace MusicPlan_Desktop.Views
 {
@@ -15,8 +16,7 @@ namespace MusicPlan_Desktop.Views
         public InstrumentsTabView(InstrumentsViewModel instrumentsViewModel)
         {
             InitializeComponent();
-            //todo:
-            //instrumentsViewModel.
+            this.DataContext = instrumentsViewModel;
         }
     }
 }

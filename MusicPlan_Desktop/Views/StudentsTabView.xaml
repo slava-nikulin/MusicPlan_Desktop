@@ -1,0 +1,154 @@
+﻿<UserControl x:Class="MusicPlan_Desktop.Views.StudentsTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:prism="http://www.codeplex.com/prism"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
+             xmlns:musicPlanDesktop="clr-namespace:MusicPlan_Desktop">
+
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <GroupBox Margin="50 20 50 20" Header="Список инструментов" Grid.Row="1">
+            <DataGrid 
+                            SelectedIndex="{Binding SelectedItemIndex}"
+                            ItemsSource="{Binding ItemsList}"
+                            SelectionMode="Single" 
+                            Margin="5 10 5 10" 
+                            Name="DgStudents" 
+                            AutoGenerateColumns="False" IsReadOnly="False" CanUserResizeColumns="True" 
+                            CanUserAddRows="False" CanUserSortColumns="True">
+                <DataGrid.Resources>
+                    <musicPlanDesktop:InstrumentsListToStringConverter x:Key="InstrumentsListToStringConverter" />
+                </DataGrid.Resources>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction
+                                Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Number}" Binding="{Binding Id}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.LastName}" Binding="{Binding LastName}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.FirstName}" Binding="{Binding FirstName}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.MiddleName}" Binding="{Binding LastName}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.StudyYear}" Binding="{Binding StudyYear}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Instruments}" Binding="{Binding Instruments, Converter={StaticResource InstrumentsListToStringConverter}}" />
+                    <DataGridTemplateColumn Header="Удалить">
+                        <DataGridTemplateColumn.CellTemplate >
+                            <DataTemplate>
+                                <Button  Margin="5" Padding="5"  Content="{x:Static resources:ApplicationResources.Delete}" 
+                                         Command="{Binding Path=DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                         CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"></Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="0" Header="{x:Static resources:ApplicationResources.EditInsertStudent}" HorizontalAlignment="Center" Margin="0,10,0,0" Padding="10" VerticalAlignment="Top" Width="Auto" Height="Auto" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130" />
+                    <ColumnDefinition Width="230"/>
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    Text="{Binding SelectedItem.LastName}"
+                    Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtStudentLastName" Margin="0,10,0,0"/>
+                <Label Grid.Row="0" Grid.Column="0" Content="{x:Static resources:ApplicationResources.LastName}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtStudentLastName}"/>
+                <TextBox 
+                    Text="{Binding SelectedItem.FirstName}"
+                    Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtStudentFirstName" Margin="0,10,0,0"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="{x:Static resources:ApplicationResources.FirstName}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtStudentFirstName}"/>
+                <TextBox 
+                    Text="{Binding SelectedItem.MiddleName}"
+                    Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtStudentMiddleName" Margin="0,10,0,0"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="{x:Static resources:ApplicationResources.MiddleName}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtStudentMiddleName}"/>
+                <ComboBox IsEditable="False"
+                            IsReadOnly="True" 
+                            Text="{x:Static resources:ApplicationResources.SelectStudyYear}" 
+                            Name="ComboStudyYears" 
+                            Grid.Row="3" 
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            Height="23" 
+                            Margin="0,7,0,0"
+                            VerticalAlignment="Top"
+                            Width="220"
+                          ItemsSource="{Binding Path=Classes}"
+                          SelectedValue="{Binding SelectedItem.StudyYear}"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Content="{x:Static resources:ApplicationResources.StudyYear}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=ComboStudyYears}"/>
+
+<!--SelectedItems="{Binding SelectedInstruments}"-->
+                <ListBox 
+                    ItemsSource="{Binding AvailableInstruments}"
+                    
+                                SelectionMode="Multiple" 
+                                Name="LstBoxStudentInstruments" 
+                                Grid.Row="4" 
+                                Grid.Column="1" 
+                                HorizontalAlignment="Left" 
+                                Height="auto"  
+                                Margin="0,7,0,0" 
+                                VerticalAlignment="Top" 
+                                Width="220">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Name="Border" Padding="2" SnapsToDevicePixels="true" Background="White" Margin="0">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="true">
+                                                <Setter TargetName="Border" Property="Background" Value="LightSteelBlue"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label Grid.Row="4" Grid.Column="0" Content="{x:Static resources:ApplicationResources.Instruments}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=LstBoxStudentInstruments}"/>
+
+                <Button 
+                    Content="{Binding BtnAddButtonContent}" 
+                    Command="{Binding AddUpdateCommand}"
+                    CommandParameter="{Binding SelectedItem}"
+                    Grid.Column="0" Grid.Row="5" Name="BtnAddStudent" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Margin="20,39,0,0" Padding="5" />
+                <Button 
+                    Command="{Binding CancelSelectionCommand}"
+                    Grid.Column="1" Grid.Row="5" Name="BtnCancelInsertStudent" Content="{x:Static resources:ApplicationResources.Cancel}" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="82,39,0,0" />
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

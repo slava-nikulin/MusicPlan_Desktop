@@ -4,6 +4,7 @@
         xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
         xmlns:main="clr-namespace:MusicPlan_Desktop"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        xmlns:prism="http://www.codeplex.com/prism"
         xmlns:consts="clr-namespace:MusicPlan_Desktop;assembly=MusicPlan_Desktop"
         Title="MainWindow" Height="auto" Width="auto">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -18,134 +19,23 @@
                 </MenuItem>
             </Menu>
             <TabControl Grid.Row="1" >
-                <TabItem Header="Нагрузка">
+                <TabItem Header="{x:Static resources:ApplicationResources.TeacherOverLoading}">
                     <Grid Background="#FFE5E5E5"/>
                 </TabItem>
-                <TabItem Header="Распределение">
+                <TabItem Header="{x:Static resources:ApplicationResources.StudyProgram}">
                     <Grid Background="#FFE5E5E5"/>
                 </TabItem>
-                <TabItem Header="Преподаватели">
+                <TabItem Header="{x:Static resources:ApplicationResources.Teachers}">
                     <Grid Background="#FFE5E5E5"/>
                 </TabItem>
-                <TabItem Header="Предметы">
+                <TabItem Header="{x:Static resources:ApplicationResources.Subjects}">
                     <Grid Background="#FFE5E5E5"/>
                 </TabItem>
-                <TabItem Header="Студенты">
-                    <Grid Background="#FFE5E5E5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"></RowDefinition>
-                            <RowDefinition Height="auto"></RowDefinition>
-                        </Grid.RowDefinitions>
-
-                        <GroupBox Margin="50 20 50 20" Header="Список инструментов" Grid.Row="1">
-                            <DataGrid 
-                            SelectionChanged="DgStudents_OnSelected" 
-                            SelectionMode="Single" 
-                            Margin="5 10 5 10" 
-                            Name="DgStudents" 
-                            AutoGenerateColumns="False" IsReadOnly="False" CanUserResizeColumns="True" 
-                            CanUserAddRows="False" CanUserSortColumns="True">
-                                <DataGrid.Resources>
-                                    <main:InstrumentsListToStringConverter x:Key="InstrumentsListToStringConverter" />
-                                </DataGrid.Resources>
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Number}" Binding="{Binding Id}" />
-                                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.LastName}" Binding="{Binding LastName}" />
-                                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.FirstName}" Binding="{Binding FirstName}" />
-                                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.MiddleName}" Binding="{Binding LastName}" />
-                                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.StudyYear}" Binding="{Binding StudyYear}" />
-                                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Instruments}" Binding="{Binding Instruments, Converter={StaticResource InstrumentsListToStringConverter}}" />
-                                    <DataGridTemplateColumn Header="Удалить">
-                                        <DataGridTemplateColumn.CellTemplate >
-                                            <DataTemplate>
-                                                <Button  Margin="5" Padding="5"  Content="{x:Static resources:ApplicationResources.Delete}" Click="BtnDeleteStudent_OnClick" CommandParameter="{Binding Id}"></Button>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </GroupBox>
-
-                        <GroupBox Grid.Row="0" Header="{x:Static resources:ApplicationResources.EditInsertStudent}" HorizontalAlignment="Center" Margin="0,10,0,0" Padding="10" VerticalAlignment="Top" Width="Auto" Height="Auto" >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition ></RowDefinition>
-                                    <RowDefinition ></RowDefinition>
-                                    <RowDefinition ></RowDefinition>
-                                    <RowDefinition ></RowDefinition>
-                                    <RowDefinition ></RowDefinition>
-                                    <RowDefinition ></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="130" />
-                                    <ColumnDefinition Width="230"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtStudentLastName" Margin="0,10,0,0"/>
-                                <Label Grid.Row="0" Grid.Column="0" Content="{x:Static resources:ApplicationResources.LastName}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtStudentLastName}"/>
-                                <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtStudentFirstName" Margin="0,10,0,0"/>
-                                <Label Grid.Row="1" Grid.Column="0" Content="{x:Static resources:ApplicationResources.FirstName}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtStudentFirstName}"/>
-                                <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtStudentMiddleName" Margin="0,10,0,0"/>
-                                <Label Grid.Row="2" Grid.Column="0" Content="{x:Static resources:ApplicationResources.MiddleName}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtStudentMiddleName}"/>
-                                <ComboBox IsEditable="False"
-                                      IsReadOnly="True" 
-                                      Text="{x:Static resources:ApplicationResources.SelectStudyYear}" 
-                                      Name="ComboStudyYears" 
-                                      Grid.Row="3" 
-                                      Grid.Column="1"
-                                      HorizontalAlignment="Left"
-                                      Height="23" 
-                                      Margin="0,7,0,0"
-                                      VerticalAlignment="Top"
-                                      Width="220">
-                                </ComboBox>
-                                <Label Grid.Row="3" Grid.Column="0" Content="{x:Static resources:ApplicationResources.StudyYear}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=ComboStudyYears}"/>
-
-
-                                <ListBox 
-                                SelectionMode="Multiple" 
-                                Name="LstBoxStudentInstruments" 
-                                Grid.Row="4" 
-                                Grid.Column="1" 
-                                HorizontalAlignment="Left" 
-                                Height="auto"  
-                                Margin="0,7,0,0" 
-                                VerticalAlignment="Top" 
-                                Width="220">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="{x:Type ListBoxItem}">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="ListBoxItem">
-                                                        <Border Name="Border" Padding="2" SnapsToDevicePixels="true" Background="White" Margin="0">
-                                                            <ContentPresenter/>
-                                                        </Border>
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsSelected" Value="true">
-                                                                <Setter TargetName="Border" Property="Background" Value="LightSteelBlue"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Name}"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                                <Label Grid.Row="4" Grid.Column="0" Content="{x:Static resources:ApplicationResources.Instruments}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=LstBoxStudentInstruments}"/>
-
-                                <Button Click="BtnAddStudent_Click" Grid.Column="0" Grid.Row="5" Name="BtnAddStudent" Content="{x:Static resources:ApplicationResources.Insert}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Margin="20,39,0,0" Padding="5" />
-                                <Button Click="BtnCancelInsertStudent_Click" Grid.Column="1" Grid.Row="5" Name="BtnCancelInsertStudent" Content="{x:Static resources:ApplicationResources.Cancel}" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="82,39,0,0" />
-                            </Grid>
-                        </GroupBox>
-                    </Grid>
+                <TabItem Header="{x:Static resources:ApplicationResources.Students}">
+                    <ContentControl x:Name="StudentsContent" prism:RegionManager.RegionName="{x:Static consts:Constants.StudentsRegion}" />
                 </TabItem>
-                <TabItem Header="Инструменты" >
-                    <ContentControl x:Name="InstrumentsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.InstrumentsRegion}" />
+                <TabItem Header="{x:Static resources:ApplicationResources.Instruments}">
+                    <ContentControl x:Name="InstrumentsContent" prism:RegionManager.RegionName="{x:Static consts:Constants.InstrumentsRegion}" />
                 </TabItem>
             </TabControl>
         </Grid>

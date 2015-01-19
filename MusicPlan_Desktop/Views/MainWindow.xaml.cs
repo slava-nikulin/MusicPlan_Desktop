@@ -32,26 +32,26 @@ namespace MusicPlan_Desktop
             InitializeComponent();
 
             //BindInstruments();
-            BindStudents();
+            //BindStudents();
         }
 
-        private void BindStudents()
-        {
-            var rep = new ArtCollegeGenericDataRepository<Student>();
-            var instrumentsRep = new ArtCollegeGenericDataRepository<Instrument>();
-            LstBoxStudentInstruments.ItemsSource = instrumentsRep.GetAll();
-            ComboStudyYears.Items.Clear();
-            for (var i = 1; i <= 5; i++)
-            {
-                ComboStudyYears.Items.Add(new ComboBoxItem
-                {
-                    Content = i,
-                    Tag = i
-                });
-            }
+        //private void BindStudents()
+        //{
+        //    var rep = new ArtCollegeGenericDataRepository<Student>();
+        //    var instrumentsRep = new ArtCollegeGenericDataRepository<Instrument>();
+        //    LstBoxStudentInstruments.ItemsSource = instrumentsRep.GetAll();
+        //    ComboStudyYears.Items.Clear();
+        //    for (var i = 1; i <= 5; i++)
+        //    {
+        //        ComboStudyYears.Items.Add(new ComboBoxItem
+        //        {
+        //            Content = i,
+        //            Tag = i
+        //        });
+        //    }
 
-            DgStudents.ItemsSource = rep.GetAll(la => la.Instruments);
-        }
+        //    DgStudents.ItemsSource = rep.GetAll(la => la.Instruments);
+        //}
 
         //private void BindInstruments()
         //{
@@ -117,85 +117,85 @@ namespace MusicPlan_Desktop
         //    }
         //}
 
-        private void DgStudents_OnSelected(object sender, SelectionChangedEventArgs e)
-        {
-            var item = (Student)((DataGrid)sender).SelectedItem;
-            if (item != null)
-            {
-                TxtStudentFirstName.Text = item.FirstName;
-                TxtStudentLastName.Text = item.LastName;
-                TxtStudentMiddleName.Text = item.MiddleName;
-                ComboStudyYears.SelectedValue = ComboStudyYears.Items.Cast<ComboBoxItem>().SingleOrDefault(la=>(int)la.Tag == item.StudyYear);
+        //private void DgStudents_OnSelected(object sender, SelectionChangedEventArgs e)
+        //{
+        //    var item = (Student)((DataGrid)sender).SelectedItem;
+        //    if (item != null)
+        //    {
+        //        TxtStudentFirstName.Text = item.FirstName;
+        //        TxtStudentLastName.Text = item.LastName;
+        //        TxtStudentMiddleName.Text = item.MiddleName;
+        //        ComboStudyYears.SelectedValue = ComboStudyYears.Items.Cast<ComboBoxItem>().SingleOrDefault(la=>(int)la.Tag == item.StudyYear);
 
-                foreach (var lstItem in LstBoxStudentInstruments.Items.Cast<Instrument>()
-                    .Where(lstItem => item.Instruments.Any(la => la.Id == lstItem.Id)))
-                {
-                    LstBoxStudentInstruments.SelectedItems.Add(lstItem);
-                }
+        //        foreach (var lstItem in LstBoxStudentInstruments.Items.Cast<Instrument>()
+        //            .Where(lstItem => item.Instruments.Any(la => la.Id == lstItem.Id)))
+        //        {
+        //            LstBoxStudentInstruments.SelectedItems.Add(lstItem);
+        //        }
 
-                BtnAddStudent.Content = ApplicationResources.ResourceManager.GetString("Edit");
-                BtnAddStudent.CommandParameter = item.Id;
-            }
-        }
+        //        BtnAddStudent.Content = ApplicationResources.ResourceManager.GetString("Edit");
+        //        BtnAddStudent.CommandParameter = item.Id;
+        //    }
+        //}
 
-        private void BtnDeleteStudent_OnClick(object sender, RoutedEventArgs e)
-        {
-            var id = (int)((Button)(sender)).CommandParameter;
-            var rep = new ArtCollegeGenericDataRepository<Student>();
-            rep.Remove(rep.GetSingle(la => la.Id == id));
-            BindStudents();
-            ClearStudentFields();
-        }
+        //private void BtnDeleteStudent_OnClick(object sender, RoutedEventArgs e)
+        //{
+        //    var id = (int)((Button)(sender)).CommandParameter;
+        //    var rep = new ArtCollegeGenericDataRepository<Student>();
+        //    rep.Remove(rep.GetSingle(la => la.Id == id));
+        //    BindStudents();
+        //    ClearStudentFields();
+        //}
 
-        private void BtnAddStudent_Click(object sender, RoutedEventArgs e)
-        {
-            var rep = new StudentRepository();
-            var commandParam = ((Button)(sender)).CommandParameter;
-            if (commandParam == null)
-            {
-                var instr = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList();              
-                var itemToAdd = new Student
-                {
-                    FirstName = TxtStudentFirstName.Text,
-                    LastName = TxtStudentLastName.Text,
-                    MiddleName = TxtStudentMiddleName.Text,
-                    StudyYear = (int)((ComboBoxItem)ComboStudyYears.SelectedValue).Content,
-                    Instruments = instr
-                };
-                rep.Add(itemToAdd);
-            }
-            else
-            {
-                var id = (int)commandParam;
-                var itemForUpdate = rep.GetSingle(la => la.Id == id, la=>la.Instruments);
-                itemForUpdate.FirstName = TxtStudentFirstName.Text;
-                itemForUpdate.LastName = TxtStudentLastName.Text;
-                itemForUpdate.MiddleName = TxtStudentMiddleName.Text;
-                itemForUpdate.StudyYear = (int)((ComboBoxItem)ComboStudyYears.SelectedValue).Content;
-                itemForUpdate.Instruments = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList();
-                rep.Update(itemForUpdate);
-            }
+        //private void BtnAddStudent_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var rep = new StudentRepository();
+        //    var commandParam = ((Button)(sender)).CommandParameter;
+        //    if (commandParam == null)
+        //    {
+        //        var instr = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList();              
+        //        var itemToAdd = new Student
+        //        {
+        //            FirstName = TxtStudentFirstName.Text,
+        //            LastName = TxtStudentLastName.Text,
+        //            MiddleName = TxtStudentMiddleName.Text,
+        //            StudyYear = (int)((ComboBoxItem)ComboStudyYears.SelectedValue).Content,
+        //            Instruments = instr
+        //        };
+        //        rep.Add(itemToAdd);
+        //    }
+        //    else
+        //    {
+        //        var id = (int)commandParam;
+        //        var itemForUpdate = rep.GetSingle(la => la.Id == id, la=>la.Instruments);
+        //        itemForUpdate.FirstName = TxtStudentFirstName.Text;
+        //        itemForUpdate.LastName = TxtStudentLastName.Text;
+        //        itemForUpdate.MiddleName = TxtStudentMiddleName.Text;
+        //        itemForUpdate.StudyYear = (int)((ComboBoxItem)ComboStudyYears.SelectedValue).Content;
+        //        itemForUpdate.Instruments = LstBoxStudentInstruments.SelectedItems.Cast<Instrument>().ToList();
+        //        rep.Update(itemForUpdate);
+        //    }
 
-            BindStudents();
-            ClearStudentFields();
-        }
+        //    BindStudents();
+        //    ClearStudentFields();
+        //}
 
-        private void BtnCancelInsertStudent_Click(object sender, RoutedEventArgs e)
-        {
-            DgStudents.UnselectAll();
-            ClearStudentFields();
-        }
+        //private void BtnCancelInsertStudent_Click(object sender, RoutedEventArgs e)
+        //{
+        //    DgStudents.UnselectAll();
+        //    ClearStudentFields();
+        //}
 
-        private void ClearStudentFields()
-        {
-            TxtStudentFirstName.Text = string.Empty;
-            TxtStudentLastName.Text = string.Empty;
-            TxtStudentMiddleName.Text = string.Empty;
-            ComboStudyYears.SelectedIndex = -1;
-            LstBoxStudentInstruments.UnselectAll();
-            BtnAddStudent.Content = ApplicationResources.ResourceManager.GetString("Insert");
-            BtnAddStudent.CommandParameter = null;
-        }
+        //private void ClearStudentFields()
+        //{
+        //    TxtStudentFirstName.Text = string.Empty;
+        //    TxtStudentLastName.Text = string.Empty;
+        //    TxtStudentMiddleName.Text = string.Empty;
+        //    ComboStudyYears.SelectedIndex = -1;
+        //    LstBoxStudentInstruments.UnselectAll();
+        //    BtnAddStudent.Content = ApplicationResources.ResourceManager.GetString("Insert");
+        //    BtnAddStudent.CommandParameter = null;
+        //}
     }
 
     [ValueConversion(typeof(ICollection<Instrument>), typeof(string))]
