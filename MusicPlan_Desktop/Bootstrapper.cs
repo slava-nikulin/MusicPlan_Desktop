@@ -23,10 +23,12 @@ namespace MusicPlan_Desktop
                 ModuleName = instrumentsModule.Name,
                 ModuleType = instrumentsModule.AssemblyQualifiedName
             });
-
-            
-            //Type customerModule = typeof(CustomersModule);
-            //moduleCatalog.AddModule(new ModuleInfo() { ModuleName = customerModule.Name, ModuleType = customerModule.AssemblyQualifiedName });
+            var studentsModule = typeof(StudentsModule);
+            moduleCatalog.AddModule(new ModuleInfo
+            {
+                ModuleName = studentsModule.Name,
+                ModuleType = studentsModule.AssemblyQualifiedName
+            });
 
             return moduleCatalog;
         }

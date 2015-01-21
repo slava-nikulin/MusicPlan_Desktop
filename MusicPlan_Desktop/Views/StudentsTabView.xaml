@@ -99,10 +99,8 @@
 
                 <Label Grid.Row="3" Grid.Column="0" Content="{x:Static resources:ApplicationResources.StudyYear}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=ComboStudyYears}"/>
 
-<!--SelectedItems="{Binding SelectedInstruments}"-->
                 <ListBox 
                     ItemsSource="{Binding AvailableInstruments}"
-                    
                                 SelectionMode="Multiple" 
                                 Name="LstBoxStudentInstruments" 
                                 Grid.Row="4" 
@@ -114,7 +112,7 @@
                                 Width="220">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
-                            
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
@@ -134,7 +132,7 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding XListItem.Name}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

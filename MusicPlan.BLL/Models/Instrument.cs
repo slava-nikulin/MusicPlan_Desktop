@@ -11,5 +11,16 @@ namespace MusicPlan.BLL.Models
         {
             return MemberwiseClone();
         }
+
+        public Instrument()
+        {
+            
+        }
+
+        //public Instrument(Instrument instrumentToClone)
+        //{
+        //    Id = instrumentToClone.Id;
+        //    Name = instrumentToClone.Name;
+        //}
     }
 }

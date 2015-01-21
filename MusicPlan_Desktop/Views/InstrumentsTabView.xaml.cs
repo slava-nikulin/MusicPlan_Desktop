@@ -13,10 +13,10 @@ namespace MusicPlan_Desktop.Views
         /// <summary>
         /// Initializes a new instance of the InstrumentsTabView class.
         /// </summary>
-        public InstrumentsTabView(InstrumentsViewModel instrumentsViewModel)
+        public InstrumentsTabView(InstrumentsViewModel viewModel)
         {
             InitializeComponent();
-            this.DataContext = instrumentsViewModel;
+            DataContext = viewModel;
         }
     }
 }

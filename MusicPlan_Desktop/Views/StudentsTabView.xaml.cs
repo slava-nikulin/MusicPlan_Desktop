@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MusicPlan_Desktop.ViewModels;
 
 namespace MusicPlan_Desktop.Views
 {
@@ -20,9 +21,10 @@ namespace MusicPlan_Desktop.Views
     /// </summary>
     public partial class StudentsTabView : UserControl
     {
-        public StudentsTabView()
+        public StudentsTabView(StudentsViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
     }
 }

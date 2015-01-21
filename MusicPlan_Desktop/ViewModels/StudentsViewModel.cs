@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GeorgeCloney;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using MusicPlan.BLL.Models;
@@ -21,8 +22,7 @@ namespace MusicPlan_Desktop.ViewModels
         private ObservableCollection<Student> _itemsList;
         private string _btnAddButtonContent;
         private int _selectedItemIndex;
-        private List<Instrument> _availableInstruments;
-        private ObservableCollection<Instrument> _selectedInstruments;
+        private ObservableCollection<XamlListItem<Instrument>> _availableInstruments;
 
         #endregion
 
@@ -40,18 +40,12 @@ namespace MusicPlan_Desktop.ViewModels
         public Student SelectedItem
         {
             get { return _selectedItem ?? new Student(); }
-            set
-            {
-                SetProperty(ref _selectedItem, value);
-            }
+            set { SetProperty(ref _selectedItem, value); }
         }
         public ObservableCollection<Student> ItemsList
         {
             get { return _itemsList; }
-            set
-            {
-                SetProperty(ref _itemsList, value);
-            }
+            set { SetProperty(ref _itemsList, value); }
         }
         public string BtnAddButtonContent
         {
@@ -64,16 +58,10 @@ namespace MusicPlan_Desktop.ViewModels
             get { return new List<int> { 1, 2, 3, 4, 5 }; }
         }
 
-        public List<Instrument> AvailableInstruments
+        public ObservableCollection<XamlListItem<Instrument>> AvailableInstruments
         {
             get { return _availableInstruments; }
             set { SetProperty(ref _availableInstruments, value); }
-        }
-
-        public ObservableCollection<Instrument> SelectedInstruments
-        {
-            get { return _selectedInstruments ?? new ObservableCollection<Instrument>(); }
-            set { SetProperty(ref _selectedInstruments, value); }
         }
 
         public ICommand AddUpdateCommand { get; set; }
@@ -85,6 +73,22 @@ namespace MusicPlan_Desktop.ViewModels
         #region Constructor
         public StudentsViewModel()
         {
+            PrepareViewModel();
+            var rep = new ArtCollegeGenericDataRepository<Instrument>();
+            AvailableInstruments = new ObservableCollection<XamlListItem<Instrument>>();
+            foreach (var instr in rep.GetAll())
+            {
+                AvailableInstruments.Add(new XamlListItem<Instrument>
+                {
+                    IsSelected = false,
+                    XListItem = instr
+                });
+            }
+            
+        }
+
+        public void PrepareViewModel()
+        {
             BindItems();
             SelectedItem = new Student();
             SelectedItemIndex = -1;
@@ -93,9 +97,8 @@ namespace MusicPlan_Desktop.ViewModels
             SelectItemCommand = new DelegateCommand<Student>(SelectItem);
             CancelSelectionCommand = new DelegateCommand(UnselectItem);
             BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
-            var rep = new ArtCollegeGenericDataRepository<Instrument>();
-            AvailableInstruments = new List<Instrument>(rep.GetAll());
         }
+
         #endregion
 
         #region ViewModel command handlers
@@ -104,13 +107,22 @@ namespace MusicPlan_Desktop.ViewModels
             SelectedItem = new Student();
             SelectedItemIndex = -1;
             BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+            foreach (var instr in AvailableInstruments)
+            {
+                instr.IsSelected = false;
+            }
         }
 
         public void SelectItem(Student item)
         {
             if (SelectedItemIndex != -1)
             {
-                SelectedItem = (Student)item.Clone();
+                SelectedItem = (Student)item.DeepClone();
+                foreach (var singleOrDefault in SelectedItem.Instruments.Select(instr => AvailableInstruments.SingleOrDefault(la => la.XListItem.Id == instr.Id))
+                            .Where(singleOrDefault => singleOrDefault != null))
+                {
+                    singleOrDefault.IsSelected = true;
+                }
                 BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Edit");
             }
         }
@@ -118,7 +130,7 @@ namespace MusicPlan_Desktop.ViewModels
         public void BindItems()
         {
             var rep = new ArtCollegeGenericDataRepository<Student>();
-            ItemsList = new ObservableCollection<Student>(rep.GetAll());
+            ItemsList = new ObservableCollection<Student>(rep.GetAll(la=>la.Instruments));
         }
 
         public void DeleteItem(Student item)

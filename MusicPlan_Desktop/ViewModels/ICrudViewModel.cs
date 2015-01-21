@@ -14,6 +14,7 @@ namespace MusicPlan_Desktop.ViewModels
         ICommand CancelSelectionCommand { get; set; }
         ICommand SelectItemCommand { get; set; }
 
+        void PrepareViewModel();
         void UnselectItem();
         void SelectItem(T item);
         void BindItems();

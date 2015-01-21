@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeorgeCloney">
+      <HintPath>..\packages\GeorgeCloney.1.1.1.17\lib\net40\GeorgeCloney.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Prism.Composition">
       <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
     </Reference>
@@ -92,7 +95,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Modules\StudentsModule.cs" />
     <Compile Include="ViewModels\ICrudViewModel.cs" />
+    <Compile Include="ViewModels\XamlListItem.cs" />
     <Compile Include="ViewModels\StudentsViewModel.cs" />
     <Compile Include="Views\StudentsTabView.xaml.cs">
       <DependentUpon>StudentsTabView.xaml</DependentUpon>

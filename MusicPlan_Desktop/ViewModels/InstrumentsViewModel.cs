@@ -61,6 +61,14 @@ namespace MusicPlan_Desktop.ViewModels
         #region Constructor
         public InstrumentsViewModel()
         {
+            PrepareViewModel();
+        }
+        #endregion
+
+        #region ViewModel command handlers
+
+        public void PrepareViewModel()
+        {
             BindItems();
             SelectedItem = new Instrument();
             SelectedItemIndex = -1;
@@ -70,9 +78,6 @@ namespace MusicPlan_Desktop.ViewModels
             CancelSelectionCommand = new DelegateCommand(UnselectItem);
             BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
         }
-        #endregion
-
-        #region ViewModel command handlers
 
         public void UnselectItem()
         {
