@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicPlan_Desktop
+namespace MusicPlan_Desktop.Modules
 {
-    public class MainController
+    class MainModule
     {
-
-
     }
 }

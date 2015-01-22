@@ -6,7 +6,9 @@
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
         xmlns:prism="http://www.codeplex.com/prism"
         xmlns:consts="clr-namespace:MusicPlan_Desktop;assembly=MusicPlan_Desktop"
-        Title="MainWindow" Height="auto" Width="auto">
+        Title="MainWindow" Height="auto" Width="auto"
+        WindowStartupLocation="CenterScreen" 
+        WindowState="Maximized">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.RowDefinitions>
@@ -14,8 +16,8 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Menu Grid.Row="0">
-                <MenuItem Header="File">
-                    <MenuItem Header="Exit"></MenuItem>
+                <MenuItem Header="Комманды">
+                    <MenuItem Header="Обновить данные" Command="{Binding SyncDataCommand}"></MenuItem>
                 </MenuItem>
             </Menu>
             <TabControl Grid.Row="1" >

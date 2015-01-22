@@ -16,9 +16,11 @@
         </Grid.RowDefinitions>
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.InstrumentsList}" Grid.Row="1">
+            <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
             <DataGrid 
-                SelectedIndex="{Binding SelectedItemIndex}"
-                ItemsSource="{Binding ItemsList}"
+                            Height="500"
+                            SelectedIndex="{Binding SelectedItemIndex}"
+                            ItemsSource="{Binding ItemsList}"
                             SelectionMode="Single" 
                             Margin="5 10 5 10"
                             Name="DgInstruments" 
@@ -56,6 +58,7 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            </ScrollViewer>
         </GroupBox>
 
         <GroupBox Grid.Row="0" 

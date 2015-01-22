@@ -95,13 +95,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\SynchronizeSelectedItems.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CLasses\Enums.cs" />
+    <Compile Include="CLasses\Events\SwitchTabEvent.cs" />
+    <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Modules\StudentsModule.cs" />
     <Compile Include="ViewModels\ICrudViewModel.cs" />
-    <Compile Include="ViewModels\XamlListItem.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\StudentsViewModel.cs" />
     <Compile Include="Views\StudentsTabView.xaml.cs">
       <DependentUpon>StudentsTabView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CLasses\WeakEventHandler.cs" />
     <Page Include="Views\InstrumentsTabView.xaml">
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -114,9 +121,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="MainController.cs" />
+    <Compile Include="CLasses\Bootstrapper.cs" />
+    <Compile Include="CLasses\Constants.cs" />
     <Compile Include="Modules\InstrumentsModule.cs" />
     <Compile Include="Resources\ApplicationResources.Designer.cs">
       <AutoGen>True</AutoGen>

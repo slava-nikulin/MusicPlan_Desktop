@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
+using GeorgeCloney;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.Unity;
 using MusicPlan.BLL.Models;
 using MusicPlan.DAL.Repository;
+using MusicPlan_Desktop.CLasses.Events;
 using MusicPlan_Desktop.Modules;
 using MusicPlan_Desktop.Resources;
 
@@ -17,6 +22,8 @@ namespace MusicPlan_Desktop.ViewModels
         private ObservableCollection<Instrument> _itemsList;
         private string _btnAddButtonContent;
         private int _selectedItemIndex;
+        private IUnityContainer _container;
+        private IEventAggregator _eventAggregator;
         #endregion
 
         #region Public properties
@@ -59,13 +66,16 @@ namespace MusicPlan_Desktop.ViewModels
         #endregion
 
         #region Constructor
-        public InstrumentsViewModel()
+        public InstrumentsViewModel(IUnityContainer container)
         {
+            _container = container;
+            _eventAggregator = _container.Resolve<IEventAggregator>();
+            _eventAggregator.GetEvent<SyncDataEvent>().Subscribe(ReBindItems, true);
             PrepareViewModel();
         }
         #endregion
 
-        #region ViewModel command handlers
+        #region ViewModel methods
 
         public void PrepareViewModel()
         {
@@ -77,6 +87,7 @@ namespace MusicPlan_Desktop.ViewModels
             SelectItemCommand = new DelegateCommand<Instrument>(SelectItem);
             CancelSelectionCommand = new DelegateCommand(UnselectItem);
             BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+
         }
 
         public void UnselectItem()
@@ -90,15 +101,20 @@ namespace MusicPlan_Desktop.ViewModels
         {
             if (SelectedItemIndex != -1)
             {
-                SelectedItem = (Instrument)item.Clone();
+                SelectedItem = item.DeepClone();
                 BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Edit");
             }
+        }
+
+        public void ReBindItems(object obj)
+        {
+            BindItems();
         }
 
         public void BindItems()
         {
             var rep = new ArtCollegeGenericDataRepository<Instrument>();
-            ItemsList = new ObservableCollection<Instrument>(rep.GetAll());
+            ItemsList = new ObservableCollection<Instrument>((rep.GetAll()).OrderBy(la=>la.Id));
         }
 
         public void DeleteItem(Instrument item)
@@ -111,14 +127,13 @@ namespace MusicPlan_Desktop.ViewModels
 
         public void AddUpdateItem(Instrument item)
         {
+            var rep = new ArtCollegeGenericDataRepository<Instrument>();
             if (item.Id == 0)
             {
-                var rep = new ArtCollegeGenericDataRepository<Instrument>();
                 rep.Add(item);
             }
             else
             {
-                var rep = new ArtCollegeGenericDataRepository<Instrument>();
                 rep.Update(item);
             }
             BindItems();

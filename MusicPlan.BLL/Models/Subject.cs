@@ -6,10 +6,9 @@ namespace MusicPlan.BLL.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int StudyYear { get; set; }
         public virtual SubjectParameters RegularParameters { get; set; }
         public virtual SubjectParameters СoncertmasterParameters { get; set; }
         public virtual ICollection<Teacher> Teachers { get; set; }
-        public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<SubjectStudent> SubjectToStudents { get; set; }
     }
 }

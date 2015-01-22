@@ -20,7 +20,6 @@ namespace MusicPlan.DAL
         public ArtCollegeContext(): base("ArtCollegeDbConnection")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<ArtCollegeContext>());
-            var a = ConfigurationManager.ConnectionStrings;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -39,18 +38,21 @@ namespace MusicPlan.DAL
                     m.MapLeftKey("StudentId");
                     m.MapRightKey("InstrumentId");
                 });
-            modelBuilder.Entity<Student>().HasMany(st => st.Subjects).WithMany(su=>su.Students).Map(m =>
+            modelBuilder.Entity<Student>().HasMany(st => st.SubjectToStudents).WithRequired(su=>su.Student).Map(m =>
             {
-                m.MapLeftKey("StudentId");
-                m.MapRightKey("SubjectId");
+                m.MapKey("StudentId");
             });
+
+            modelBuilder.Entity<Subject>().HasMany(su => su.SubjectToStudents).WithRequired(t => t.Subject).Map(m =>
+            {
+                m.MapKey("SubjectId");
+            });
+
             modelBuilder.Entity<Subject>().HasMany(su => su.Teachers).WithMany(t => t.Subjects).Map(m =>
             {
                 m.MapLeftKey("SubjectId");
                 m.MapRightKey("TeacherId");
             });
-
-
         }
     }
 }

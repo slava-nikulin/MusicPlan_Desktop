@@ -20,5 +20,6 @@ namespace MusicPlan_Desktop.ViewModels
         void BindItems();
         void DeleteItem(T item);
         void AddUpdateItem(T item);
+        void ReBindItems(object obj);
     }
 }
