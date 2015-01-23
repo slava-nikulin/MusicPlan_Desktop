@@ -120,6 +120,12 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="Commands" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="ConcertMasterParameters" xml:space="preserve">
+    <value>Концертмейстерские параметры</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
@@ -132,8 +138,17 @@
   <data name="EditInsertStudent" xml:space="preserve">
     <value>Добавить/редактировать студента</value>
   </data>
+  <data name="EditInsertSubject" xml:space="preserve">
+    <value>Добавить/редактировать предмет</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>Имя</value>
+  </data>
+  <data name="FirstSemesterHoursPerWeekCount" xml:space="preserve">
+    <value>Часов в неделю(1-й семестр)</value>
+  </data>
+  <data name="FirstSemesterWeeksCount" xml:space="preserve">
+    <value>Недель в 1-й семестр</value>
   </data>
   <data name="Insert" xml:space="preserve">
     <value>Добавить</value>
@@ -159,8 +174,20 @@
   <data name="Number" xml:space="preserve">
     <value>ID</value>
   </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Обновить данные на форме</value>
+  </data>
+  <data name="SecondSemesterHoursPerWeekCount" xml:space="preserve">
+    <value>Часов в неделю(2-й семестр)</value>
+  </data>
+  <data name="SecondSemesterWeeksCount" xml:space="preserve">
+    <value>Недель в 2-й семестр</value>
+  </data>
   <data name="SelectStudyYear" xml:space="preserve">
     <value>Выберите курс</value>
+  </data>
+  <data name="StandatdParameters" xml:space="preserve">
+    <value>Стандартные параметры</value>
   </data>
   <data name="Students" xml:space="preserve">
     <value>Студенты</value>
@@ -173,6 +200,9 @@
   </data>
   <data name="Subjects" xml:space="preserve">
     <value>Предметы</value>
+  </data>
+  <data name="SubjectsList" xml:space="preserve">
+    <value>Список предметов</value>
   </data>
   <data name="TeacherOverLoading" xml:space="preserve">
     <value>Нагрузка</value>

@@ -89,6 +89,12 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.Controls.v5.4">
+      <HintPath>..\packages\Xceed.Wpf.Controls.5.4.14473.13530\lib\net40\Xceed.Wpf.Controls.v5.4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid.v5.4">
+      <HintPath>..\packages\Xceed.Wpf.DataGrid.5.4.14473.13530\lib\net40\Xceed.Wpf.DataGrid.v5.4.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -102,13 +108,21 @@
     <Compile Include="CLasses\Events\SwitchTabEvent.cs" />
     <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Modules\StudentsModule.cs" />
+    <Compile Include="Modules\SubjectsModule.cs" />
     <Compile Include="ViewModels\ICrudViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\StudentsViewModel.cs" />
+    <Compile Include="ViewModels\SubjectsViewModel.cs" />
     <Compile Include="Views\StudentsTabView.xaml.cs">
       <DependentUpon>StudentsTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="CLasses\WeakEventHandler.cs" />
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SubjectsTabView.xaml.cs">
+      <DependentUpon>SubjectsTabView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\InstrumentsTabView.xaml">
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -138,6 +152,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\StudentsTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SubjectsTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

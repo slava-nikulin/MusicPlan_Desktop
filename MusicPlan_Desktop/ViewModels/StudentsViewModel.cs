@@ -88,13 +88,11 @@ namespace MusicPlan_Desktop.ViewModels
             _eventAggregator = _container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<SyncDataEvent>().Subscribe(ReBindItems, true);
             PrepareViewModel();
-            var rep = new ArtCollegeGenericDataRepository<Instrument>();
-            AvailableInstruments = new ObservableCollection<Instrument>(rep.GetAll().OrderBy(la=>la.Id));
         }
 
         public void PrepareViewModel()
         {
-            BindItems();
+            ReBindItems(null);
             SelectedItem = new Student();
             SelectedItemIndex = -1;
             AddUpdateCommand = new DelegateCommand<Student>(AddUpdateItem);
@@ -110,6 +108,8 @@ namespace MusicPlan_Desktop.ViewModels
         public void ReBindItems(object obj)
         {
             BindItems();
+            var rep = new ArtCollegeGenericDataRepository<Instrument>();
+            AvailableInstruments = new ObservableCollection<Instrument>(rep.GetAll().OrderBy(la => la.Id));
         }
 
         public void UnselectItem()

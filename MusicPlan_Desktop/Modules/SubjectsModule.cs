@@ -10,18 +10,18 @@ using MusicPlan_Desktop.Views;
 
 namespace MusicPlan_Desktop.Modules
 {
-    public class MainModule : IModule
+    public class SubjectsModule : IModule
     {
         private readonly IUnityContainer _container;
-
-        public MainModule(IUnityContainer container)
+        public SubjectsModule(IUnityContainer container)
         {
             _container = container;
         }
+
         public void Initialize()
         {
             var regionManager = _container.Resolve<IRegionManager>();
-            regionManager.RegisterViewWithRegion(Constants.MainRegion, typeof(MainView));
+            regionManager.RegisterViewWithRegion(Constants.SubjectsRegion, typeof(SubjectsTabView));
         }
     }
 }

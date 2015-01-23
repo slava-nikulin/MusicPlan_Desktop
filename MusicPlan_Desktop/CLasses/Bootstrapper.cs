@@ -17,6 +17,12 @@ namespace MusicPlan_Desktop
         {
             var moduleCatalog = new ModuleCatalog();
 
+            var mainModule = typeof(MainModule);
+            moduleCatalog.AddModule(new ModuleInfo
+            {
+                ModuleName = mainModule.Name,
+                ModuleType = mainModule.AssemblyQualifiedName
+            });
             var instrumentsModule = typeof(InstrumentsModule);
             moduleCatalog.AddModule(new ModuleInfo
             {
@@ -28,6 +34,12 @@ namespace MusicPlan_Desktop
             {
                 ModuleName = studentsModule.Name,
                 ModuleType = studentsModule.AssemblyQualifiedName
+            });
+            var subjectsModule = typeof(SubjectsModule);
+            moduleCatalog.AddModule(new ModuleInfo
+            {
+                ModuleName = subjectsModule.Name,
+                ModuleType = subjectsModule.AssemblyQualifiedName
             });
 
             return moduleCatalog;

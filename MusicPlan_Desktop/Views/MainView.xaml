@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="MusicPlan_Desktop.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
+             xmlns:regions="http://www.codeplex.com/CompositeWPF"
+             xmlns:consts="clr-namespace:MusicPlan_Desktop"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Menu Grid.Row="0">
+                <MenuItem Header="{x:Static resources:ApplicationResources.Commands}">
+                    <MenuItem Header="{x:Static resources:ApplicationResources.Refresh}" Command="{Binding SyncDataCommand}"></MenuItem>
+                </MenuItem>
+            </Menu>
+            <TabControl Grid.Row="1" >
+                <TabItem Header="{x:Static resources:ApplicationResources.TeacherOverLoading}">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="{x:Static resources:ApplicationResources.StudyProgram}">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="{x:Static resources:ApplicationResources.Teachers}">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="{x:Static resources:ApplicationResources.Subjects}">
+                    <ContentControl x:Name="SubjectsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.SubjectsRegion}" />
+                </TabItem>
+                <TabItem Header="{x:Static resources:ApplicationResources.Students}">
+                    <ContentControl x:Name="StudentsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.StudentsRegion}" />
+                </TabItem>
+                <TabItem Header="{x:Static resources:ApplicationResources.Instruments}">
+                    <ContentControl x:Name="InstrumentsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.InstrumentsRegion}" />
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,182 @@
+﻿<UserControl x:Class="MusicPlan_Desktop.Views.SubjectsTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+             
+             >
+
+    <Grid Background="#FFE5E5E5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.SubjectsList}" Grid.Row="1">
+            <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <xcdg:DataGridControl ItemsSource="{Binding ItemsList}"
+                       ReadOnly="True"
+                       NavigationBehavior="RowOnly"
+                       HorizontalAlignment="Center"
+                       AutoCreateColumns="False">
+
+                    <xcdg:DataGridControl.MergedHeaders>
+                        <!--<xcdg:MergedHeader>
+                            <xcdg:MergedHeader.MergedColumns>
+                                <xcdg:MergedColumn FieldName="emptyCol"
+                            Title="11"
+                            CellHorizontalContentAlignment="Center"
+                            ChildColumnNames="Id,Name" />
+                            </xcdg:MergedHeader.MergedColumns>
+                        </xcdg:MergedHeader>-->
+                        <xcdg:MergedHeader>
+                            <xcdg:MergedHeader.MergedColumns>
+                                <xcdg:MergedColumn FieldName="regParams"
+                            Title="{x:Static resources:ApplicationResources.StandatdParameters}"
+                            CellHorizontalContentAlignment="Center"
+                            ChildColumnNames="regParams1,regParams2,regParams3,regParams4" />
+                                                            </xcdg:MergedHeader.MergedColumns>
+                        </xcdg:MergedHeader>
+                        <xcdg:MergedHeader>
+                            <xcdg:MergedHeader.MergedColumns>
+                                <xcdg:MergedColumn FieldName="concParams"
+                            Title="{x:Static resources:ApplicationResources.ConcertMasterParameters}"
+                            CellHorizontalContentAlignment="Center"
+                            ChildColumnNames="concertMasterParams1,concertMasterParams2,concertMasterParams3,concertMasterParams4" />
+                            </xcdg:MergedHeader.MergedColumns>
+                        </xcdg:MergedHeader>
+                    </xcdg:DataGridControl.MergedHeaders>
+
+
+                    <xcdg:DataGridControl.Columns >
+                        <xcdg:Column FieldName="Id" Title="{x:Static resources:ApplicationResources.Number}"/>
+                        <xcdg:Column FieldName="Name" Title="{x:Static resources:ApplicationResources.Name}" />
+                        <xcdg:Column  FieldName="regParams1" Title="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}">
+                            <xcdg:Column.DisplayMemberBindingInfo>
+                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="RegularParameters.WeeksPerFirstSemester"/>
+                            </xcdg:Column.DisplayMemberBindingInfo>
+                        </xcdg:Column>
+                        <xcdg:Column  FieldName="regParams2" Title="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}">
+                            <xcdg:Column.DisplayMemberBindingInfo>
+                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="RegularParameters.HoursPerFirstSemester"/>
+                            </xcdg:Column.DisplayMemberBindingInfo>
+                        </xcdg:Column>
+                        <xcdg:Column  FieldName="regParams3" Title="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}">
+                            <xcdg:Column.DisplayMemberBindingInfo>
+                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="RegularParameters.WeeksPerSecondSemester"/>
+                            </xcdg:Column.DisplayMemberBindingInfo>
+                        </xcdg:Column>
+                        <xcdg:Column  FieldName="regParams4" Title="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}">
+                            <xcdg:Column.DisplayMemberBindingInfo>
+                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="RegularParameters.HoursPerSecondSemester"/>
+                            </xcdg:Column.DisplayMemberBindingInfo>
+                        </xcdg:Column>
+
+                        <xcdg:Column  FieldName="concertMasterParams1" Title="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}">
+                            <xcdg:Column.DisplayMemberBindingInfo>
+                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="ConcertmasterParameters.WeeksPerFirstSemester"/>
+                            </xcdg:Column.DisplayMemberBindingInfo>
+                        </xcdg:Column>
+                        <xcdg:Column  FieldName="concertMasterParams2" Title="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}">
+                            <xcdg:Column.DisplayMemberBindingInfo>
+                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="ConcertmasterParameters.HoursPerFirstSemester"/>
+                            </xcdg:Column.DisplayMemberBindingInfo>
+                        </xcdg:Column>
+                        <xcdg:Column  FieldName="concertMasterParams3" Title="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}">
+                            <xcdg:Column.DisplayMemberBindingInfo>
+                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="ConcertmasterParameters.WeeksPerSecondSemester"/>
+                            </xcdg:Column.DisplayMemberBindingInfo>
+                        </xcdg:Column>
+                        <xcdg:Column  FieldName="concertMasterParams4" Title="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}">
+                            <xcdg:Column.DisplayMemberBindingInfo>
+                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="ConcertmasterParameters.HoursPerSecondSemester"/>
+                            </xcdg:Column.DisplayMemberBindingInfo>
+                        </xcdg:Column>
+                        
+                    </xcdg:DataGridControl.Columns>
+                    <xcdg:DataGridControl.View>
+
+                        <xcdg:TableflowView 
+                            ColumnStretchMode="All"
+                                AllowColumnChooser="False"
+                                ShowFixedColumnSplitter="False" />
+                    </xcdg:DataGridControl.View>
+
+
+                </xcdg:DataGridControl>
+
+            </ScrollViewer>
+        </GroupBox>
+
+        <GroupBox Grid.Row="0" 
+                  Header="{x:Static resources:ApplicationResources.EditInsertSubject}" 
+                  HorizontalAlignment="Center" 
+                  Margin="0,10,0,0" 
+                  Padding="10" 
+                  VerticalAlignment="Top" 
+                  Width="Auto" 
+                  Height="Auto" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox 
+                    Text="{Binding SelectedItem.Name}"
+                    Grid.Row="0" Grid.Column="1" 
+                    HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="10,10,0,0"
+                    Name="TxtInstrumentName" />
+                <Label Grid.Row="0" Grid.Column="0" Content="{x:Static resources:ApplicationResources.Name}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtInstrumentName}"/>
+
+                <GroupBox Margin="10" Grid.Column="0" Grid.Row="1" Header="{x:Static resources:ApplicationResources.StandatdParameters}">
+                    <StackPanel>
+                        <Label Content="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}"/>
+                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
+                        <Label Content="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}"/>
+                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
+                        <Label Content="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}"/>
+                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
+                        <Label Content="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}"/>
+                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Margin="10" Grid.Column="1" Grid.Row="1" Header="{x:Static resources:ApplicationResources.ConcertMasterParameters}">
+                    <StackPanel>
+                        <Label Content="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}"/>
+                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
+                        <Label Content="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}"/>
+                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
+                        <Label Content="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}"/>
+                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
+                        <Label Content="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}"/>
+                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
+                    </StackPanel>
+                </GroupBox>
+
+
+                <Button 
+                    Grid.Column="0" Grid.Row="2" 
+                    Name="BtnAddInstrument" 
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Margin="20,10,0,0" Padding="5"
+                    Content="{Binding BtnAddButtonContent}" 
+                    Command="{Binding AddUpdateCommand}"
+                    CommandParameter="{Binding SelectedItem}"/>
+                <Button Grid.Column="1" Grid.Row="2" 
+                        Command="{Binding CancelSelectionCommand}"
+                        Name="BtnCancelInsertInstrument" 
+                        Content="{x:Static resources:ApplicationResources.Cancel}" 
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="82,10,0,0" />
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

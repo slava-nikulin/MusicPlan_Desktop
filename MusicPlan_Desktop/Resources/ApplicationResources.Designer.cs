@@ -70,6 +70,24 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Команды.
+        /// </summary>
+        public static string Commands {
+            get {
+                return ResourceManager.GetString("Commands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Концертмейстерские параметры.
+        /// </summary>
+        public static string ConcertMasterParameters {
+            get {
+                return ResourceManager.GetString("ConcertMasterParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Удалить.
         /// </summary>
         public static string Delete {
@@ -106,11 +124,38 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить/редактировать предмет.
+        /// </summary>
+        public static string EditInsertSubject {
+            get {
+                return ResourceManager.GetString("EditInsertSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя.
         /// </summary>
         public static string FirstName {
             get {
                 return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Часов в неделю(1-й семестр).
+        /// </summary>
+        public static string FirstSemesterHoursPerWeekCount {
+            get {
+                return ResourceManager.GetString("FirstSemesterHoursPerWeekCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Недель в 1-й семестр.
+        /// </summary>
+        public static string FirstSemesterWeeksCount {
+            get {
+                return ResourceManager.GetString("FirstSemesterWeeksCount", resourceCulture);
             }
         }
         
@@ -187,11 +232,47 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Обновить данные на форме.
+        /// </summary>
+        public static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Часов в неделю(2-й семестр).
+        /// </summary>
+        public static string SecondSemesterHoursPerWeekCount {
+            get {
+                return ResourceManager.GetString("SecondSemesterHoursPerWeekCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Недель в 2-й семестр.
+        /// </summary>
+        public static string SecondSemesterWeeksCount {
+            get {
+                return ResourceManager.GetString("SecondSemesterWeeksCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Выберите курс.
         /// </summary>
         public static string SelectStudyYear {
             get {
                 return ResourceManager.GetString("SelectStudyYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Стандартные параметры.
+        /// </summary>
+        public static string StandatdParameters {
+            get {
+                return ResourceManager.GetString("StandatdParameters", resourceCulture);
             }
         }
         
@@ -228,6 +309,15 @@ namespace MusicPlan_Desktop.Resources {
         public static string Subjects {
             get {
                 return ResourceManager.GetString("Subjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список предметов.
+        /// </summary>
+        public static string SubjectsList {
+            get {
+                return ResourceManager.GetString("SubjectsList", resourceCulture);
             }
         }
         

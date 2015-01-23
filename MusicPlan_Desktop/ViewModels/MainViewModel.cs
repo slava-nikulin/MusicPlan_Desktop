@@ -16,11 +16,14 @@ namespace MusicPlan_Desktop.ViewModels
     public class MainViewModel : BindableBase
     {
         private readonly IEventAggregator _eventAggregator;
+        private IUnityContainer _container;
+
         public ICommand SyncDataCommand { get; set; }
 
-        public MainViewModel()
+        public MainViewModel(IUnityContainer container)
         {
-            _eventAggregator = new EventAggregator();
+            _container = container;
+            _eventAggregator = _container.Resolve<IEventAggregator>();
             SyncDataCommand = new DelegateCommand(SyncData);
         }
 

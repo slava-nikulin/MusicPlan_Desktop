@@ -61,6 +61,7 @@
     <Compile Include="Repository\ArtCollegeGenericDataRepository.cs" />
     <Compile Include="Repository\IGenericDataRepository.cs" />
     <Compile Include="Repository\StudentRepository.cs" />
+    <Compile Include="Repository\SubjectRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MusicPlan.BLL\MusicPlan.BLL.csproj">

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,23 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Practices.Prism.Mvvm;
-using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Unity;
-using MusicPlan.BLL;
-using MusicPlan.BLL.Models;
-using MusicPlan.DAL.Repository;
-using MusicPlan_Desktop.Resources;
 using MusicPlan_Desktop.ViewModels;
 
-namespace MusicPlan_Desktop
+namespace MusicPlan_Desktop.Views
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for SubjectsTabView.xaml
+    /// </summary>
+    public partial class SubjectsTabView : UserControl
     {
-        public MainWindow()
+        public SubjectsTabView(SubjectsViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
-
     }
 }

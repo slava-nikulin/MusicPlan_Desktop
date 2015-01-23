@@ -9,37 +9,5 @@
         Title="MainWindow" Height="auto" Width="auto"
         WindowStartupLocation="CenterScreen" 
         WindowState="Maximized">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Menu Grid.Row="0">
-                <MenuItem Header="Комманды">
-                    <MenuItem Header="Обновить данные" Command="{Binding SyncDataCommand}"></MenuItem>
-                </MenuItem>
-            </Menu>
-            <TabControl Grid.Row="1" >
-                <TabItem Header="{x:Static resources:ApplicationResources.TeacherOverLoading}">
-                    <Grid Background="#FFE5E5E5"/>
-                </TabItem>
-                <TabItem Header="{x:Static resources:ApplicationResources.StudyProgram}">
-                    <Grid Background="#FFE5E5E5"/>
-                </TabItem>
-                <TabItem Header="{x:Static resources:ApplicationResources.Teachers}">
-                    <Grid Background="#FFE5E5E5"/>
-                </TabItem>
-                <TabItem Header="{x:Static resources:ApplicationResources.Subjects}">
-                    <Grid Background="#FFE5E5E5"/>
-                </TabItem>
-                <TabItem Header="{x:Static resources:ApplicationResources.Students}">
-                    <ContentControl x:Name="StudentsContent" prism:RegionManager.RegionName="{x:Static consts:Constants.StudentsRegion}" />
-                </TabItem>
-                <TabItem Header="{x:Static resources:ApplicationResources.Instruments}">
-                    <ContentControl x:Name="InstrumentsContent" prism:RegionManager.RegionName="{x:Static consts:Constants.InstrumentsRegion}" />
-                </TabItem>
-            </TabControl>
-        </Grid>
-    </ScrollViewer>
+    <ContentControl x:Name="InstrumentsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.MainRegion}" />
 </Window>
