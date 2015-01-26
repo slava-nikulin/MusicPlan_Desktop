@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 namespace MusicPlan.BLL.Models
 {
-    public sealed class Student: IModel
+    public class Student: IModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -13,8 +13,8 @@ namespace MusicPlan.BLL.Models
         public string MiddleName { get; set; }
         public int StudyYear { get; set; }
 
-        public ICollection<Instrument> Instruments { get; set; }
-        public ICollection<SubjectStudent> SubjectToStudents { get; set; }
+        public virtual ICollection<Instrument> Instruments { get; set; }
+        public virtual ICollection<SubjectStudent> SubjectToStudents { get; set; }
 
         public Student()
         {

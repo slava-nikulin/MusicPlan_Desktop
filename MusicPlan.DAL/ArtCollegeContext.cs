@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MusicPlan.BLL.Models;
+using MusicPlan.DAL.DatabaseInitializer;
 
 namespace MusicPlan.DAL
 {
@@ -15,11 +16,13 @@ namespace MusicPlan.DAL
         public DbSet<Student> Students { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<SubjectParameters> SubjectsParameters { get; set; } 
+        public DbSet<SubjectParameters> SubjectsParameters { get; set; }
+        public DbSet<SubjectParameterType> ParameterTypes { get; set; }
+        public DbSet<SubjectStudent> SubjectsToStudents { get; set; } 
 
         public ArtCollegeContext(): base("ArtCollegeDbConnection")
         {
-            Database.SetInitializer(new CreateDatabaseIfNotExists<ArtCollegeContext>());
+            Database.SetInitializer(new ArtCollegeDatabaseInitializer());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -28,6 +31,8 @@ namespace MusicPlan.DAL
             modelBuilder.Entity<Student>().HasKey(st => st.Id);
             modelBuilder.Entity<Subject>().HasKey(su => su.Id);
             modelBuilder.Entity<Teacher>().HasKey(t => t.Id);
+            modelBuilder.Entity<SubjectParameterType>().HasKey(la => la.Id);
+            modelBuilder.Entity<SubjectStudent>().HasKey(sp => sp.Id);
             modelBuilder.Entity<SubjectParameters>().HasKey(sp => sp.Id);
 
             modelBuilder.Entity<Student>()
@@ -38,6 +43,7 @@ namespace MusicPlan.DAL
                     m.MapLeftKey("StudentId");
                     m.MapRightKey("InstrumentId");
                 });
+
             modelBuilder.Entity<Student>().HasMany(st => st.SubjectToStudents).WithRequired(su=>su.Student).Map(m =>
             {
                 m.MapKey("StudentId");
@@ -52,6 +58,20 @@ namespace MusicPlan.DAL
             {
                 m.MapLeftKey("SubjectId");
                 m.MapRightKey("TeacherId");
+            });
+
+            modelBuilder.Entity<Subject>()
+                .HasMany(subj => subj.HoursParameters)
+                .WithRequired(param => param.Subject)
+                .Map(
+                    m =>
+                    {
+                        m.MapKey("SubjectId");
+                    });
+
+            modelBuilder.Entity<SubjectParameters>().HasRequired(la => la.Type).WithMany().Map(m =>
+            {
+                m.MapKey("TypeId");
             });
         }
     }

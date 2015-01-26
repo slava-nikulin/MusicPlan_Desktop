@@ -117,106 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
-  <data name="Commands" xml:space="preserve">
-    <value>Команды</value>
-  </data>
   <data name="ConcertMasterParameters" xml:space="preserve">
     <value>Концертмейстерские часы</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редактировать</value>
-  </data>
-  <data name="EditInsertInstrument" xml:space="preserve">
-    <value>Добавить/редактировать инструмент</value>
-  </data>
-  <data name="EditInsertStudent" xml:space="preserve">
-    <value>Добавить/редактировать студента</value>
-  </data>
-  <data name="EditInsertSubject" xml:space="preserve">
-    <value>Добавить/редактировать предмет</value>
-  </data>
-  <data name="FirstName" xml:space="preserve">
-    <value>Имя</value>
-  </data>
-  <data name="FirstSemesterHoursPerWeekCount" xml:space="preserve">
-    <value>Часов в неделю(1-й семестр)</value>
-  </data>
-  <data name="FirstSemesterWeeksCount" xml:space="preserve">
-    <value>Недель в 1-й семестр</value>
-  </data>
-  <data name="Insert" xml:space="preserve">
-    <value>Добавить</value>
-  </data>
-  <data name="Instrument" xml:space="preserve">
-    <value>Инструмент</value>
-  </data>
-  <data name="Instruments" xml:space="preserve">
-    <value>Инструменты</value>
-  </data>
-  <data name="InstrumentsList" xml:space="preserve">
-    <value>Список инструментов</value>
-  </data>
-  <data name="LastName" xml:space="preserve">
-    <value>Фамилия</value>
-  </data>
-  <data name="MiddleName" xml:space="preserve">
-    <value>Отчество</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Название</value>
-  </data>
-  <data name="Number" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="ParametersType" xml:space="preserve">
-    <value>Тип параметров</value>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Обновить данные на форме</value>
-  </data>
-  <data name="Schedule" xml:space="preserve">
-    <value>Расписание на семестр</value>
-  </data>
-  <data name="Schedules" xml:space="preserve">
-    <value>Список расписаний предмета</value>
-  </data>
-  <data name="SecondSemesterHoursPerWeekCount" xml:space="preserve">
-    <value>Часов в неделю(2-й семестр)</value>
-  </data>
-  <data name="SecondSemesterWeeksCount" xml:space="preserve">
-    <value>Недель в 2-й семестр</value>
-  </data>
-  <data name="SelectStudyYear" xml:space="preserve">
-    <value>Выберите курс</value>
-  </data>
   <data name="StandatdParameters" xml:space="preserve">
     <value>Обычные часы</value>
-  </data>
-  <data name="Students" xml:space="preserve">
-    <value>Студенты</value>
-  </data>
-  <data name="StudyProgram" xml:space="preserve">
-    <value>Учебная программа</value>
-  </data>
-  <data name="StudyYear" xml:space="preserve">
-    <value>Курс</value>
-  </data>
-  <data name="Subjects" xml:space="preserve">
-    <value>Предметы</value>
-  </data>
-  <data name="SubjectsList" xml:space="preserve">
-    <value>Список предметов</value>
-  </data>
-  <data name="TeacherOverLoading" xml:space="preserve">
-    <value>Нагрузка</value>
-  </data>
-  <data name="Teachers" xml:space="preserve">
-    <value>Преподаватели</value>
   </data>
 </root>

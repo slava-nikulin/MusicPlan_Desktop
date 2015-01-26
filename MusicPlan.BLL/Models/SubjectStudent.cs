@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace MusicPlan.BLL.Models
 {
-    public class SubjectStudent:IModel
+    public class SubjectStudent: IModel
     {
         public virtual Subject Subject { get; set; }
         public virtual Student Student { get; set; }
-
-        public bool BindedAsConcertMaster { get; set; }
+        public virtual SubjectParameterType BindType { get; set; }
 
         public int Id { get; set; }
     }

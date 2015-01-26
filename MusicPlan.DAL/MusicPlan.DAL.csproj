@@ -57,6 +57,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArtCollegeContext.cs" />
+    <Compile Include="DalResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DalResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseInitializer\ArtCollegeDatabaseInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ArtCollegeGenericDataRepository.cs" />
     <Compile Include="Repository\IGenericDataRepository.cs" />
@@ -74,6 +80,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DalResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DalResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

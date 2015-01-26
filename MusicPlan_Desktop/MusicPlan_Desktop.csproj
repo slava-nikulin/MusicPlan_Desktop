@@ -105,7 +105,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CLasses\Enums.cs" />
-    <Compile Include="CLasses\Events\SwitchTabEvent.cs" />
+    <Compile Include="CLasses\Events\SyncDataEvent.cs" />
     <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Modules\StudentsModule.cs" />
     <Compile Include="Modules\SubjectsModule.cs" />

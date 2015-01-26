@@ -6,10 +6,7 @@
              xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
-             
-             >
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
 
     <Grid Background="#FFE5E5E5">
         <Grid.RowDefinitions>
@@ -18,99 +15,95 @@
         </Grid.RowDefinitions>
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.SubjectsList}" Grid.Row="1">
-            <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <xcdg:DataGridControl ItemsSource="{Binding ItemsList}"
-                       ReadOnly="True"
-                       NavigationBehavior="RowOnly"
-                       HorizontalAlignment="Center"
-                       AutoCreateColumns="False">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <DataGrid  Height="500"
+                            SelectedIndex="{Binding SelectedItemIndex}"
+                            ItemsSource="{Binding ItemsList}"
+                            SelectionMode="Single" 
+                            Margin="5 10 5 10"
+                            Name="DgInstruments" 
+                            AutoGenerateColumns="False" 
+                            IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True"
+                           RowDetailsVisibilityMode="VisibleWhenSelected">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction
+                                Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
-                    <xcdg:DataGridControl.MergedHeaders>
-                        <!--<xcdg:MergedHeader>
-                            <xcdg:MergedHeader.MergedColumns>
-                                <xcdg:MergedColumn FieldName="emptyCol"
-                            Title="11"
-                            CellHorizontalContentAlignment="Center"
-                            ChildColumnNames="Id,Name" />
-                            </xcdg:MergedHeader.MergedColumns>
-                        </xcdg:MergedHeader>-->
-                        <xcdg:MergedHeader>
-                            <xcdg:MergedHeader.MergedColumns>
-                                <xcdg:MergedColumn FieldName="regParams"
-                            Title="{x:Static resources:ApplicationResources.StandatdParameters}"
-                            CellHorizontalContentAlignment="Center"
-                            ChildColumnNames="regParams1,regParams2,regParams3,regParams4" />
-                                                            </xcdg:MergedHeader.MergedColumns>
-                        </xcdg:MergedHeader>
-                        <xcdg:MergedHeader>
-                            <xcdg:MergedHeader.MergedColumns>
-                                <xcdg:MergedColumn FieldName="concParams"
-                            Title="{x:Static resources:ApplicationResources.ConcertMasterParameters}"
-                            CellHorizontalContentAlignment="Center"
-                            ChildColumnNames="concertMasterParams1,concertMasterParams2,concertMasterParams3,concertMasterParams4" />
-                            </xcdg:MergedHeader.MergedColumns>
-                        </xcdg:MergedHeader>
-                    </xcdg:DataGridControl.MergedHeaders>
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <GroupBox HorizontalAlignment="Left" Margin="10" Width="220" Header="{x:Static resources:ApplicationResources.Schedules}">
+                                <DataGrid
+                                    SelectionMode="Single" 
+                                    AutoGenerateColumns="False" 
+                                    IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True"
+                                    Margin="10" 
+                                    ItemsSource="{Binding HoursParameters}"
+                                    SelectedIndex="{Binding SelectedSubItemIndex}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}" Binding="{Binding WeeksPerFirstSemester}" />
+                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}" Binding="{Binding HoursPerFirstSemester}" />
+                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}" Binding="{Binding WeeksPerSecondSemester}" />
+                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}" Binding="{Binding HoursPerSecondSemester}" />
+                                        <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
+                                            <DataGridTemplateColumn.CellTemplate >
+                                                <DataTemplate>
+                                                    <Button  Margin="3" Padding="3" Content="{x:Static resources:ApplicationResources.Delete}">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Click">
+                                                                <i:InvokeCommandAction 
+                                                Command="{Binding Path=DataContext.DeleteSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}}"
+                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
 
-
-                    <xcdg:DataGridControl.Columns >
-                        <xcdg:Column FieldName="Id" Title="{x:Static resources:ApplicationResources.Number}"/>
-                        <xcdg:Column FieldName="Name" Title="{x:Static resources:ApplicationResources.Name}" />
-                        <xcdg:Column  FieldName="regParams1" Title="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}">
-                            <xcdg:Column.DisplayMemberBindingInfo>
-                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="RegularParameters.WeeksPerFirstSemester"/>
-                            </xcdg:Column.DisplayMemberBindingInfo>
-                        </xcdg:Column>
-                        <xcdg:Column  FieldName="regParams2" Title="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}">
-                            <xcdg:Column.DisplayMemberBindingInfo>
-                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="RegularParameters.HoursPerFirstSemester"/>
-                            </xcdg:Column.DisplayMemberBindingInfo>
-                        </xcdg:Column>
-                        <xcdg:Column  FieldName="regParams3" Title="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}">
-                            <xcdg:Column.DisplayMemberBindingInfo>
-                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="RegularParameters.WeeksPerSecondSemester"/>
-                            </xcdg:Column.DisplayMemberBindingInfo>
-                        </xcdg:Column>
-                        <xcdg:Column  FieldName="regParams4" Title="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}">
-                            <xcdg:Column.DisplayMemberBindingInfo>
-                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="RegularParameters.HoursPerSecondSemester"/>
-                            </xcdg:Column.DisplayMemberBindingInfo>
-                        </xcdg:Column>
-
-                        <xcdg:Column  FieldName="concertMasterParams1" Title="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}">
-                            <xcdg:Column.DisplayMemberBindingInfo>
-                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="ConcertmasterParameters.WeeksPerFirstSemester"/>
-                            </xcdg:Column.DisplayMemberBindingInfo>
-                        </xcdg:Column>
-                        <xcdg:Column  FieldName="concertMasterParams2" Title="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}">
-                            <xcdg:Column.DisplayMemberBindingInfo>
-                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="ConcertmasterParameters.HoursPerFirstSemester"/>
-                            </xcdg:Column.DisplayMemberBindingInfo>
-                        </xcdg:Column>
-                        <xcdg:Column  FieldName="concertMasterParams3" Title="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}">
-                            <xcdg:Column.DisplayMemberBindingInfo>
-                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="ConcertmasterParameters.WeeksPerSecondSemester"/>
-                            </xcdg:Column.DisplayMemberBindingInfo>
-                        </xcdg:Column>
-                        <xcdg:Column  FieldName="concertMasterParams4" Title="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}">
-                            <xcdg:Column.DisplayMemberBindingInfo>
-                                <xcdg:DataGridBindingInfo ReadOnly="True" Path="ConcertmasterParameters.HoursPerSecondSemester"/>
-                            </xcdg:Column.DisplayMemberBindingInfo>
-                        </xcdg:Column>
-                        
-                    </xcdg:DataGridControl.Columns>
-                    <xcdg:DataGridControl.View>
-
-                        <xcdg:TableflowView 
-                            ColumnStretchMode="All"
-                                AllowColumnChooser="False"
-                                ShowFixedColumnSplitter="False" />
-                    </xcdg:DataGridControl.View>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction
+                                                Command="{Binding DataContext.SelectSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}"
+                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </DataGrid>
+                            </GroupBox>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
 
 
-                </xcdg:DataGridControl>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.Number}" Binding="{Binding Id}" />
+                        <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Instrument}" Binding="{Binding Name}" />
+                        <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
+                            <DataGridTemplateColumn.CellTemplate >
+                                <DataTemplate>
+                                    <Button  Margin="5" Padding="5" Content="{x:Static resources:ApplicationResources.Delete}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction 
+                                                Command="{Binding Path=DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+
+
+                </DataGrid>
 
             </ScrollViewer>
+
+
         </GroupBox>
 
         <GroupBox Grid.Row="0" 
@@ -126,56 +119,76 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox 
-                    Text="{Binding SelectedItem.Name}"
-                    Grid.Row="0" Grid.Column="1" 
-                    HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="10,10,0,0"
-                    Name="TxtInstrumentName" />
-                <Label Grid.Row="0" Grid.Column="0" Content="{x:Static resources:ApplicationResources.Name}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtInstrumentName}"/>
+                <StackPanel Grid.Row="0">
+                    <Label Content="{x:Static resources:ApplicationResources.Name}" HorizontalAlignment="Left" Margin="15 0 0 0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtInstrumentName}"/>
+                    <TextBox Text="{Binding SelectedItem.Name}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="15,0,0,0" x:Name="TxtInstrumentName" />
+                </StackPanel>
+                <GroupBox Margin="10" Grid.Row="1" Header="{x:Static resources:ApplicationResources.Schedule}">
 
-                <GroupBox Margin="10" Grid.Column="0" Grid.Row="1" Header="{x:Static resources:ApplicationResources.StandatdParameters}">
-                    <StackPanel>
-                        <Label Content="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}"/>
-                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
-                        <Label Content="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}"/>
-                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
-                        <Label Content="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}"/>
-                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
-                        <Label Content="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}"/>
-                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Margin="10 0 5 10" Orientation="Horizontal">
+                                <Label Content="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}"/>
+                                <TextBox Text="{Binding SelectedSubItem.WeeksPerFirstSemester}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
+                            </StackPanel>
+                            <StackPanel Margin="10 0 5 10" Orientation="Horizontal">
+                                <Label Content="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}"/>
+                                <TextBox Text="{Binding SelectedSubItem.WeeksPerSecondSemester}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Margin="10 0 5 10" Orientation="Horizontal">
+                                <Label Content="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}"/>
+                                <TextBox Text="{Binding SelectedSubItem.HoursPerFirstSemester}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
+                            </StackPanel>
+                            <StackPanel Margin="10 0 5 10" Orientation="Horizontal">
+                                <Label Content="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}"/>
+                                <TextBox Text="{Binding SelectedSubItem.HoursPerSecondSemester}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal" Margin="10 0 5 10">
+                                <Label Content="{x:Static resources:ApplicationResources.ParametersType}"/>
+                                <ComboBox
+                            HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
+                            IsEditable="False" IsReadOnly="True" 
+                            ItemsSource="{Binding SubjectParameterTypes}"
+                            SelectedItem="{Binding SelectedSubItem.Type}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Right" Margin="10 0 5 10" Orientation="Horizontal">
+                                <Label Content="{x:Static resources:ApplicationResources.StudyYear}"/>
+                                <ComboBox
+                                    HorizontalAlignment="Right" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
+                                    IsEditable="False" IsReadOnly="True" 
+                                    ItemsSource="{Binding Path=Classes}"
+                                    SelectedItem="{Binding SelectedSubItem.StudyYear}">
+                                </ComboBox>
+                            </StackPanel>
+                        </StackPanel>
+
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Margin="10" Grid.Column="1" Grid.Row="1" Header="{x:Static resources:ApplicationResources.ConcertMasterParameters}">
-                    <StackPanel>
-                        <Label Content="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}"/>
-                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
-                        <Label Content="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}"/>
-                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
-                        <Label Content="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}"/>
-                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
-                        <Label Content="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}"/>
-                        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="0"></TextBox>
-                    </StackPanel>
-                </GroupBox>
-
 
                 <Button 
-                    Grid.Column="0" Grid.Row="2" 
+                    Grid.Row="3" 
                     Name="BtnAddInstrument" 
-                    HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Margin="20,10,0,0" Padding="5"
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" Margin="50 0 0 0" Padding="5"
                     Content="{Binding BtnAddButtonContent}" 
                     Command="{Binding AddUpdateCommand}"
                     CommandParameter="{Binding SelectedItem}"/>
-                <Button Grid.Column="1" Grid.Row="2" 
+                <Button Grid.Row="3" 
                         Command="{Binding CancelSelectionCommand}"
                         Name="BtnCancelInsertInstrument" 
                         Content="{x:Static resources:ApplicationResources.Cancel}" 
-                        HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="82,10,0,0" />
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Padding="5" Margin="0 0 50 0" />
             </Grid>
         </GroupBox>
     </Grid>

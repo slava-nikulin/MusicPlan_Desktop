@@ -8,18 +8,21 @@
              xmlns:consts="clr-namespace:MusicPlan_Desktop"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Menu Grid.Row="0">
-                <MenuItem Header="{x:Static resources:ApplicationResources.Commands}">
-                    <MenuItem Header="{x:Static resources:ApplicationResources.Refresh}" Command="{Binding SyncDataCommand}"></MenuItem>
-                </MenuItem>
-            </Menu>
-            <TabControl Grid.Row="1" >
+
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom" Name="MainStatusBar">
+            <StatusBarItem>
+                <TextBlock Name="LblStatusMessage" Text="123" />
+            </StatusBarItem>
+        </StatusBar>
+
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="{x:Static resources:ApplicationResources.Commands}">
+                <MenuItem Header="{x:Static resources:ApplicationResources.Refresh}" Command="{Binding SyncDataCommand}"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <TabControl >
                 <TabItem Header="{x:Static resources:ApplicationResources.TeacherOverLoading}">
                     <Grid Background="#FFE5E5E5"/>
                 </TabItem>
@@ -39,6 +42,6 @@
                     <ContentControl x:Name="InstrumentsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.InstrumentsRegion}" />
                 </TabItem>
             </TabControl>
-        </Grid>
-    </ScrollViewer>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>

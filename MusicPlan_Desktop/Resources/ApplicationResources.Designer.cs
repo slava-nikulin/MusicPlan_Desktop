@@ -79,7 +79,7 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Концертмейстерские параметры.
+        ///   Looks up a localized string similar to Концертмейстерские часы.
         /// </summary>
         public static string ConcertMasterParameters {
             get {
@@ -232,11 +232,38 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Тип параметров.
+        /// </summary>
+        public static string ParametersType {
+            get {
+                return ResourceManager.GetString("ParametersType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Обновить данные на форме.
         /// </summary>
         public static string Refresh {
             get {
                 return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Расписание на семестр.
+        /// </summary>
+        public static string Schedule {
+            get {
+                return ResourceManager.GetString("Schedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список расписаний предмета.
+        /// </summary>
+        public static string Schedules {
+            get {
+                return ResourceManager.GetString("Schedules", resourceCulture);
             }
         }
         
@@ -268,7 +295,7 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Стандартные параметры.
+        ///   Looks up a localized string similar to Обычные часы.
         /// </summary>
         public static string StandatdParameters {
             get {

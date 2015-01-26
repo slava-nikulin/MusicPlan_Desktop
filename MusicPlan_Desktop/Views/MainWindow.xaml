@@ -10,4 +10,5 @@
         WindowStartupLocation="CenterScreen" 
         WindowState="Maximized">
     <ContentControl x:Name="InstrumentsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.MainRegion}" />
+
 </Window>
