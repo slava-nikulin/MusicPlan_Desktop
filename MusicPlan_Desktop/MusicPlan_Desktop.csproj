@@ -104,6 +104,7 @@
     <Compile Include="Behaviors\SynchronizeSelectedItems.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CLasses\Converters.cs" />
     <Compile Include="CLasses\Enums.cs" />
     <Compile Include="CLasses\Events\SyncDataEvent.cs" />
     <Compile Include="Modules\MainModule.cs" />

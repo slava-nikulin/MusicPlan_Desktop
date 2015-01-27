@@ -28,19 +28,4 @@ namespace MusicPlan_Desktop.Views
             DataContext = viewModel;
         }
     }
-
-    [ValueConversion(typeof(ICollection<Instrument>), typeof(string))]
-    public class InstrumentsListToStringConverter : IValueConverter
-    {
-
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return String.Join(string.Format("{0}", Environment.NewLine), ((ICollection<Instrument>)value).Select(la => la.Name).ToArray());
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

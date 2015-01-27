@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Remoting.Proxies;
 using System.Text;
@@ -29,6 +30,9 @@ namespace MusicPlan_Desktop.ViewModels
         private string _btnAddButtonContent;
         private int _selectedItemIndex;
         private int _selectedSubItemIndex;
+        private bool _applyForAllStudyYears;
+        private bool _subItemsInsertUpdateMode;
+        private List<int> _classes; 
         private IUnityContainer _container;
         private IEventAggregator _eventAggregator;
         #endregion
@@ -45,9 +49,26 @@ namespace MusicPlan_Desktop.ViewModels
 
         #region Public properties
 
+        public bool SubItemsInsertUpdateMode
+        {
+            get { return _subItemsInsertUpdateMode; }
+            set
+            {
+                SetProperty(ref _subItemsInsertUpdateMode, value);
+                
+            }
+        }
+
+        public bool ApplyForAllStudyYears
+        {
+            get { return _applyForAllStudyYears; }
+            set { SetProperty(ref _applyForAllStudyYears, value); }
+        }
+
         public List<int> Classes
         {
-            get { return new List<int> { 1, 2, 3, 4, 5 }; }
+            get { return _classes; }
+            set { SetProperty(ref _classes, value); }
         }
 
         public ObservableCollection<SubjectParameterType> SubjectParameterTypes
@@ -122,78 +143,100 @@ namespace MusicPlan_Desktop.ViewModels
         public ICommand SelectItemCommand{ get; set; }
         public ICommand DeleteSubItemCommand { get; set; }
         public ICommand SelectSubItemCommand { get; set; }
+        public ICommand ChangeCheckedCommand { get; set; }
+
         #endregion
 
         #region ViewModel methods
         public void PrepareViewModel()
         {
             BindItems();
+            SubItemsInsertUpdateMode = true;
             SelectedItem = new Subject();
             SelectedSubItem = new SubjectParameters();
+            Classes = new List<int> {1, 2, 3, 4, 5};
             SelectedItemIndex = -1;
             SelectedSubItemIndex = -1;
             AddUpdateCommand = new DelegateCommand<Subject>(AddUpdateItem);
             DeleteItemCommand = new DelegateCommand<Subject>(DeleteItem);
             DeleteSubItemCommand = new DelegateCommand<SubjectParameters>(DeleteSubItem);
             SelectItemCommand = new DelegateCommand<Subject>(SelectItem);
-            SelectItemCommand = new DelegateCommand<SubjectParameters>(SelectSubItem);
+            SelectSubItemCommand = new DelegateCommand<SubjectParameters>(SelectSubItem);
             CancelSelectionCommand = new DelegateCommand(UnselectItem);
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+            ChangeCheckedCommand = new DelegateCommand(ApplyForAllYearsCheckboxChange);
+            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectInsert_ParameterInsert");
+            PropertyChanged += ChangeProperty;
+        }
+
+        private void ChangeProperty(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SubItemsInsertUpdateMode")
+            {
+                if (SubItemsInsertUpdateMode)
+                {
+                    BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterEdit");
+                }
+                else
+                {
+                    BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit");
+                }
+            }
+        }
+
+        private void ApplyForAllYearsCheckboxChange()
+        {
+            Classes = !ApplyForAllStudyYears ? new List<int> { 1, 2, 3, 4, 5 } : null;
         }
 
         private void SelectSubItem(SubjectParameters subItem)
         {
             if (SelectedSubItemIndex != -1)
             {
+                ApplyForAllStudyYears = false;
+                SubItemsInsertUpdateMode = true;
+                //SelectedSubItem = subItem;
                 SelectedSubItem = subItem.DeepClone();
+                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterEdit");
             }
         }
 
         private void DeleteSubItem(SubjectParameters subItem)
         {
             var rep = new ArtCollegeGenericDataRepository<SubjectParameters>();
-            rep.Remove(subItem);
+            //rep.Remove(subItem);
             UnselectSubItem();
-            BindSubItems();
         }
 
         public void UnselectSubItem()
         {
             SelectedSubItem = new SubjectParameters();
-            SelectedItemIndex = -1;
+            SelectedSubItemIndex = -1;
+            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterInsert");
         }
 
         public void UnselectItem()
         {
             UnselectSubItem();
             SelectedItem = new Subject();
-            SelectedSubItemIndex = -1;
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+            SelectedItemIndex = -1;
+            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectInsert_ParameterInsert");
         }
 
         public void SelectItem(Subject item)
         {
-            if (SelectedItemIndex != -1)
+            if (SelectedItemIndex != -1 && item.Id!=SelectedItem.Id)
             {
+                SubItemsInsertUpdateMode = false;
+                UnselectSubItem();
                 SelectedItem = item.DeepClone();
-                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Edit");
+                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit");
             }
-        }
-
-        public void BindSubItems()
-        {
-            var rep = new ArtCollegeGenericDataRepository<SubjectParameters>();
-            SubItemsList =
-                new ObservableCollection<SubjectParameters>(
-                    (rep.GetAll(la => la.Type).OrderBy(la => la.Id)));
         }
 
         public void BindItems()
         {
             var rep = new ArtCollegeGenericDataRepository<Subject>();
-            ItemsList =
-                new ObservableCollection<Subject>(
-                    (rep.GetAll(la => la.HoursParameters, la => la.HoursParameters.Select(p => p.Type))).OrderBy(la => la.Id));
+            ItemsList = new ObservableCollection<Subject>((rep.GetAll(la => la.HoursParameters, la => la.HoursParameters.Select(p => p.Type))).OrderBy(la => la.Id));
             var rep1 = new ArtCollegeGenericDataRepository<SubjectParameterType>();
             SubjectParameterTypes = new ObservableCollection<SubjectParameterType>(rep1.GetAll());
         }
@@ -208,14 +251,39 @@ namespace MusicPlan_Desktop.ViewModels
 
         public void AddUpdateItem(Subject item)
         {
-            var rep = new ArtCollegeGenericDataRepository<Subject>();
+            //var repParams = new SubjectParametersRepository();
+            var repSubject = new SubjectRepository();
             if (item.Id == 0)
             {
-                //rep.Add(item);
+                repSubject.Add(item);
             }
             else
             {
-                //rep.Update(item);
+                if (SelectedSubItemIndex != -1)
+                {
+                    item.HoursParameters.Remove(item.HoursParameters.SingleOrDefault(la => la.Id == SelectedSubItem.Id));
+                    item.HoursParameters.Add(SelectedSubItem);
+                    repSubject.Update(item);
+                    var selectedIndex = SelectedItemIndex;
+                    BindItems();
+                    SelectedItemIndex = selectedIndex;
+                    UnselectSubItem();
+                    return;
+                }
+                if (ApplyForAllStudyYears)
+                {
+                    for (int i = 1; i <= 5; i++)
+                    {
+                        var paramClone = SelectedSubItem.DeepClone();
+                        paramClone.StudyYear = i;
+                        item.HoursParameters.Add(paramClone);
+                    }
+                }
+                else
+                {
+                    item.HoursParameters.Add(SelectedSubItem);
+                }
+                repSubject.Update(item);
             }
             BindItems();
             UnselectItem();

@@ -8,7 +8,7 @@
              xmlns:Behaviors="clr-namespace:MusicPlan_Desktop.Behaviors"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
-             xmlns:musicPlanDesktop="clr-namespace:MusicPlan_Desktop.Views">
+             xmlns:converters="clr-namespace:MusicPlan_Desktop.CLasses">
 
     <Grid Background="#FFE5E5E5">
         <Grid.RowDefinitions>
@@ -26,7 +26,7 @@
                             AutoGenerateColumns="False" IsReadOnly="False" CanUserResizeColumns="True" 
                             CanUserAddRows="False" CanUserSortColumns="True">
                 <DataGrid.Resources>
-                    <musicPlanDesktop:InstrumentsListToStringConverter x:Key="InstrumentsListToStringConverter" />
+                    <converters:InstrumentsListToStringConverter x:Key="InstrumentsListToStringConverter" />
                 </DataGrid.Resources>
 
                 <i:Interaction.Triggers>

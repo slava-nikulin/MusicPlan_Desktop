@@ -7,7 +7,16 @@
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="{Binding}" FontFamily="Georgia" FontStyle="Italic" FontWeight="Heavy" TextDecorations="Underline" Foreground="Black" HorizontalAlignment="Stretch" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type Expander}">
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontFamily="Georgia" FontStyle="Italic" FontWeight="Heavy" TextDecorations="Underline" Foreground="Black" HorizontalAlignment="Stretch" />
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
@@ -21,6 +30,13 @@
         <Style TargetType="{x:Type xcdg:ColumnManagerRow}">
             <Setter Property="AllowColumnReorder" Value="False"/>
         </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="FontWeight"
+                  Value="Bold" />
+        </Style>
+
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="MistyRose"/>
+  
     </Application.Resources>
    
 </Application>

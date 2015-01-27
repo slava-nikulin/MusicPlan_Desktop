@@ -61,6 +61,24 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить/Редактировать расписание.
+        /// </summary>
+        public static string AddEditSchedule {
+            get {
+                return ResourceManager.GetString("AddEditSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавить расписание этого типа для всех курсов?.
+        /// </summary>
+        public static string ApplyForAllStudyYears {
+            get {
+                return ResourceManager.GetString("ApplyForAllStudyYears", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Отмена.
         /// </summary>
         public static string Cancel {
@@ -327,6 +345,51 @@ namespace MusicPlan_Desktop.Resources {
         public static string StudyYear {
             get {
                 return ResourceManager.GetString("StudyYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Предмет.
+        /// </summary>
+        public static string Subject {
+            get {
+                return ResourceManager.GetString("Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактировать предмет.
+        /// </summary>
+        public static string SubjectEdit {
+            get {
+                return ResourceManager.GetString("SubjectEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактировать предмет/Редактировать расписание.
+        /// </summary>
+        public static string SubjectEdit_ParameterEdit {
+            get {
+                return ResourceManager.GetString("SubjectEdit_ParameterEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактировать предмет/Добавить расписание.
+        /// </summary>
+        public static string SubjectEdit_ParameterInsert {
+            get {
+                return ResourceManager.GetString("SubjectEdit_ParameterInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Добавить предмет/Добавить расписание.
+        /// </summary>
+        public static string SubjectInsert_ParameterInsert {
+            get {
+                return ResourceManager.GetString("SubjectInsert_ParameterInsert", resourceCulture);
             }
         }
         
