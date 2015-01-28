@@ -225,6 +225,9 @@
   <data name="SubjectEdit_ParameterInsert" xml:space="preserve">
     <value>Редактировать предмет/Добавить расписание</value>
   </data>
+  <data name="SubjectInsert" xml:space="preserve">
+    <value>Добавить предмет</value>
+  </data>
   <data name="SubjectInsert_ParameterInsert" xml:space="preserve">
     <value>Добавить предмет/Добавить расписание</value>
   </data>

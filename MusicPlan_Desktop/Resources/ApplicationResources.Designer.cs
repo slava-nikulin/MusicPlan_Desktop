@@ -385,6 +385,15 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить предмет.
+        /// </summary>
+        public static string SubjectInsert {
+            get {
+                return ResourceManager.GetString("SubjectInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Добавить предмет/Добавить расписание.
         /// </summary>
         public static string SubjectInsert_ParameterInsert {

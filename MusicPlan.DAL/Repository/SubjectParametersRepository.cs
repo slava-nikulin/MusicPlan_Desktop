@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -37,7 +38,17 @@ namespace MusicPlan.DAL.Repository
 
         public void Remove(params SubjectParameters[] items)
         {
-            throw new NotImplementedException();
+            using (var context = new ArtCollegeContext())
+            {
+                foreach (var item in items)
+                {
+                    item.Subject.HoursParameters = null;
+                    context.Entry(item.Subject).State = EntityState.Unchanged;
+                    context.Entry(item.Type).State = EntityState.Unchanged;
+                    context.Entry(item).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
+            }
         }
     }
 }

@@ -32,14 +32,17 @@ namespace MusicPlan_Desktop.ViewModels
         private int _selectedSubItemIndex;
         private bool _applyForAllStudyYears;
         private bool _subItemsInsertUpdateMode;
-        private List<int> _classes; 
+        private List<int> _classes;
         private IUnityContainer _container;
         private IEventAggregator _eventAggregator;
+        private bool _subitemClicked;
+
         #endregion
 
         #region Constructor
         public SubjectsViewModel(IUnityContainer container)
         {
+            _subitemClicked = false;
             _container = container;
             _eventAggregator = _container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<SyncDataEvent>().Subscribe(ReBindItems, true);
@@ -55,7 +58,7 @@ namespace MusicPlan_Desktop.ViewModels
             set
             {
                 SetProperty(ref _subItemsInsertUpdateMode, value);
-                
+
             }
         }
 
@@ -83,7 +86,7 @@ namespace MusicPlan_Desktop.ViewModels
             set
             {
                 SetProperty(ref _selectedSubItem, value);
-            } 
+            }
         }
 
         public int SelectedItemIndex
@@ -137,14 +140,14 @@ namespace MusicPlan_Desktop.ViewModels
             set { SetProperty(ref _btnAddButtonContent, value); }
         }
 
-        public ICommand AddUpdateCommand{ get; set; }
-        public ICommand DeleteItemCommand{ get; set; }
-        public ICommand CancelSelectionCommand{ get; set; }
-        public ICommand SelectItemCommand{ get; set; }
+        public ICommand AddUpdateCommand { get; set; }
+        public ICommand DeleteItemCommand { get; set; }
+        public ICommand CancelSelectionCommand { get; set; }
+        public ICommand SelectItemCommand { get; set; }
         public ICommand DeleteSubItemCommand { get; set; }
         public ICommand SelectSubItemCommand { get; set; }
-        public ICommand ChangeCheckedCommand { get; set; }
-
+        public ICommand ClickItemCommand { get; set; }
+        public ICommand ClickSubItemCommand { get; set; }
         #endregion
 
         #region ViewModel methods
@@ -154,7 +157,7 @@ namespace MusicPlan_Desktop.ViewModels
             SubItemsInsertUpdateMode = true;
             SelectedItem = new Subject();
             SelectedSubItem = new SubjectParameters();
-            Classes = new List<int> {1, 2, 3, 4, 5};
+            Classes = new List<int> { 1, 2, 3, 4, 5 };
             SelectedItemIndex = -1;
             SelectedSubItemIndex = -1;
             AddUpdateCommand = new DelegateCommand<Subject>(AddUpdateItem);
@@ -163,9 +166,31 @@ namespace MusicPlan_Desktop.ViewModels
             SelectItemCommand = new DelegateCommand<Subject>(SelectItem);
             SelectSubItemCommand = new DelegateCommand<SubjectParameters>(SelectSubItem);
             CancelSelectionCommand = new DelegateCommand(UnselectItem);
-            ChangeCheckedCommand = new DelegateCommand(ApplyForAllYearsCheckboxChange);
+            ClickItemCommand = new DelegateCommand<Subject>(ClickItem);
+            ClickSubItemCommand = new DelegateCommand<SubjectParameters>(ClickSubItem); 
             BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectInsert_ParameterInsert");
             PropertyChanged += ChangeProperty;
+        }
+
+        private void ClickItem(Subject item)
+        {
+            if (item.Id == SelectedItem.Id && !_subitemClicked)
+            {
+                UnselectItem();
+            }
+            else
+            {
+                _subitemClicked = false;
+            }
+        }
+
+        private void ClickSubItem(SubjectParameters subItem)
+        {
+            if (subItem.Id == SelectedSubItem.Id)
+            {
+                UnselectSubItem();
+                _subitemClicked = true;
+            }
         }
 
         private void ChangeProperty(object sender, PropertyChangedEventArgs e)
@@ -174,27 +199,34 @@ namespace MusicPlan_Desktop.ViewModels
             {
                 if (SubItemsInsertUpdateMode)
                 {
-                    BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterEdit");
+                    if (SelectedSubItemIndex == -1 && SelectedItemIndex == -1)
+                    {
+                        BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectInsert_ParameterInsert");
+                    }
+                    else if (SelectedSubItemIndex == -1 && SelectedItemIndex > -1)
+                    {
+                        BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterInsert");
+                    }
+
                 }
                 else
                 {
-                    BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit");
+                    UnselectSubItem();
+                    BtnAddButtonContent = ApplicationResources.ResourceManager.GetString(SelectedItemIndex > -1 ? "SubjectEdit" : "SubjectInsert");
                 }
             }
-        }
-
-        private void ApplyForAllYearsCheckboxChange()
-        {
-            Classes = !ApplyForAllStudyYears ? new List<int> { 1, 2, 3, 4, 5 } : null;
+            if (e.PropertyName == "ApplyForAllStudyYears")
+            {
+                Classes = !ApplyForAllStudyYears ? new List<int> {1, 2, 3, 4, 5} : null;
+            }
         }
 
         private void SelectSubItem(SubjectParameters subItem)
         {
-            if (SelectedSubItemIndex != -1)
+            if (SelectedSubItemIndex != -1 && subItem.Id != SelectedSubItem.Id)
             {
                 ApplyForAllStudyYears = false;
                 SubItemsInsertUpdateMode = true;
-                //SelectedSubItem = subItem;
                 SelectedSubItem = subItem.DeepClone();
                 BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterEdit");
             }
@@ -202,13 +234,16 @@ namespace MusicPlan_Desktop.ViewModels
 
         private void DeleteSubItem(SubjectParameters subItem)
         {
-            var rep = new ArtCollegeGenericDataRepository<SubjectParameters>();
-            //rep.Remove(subItem);
+            var rep = new SubjectParametersRepository();
+            rep.Remove(subItem);
             UnselectSubItem();
+            BindItems();
+            SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == SelectedItem.Id));
         }
 
         public void UnselectSubItem()
         {
+            ApplyForAllStudyYears = false;
             SelectedSubItem = new SubjectParameters();
             SelectedSubItemIndex = -1;
             BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterInsert");
@@ -219,17 +254,16 @@ namespace MusicPlan_Desktop.ViewModels
             UnselectSubItem();
             SelectedItem = new Subject();
             SelectedItemIndex = -1;
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectInsert_ParameterInsert");
+            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString(SubItemsInsertUpdateMode ? "SubjectInsert_ParameterInsert" : "SubjectInsert");
         }
 
         public void SelectItem(Subject item)
         {
-            if (SelectedItemIndex != -1 && item.Id!=SelectedItem.Id)
+            if (SelectedItemIndex != -1 && item.Id != SelectedItem.Id)
             {
-                SubItemsInsertUpdateMode = false;
                 UnselectSubItem();
                 SelectedItem = item.DeepClone();
-                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit");
+                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString(SubItemsInsertUpdateMode ? "SubjectEdit_ParameterInsert" : "SubjectEdit");
             }
         }
 
@@ -237,13 +271,19 @@ namespace MusicPlan_Desktop.ViewModels
         {
             var rep = new ArtCollegeGenericDataRepository<Subject>();
             ItemsList = new ObservableCollection<Subject>((rep.GetAll(la => la.HoursParameters, la => la.HoursParameters.Select(p => p.Type))).OrderBy(la => la.Id));
+
+            if (SelectedItem.Id != 0)
+            {
+                SelectedItem = ItemsList.SingleOrDefault(la => la.Id == SelectedItem.Id).DeepClone();
+            }
+
             var rep1 = new ArtCollegeGenericDataRepository<SubjectParameterType>();
             SubjectParameterTypes = new ObservableCollection<SubjectParameterType>(rep1.GetAll());
         }
 
         public void DeleteItem(Subject item)
         {
-            var rep = new ArtCollegeGenericDataRepository<Subject>();
+            var rep = new SubjectRepository();
             rep.Remove(item);
             BindItems();
             UnselectItem();
@@ -251,42 +291,59 @@ namespace MusicPlan_Desktop.ViewModels
 
         public void AddUpdateItem(Subject item)
         {
-            //var repParams = new SubjectParametersRepository();
             var repSubject = new SubjectRepository();
             if (item.Id == 0)
             {
+                if (SubItemsInsertUpdateMode)
+                {
+                    if (ApplyForAllStudyYears)
+                    {
+                        for (var i = 1; i <= 5; i++)
+                        {
+                            var paramClone = SelectedSubItem.DeepClone();
+                            paramClone.StudyYear = i;
+                            item.HoursParameters.Add(paramClone);
+                        }
+                    }
+                    else
+                    {
+                        item.HoursParameters.Add(SelectedSubItem);
+                    }
+                }
                 repSubject.Add(item);
+                BindItems();
+                SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == item.Id));
+                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit");
+                return;
             }
-            else
+            if (SubItemsInsertUpdateMode)
             {
                 if (SelectedSubItemIndex != -1)
                 {
                     item.HoursParameters.Remove(item.HoursParameters.SingleOrDefault(la => la.Id == SelectedSubItem.Id));
                     item.HoursParameters.Add(SelectedSubItem);
-                    repSubject.Update(item);
-                    var selectedIndex = SelectedItemIndex;
-                    BindItems();
-                    SelectedItemIndex = selectedIndex;
-                    UnselectSubItem();
-                    return;
-                }
-                if (ApplyForAllStudyYears)
-                {
-                    for (int i = 1; i <= 5; i++)
-                    {
-                        var paramClone = SelectedSubItem.DeepClone();
-                        paramClone.StudyYear = i;
-                        item.HoursParameters.Add(paramClone);
-                    }
                 }
                 else
                 {
-                    item.HoursParameters.Add(SelectedSubItem);
+                    if (ApplyForAllStudyYears)
+                    {
+                        for (var i = 1; i <= 5; i++)
+                        {
+                            var paramClone = SelectedSubItem.DeepClone();
+                            paramClone.StudyYear = i;
+                            item.HoursParameters.Add(paramClone);
+                        }
+                    }
+                    else
+                    {
+                        item.HoursParameters.Add(SelectedSubItem);
+                    }
                 }
-                repSubject.Update(item);
             }
+            repSubject.Update(item);
             BindItems();
-            UnselectItem();
+            SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == item.Id));
+            UnselectSubItem();
         }
 
         public void ReBindItems(object obj)

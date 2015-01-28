@@ -21,25 +21,28 @@
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.SubjectsList}" Grid.Row="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <DataGrid  Height="500"
-                            SelectedIndex="{Binding SelectedItemIndex}"
-                            ItemsSource="{Binding ItemsList}"
+                <DataGrid 
+                           SelectedIndex="{Binding SelectedItemIndex}"
+                           ItemsSource="{Binding Path=ItemsList}"                    
+                            SelectionUnit="FullRow"
+                            Height="500"
                             SelectionMode="Single" 
                             Margin="5 10 5 10"
-                            Name="DgInstruments" 
                             AutoGenerateColumns="False" 
-                            IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True"
+                            IsReadOnly="False"  CanUserAddRows="False" CanUserSortColumns="True"
                            RowDetailsVisibilityMode="VisibleWhenSelected">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction 
+                                Command="{Binding SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseDown">
                             <i:InvokeCommandAction
-                                Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                Command="{Binding DataContext.ClickItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                 CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <!--<DataGrid.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Aquamarine"/>
-                    </DataGrid.Resources>-->
 
                     <DataGrid.RowDetailsTemplate>
                         <DataTemplate>
@@ -49,6 +52,7 @@
                                     AutoGenerateColumns="False" 
                                     IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True"
                                     Margin="10" 
+                                    Height="200"
                                     ItemsSource="{Binding HoursParameters}"
                                     SelectedIndex="{Binding Path=DataContext.SelectedSubItemIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
                                     <DataGrid.Columns>
@@ -56,6 +60,7 @@
                                         <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}" Binding="{Binding HoursPerFirstSemester}" />
                                         <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}" Binding="{Binding WeeksPerSecondSemester}" />
                                         <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}" Binding="{Binding HoursPerSecondSemester}" />
+                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.StudyYear}" Binding="{Binding StudyYear}" />
                                         <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.ParametersType}" Binding="{Binding Type.Name}" />
                                         <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
                                             <DataGridTemplateColumn.CellTemplate >
@@ -79,6 +84,11 @@
                                             <i:InvokeCommandAction
                                                 Command="{Binding DataContext.SelectSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                                 CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}" />
+                                        </i:EventTrigger>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction
+                                                    Command="{Binding DataContext.ClickSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </DataGrid>
@@ -171,26 +181,25 @@
                                     <StackPanel HorizontalAlignment="Right" Margin="10 0 5 10" Orientation="Horizontal">
                                         <Label Content="{x:Static resources:ApplicationResources.StudyYear}"/>
                                         <ComboBox
-                                        IsEnabled="{Binding ApplyForAllStudyYears, Converter={StaticResource BoolInverterConverter}}"
-                                    HorizontalAlignment="Right" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
-                                    IsEditable="False" IsReadOnly="True" 
-                                    ItemsSource="{Binding Path=Classes}"
-                                    SelectedItem="{Binding SelectedSubItem.StudyYear}">
+                                                    IsEnabled="{Binding ApplyForAllStudyYears, Converter={StaticResource BoolInverterConverter}}"
+                                                    HorizontalAlignment="Right" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
+                                                    IsEditable="False" IsReadOnly="True" 
+                                                    ItemsSource="{Binding Path=Classes}"
+                                                    SelectedItem="{Binding SelectedSubItem.StudyYear}">
                                         </ComboBox>
-
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Margin="0 0 0 10" HorizontalAlignment="Center" Orientation="Horizontal">
-                                <CheckBox Visibility="{Binding SelectedSubItemIndex, Converter={StaticResource IntLargerThenZeroConverter}}" Command="{Binding ChangeCheckedCommand}" IsChecked="{Binding ApplyForAllStudyYears}" FlowDirection="RightToLeft">
+                                <CheckBox Visibility="{Binding SelectedSubItemIndex, Converter={StaticResource IntLargerThenZeroConverter}}" IsChecked="{Binding ApplyForAllStudyYears}" FlowDirection="RightToLeft">
                                     <TextBlock FlowDirection="LeftToRight" Text="{x:Static resources:ApplicationResources.ApplyForAllStudyYears}"/>
                                 </CheckBox>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
                 </Expander>
-                
-                
+
+
 
                 <Button 
                     Grid.Row="3" 

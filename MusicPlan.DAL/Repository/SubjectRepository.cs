@@ -35,12 +35,19 @@ namespace MusicPlan.DAL.Repository
                     foreach (var param in item.HoursParameters)
                     {
                         param.Subject = null;
-                    }
-                    context.Entry(item).State = EntityState.Added;
-                    foreach (var param in item.HoursParameters)
-                    {
+                        var existedParam = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == param.Type.Id);
+
+                        if (existedParam == null)
+                        {
+                            context.Entry(param.Type).State = EntityState.Unchanged;
+                        }
+                        else
+                        {
+                            param.Type = existedParam;
+                        }
                         context.Entry(param).State = param.Id > 0 ? EntityState.Unchanged : EntityState.Added;
                     }
+                    context.Entry(item).State = EntityState.Added;
                 }
                 context.SaveChanges();
             }
@@ -50,18 +57,16 @@ namespace MusicPlan.DAL.Repository
         {
             using (var context = new ArtCollegeContext())
             {
-                var uniqueType = new List<SubjectParameterType>();
                 foreach (var item in items)
                 {
                     foreach (var param in item.HoursParameters)
                     {
                         param.Subject = null;
+                        var existedParam = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == param.Type.Id);
 
-                        var existedParam = uniqueType.SingleOrDefault(p => p.Id == param.Type.Id);
                         if (existedParam == null)
                         {
                             context.Entry(param.Type).State = EntityState.Unchanged;
-                            uniqueType.Add(param.Type);
                         }
                         else
                         {
@@ -77,7 +82,18 @@ namespace MusicPlan.DAL.Repository
 
         public void Remove(params Subject[] items)
         {
-            throw new NotImplementedException();
+            using (var context = new ArtCollegeContext())
+            {
+                foreach (var item in items)
+                {
+
+                    //item.Subject.HoursParameters = null;
+                    //context.Entry(item.Subject).State = EntityState.Unchanged;
+                    //context.Entry(item.Type).State = EntityState.Unchanged;
+                    //context.Entry(item).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
+            }
         }
     }
 }
