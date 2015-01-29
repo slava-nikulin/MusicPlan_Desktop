@@ -246,7 +246,7 @@ namespace MusicPlan_Desktop.ViewModels
             ApplyForAllStudyYears = false;
             SelectedSubItem = new SubjectParameters();
             SelectedSubItemIndex = -1;
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterInsert");
+            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString(SubItemsInsertUpdateMode ? "SubjectEdit_ParameterInsert" : "SubjectEdit");
         }
 
         public void UnselectItem()
@@ -313,7 +313,7 @@ namespace MusicPlan_Desktop.ViewModels
                 repSubject.Add(item);
                 BindItems();
                 SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == item.Id));
-                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit");
+                UnselectSubItem();
                 return;
             }
             if (SubItemsInsertUpdateMode)

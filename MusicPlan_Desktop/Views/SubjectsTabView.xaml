@@ -34,12 +34,12 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction 
-                                Command="{Binding SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                Command="{Binding Path=DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                 CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
                         </i:EventTrigger>
                         <i:EventTrigger EventName="MouseDown">
                             <i:InvokeCommandAction
-                                Command="{Binding DataContext.ClickItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                Command="{Binding Path=DataContext.ClickItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                 CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>

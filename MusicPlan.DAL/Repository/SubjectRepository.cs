@@ -86,11 +86,22 @@ namespace MusicPlan.DAL.Repository
             {
                 foreach (var item in items)
                 {
-
-                    //item.Subject.HoursParameters = null;
-                    //context.Entry(item.Subject).State = EntityState.Unchanged;
-                    //context.Entry(item.Type).State = EntityState.Unchanged;
-                    //context.Entry(item).State = EntityState.Deleted;
+                    foreach (var param in item.HoursParameters)
+                    {
+                        
+                        var existedParamType = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == param.Type.Id);
+                        if (existedParamType == null)
+                        {
+                            context.Entry(param.Type).State = EntityState.Unchanged;
+                        }
+                        else
+                        {
+                            param.Type = existedParamType;
+                        }
+                        param.Subject = null;
+                    }
+                    context.Subjects.Attach(item);
+                    context.Subjects.Remove(item);
                 }
                 context.SaveChanges();
             }
