@@ -151,6 +151,15 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить/редактировать преподавателя.
+        /// </summary>
+        public static string EditInsertTeacher {
+            get {
+                return ResourceManager.GetString("EditInsertTeacher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя.
         /// </summary>
         public static string FirstName {
@@ -435,6 +444,15 @@ namespace MusicPlan_Desktop.Resources {
         public static string Teachers {
             get {
                 return ResourceManager.GetString("Teachers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список преподавателей.
+        /// </summary>
+        public static string TeachersList {
+            get {
+                return ResourceManager.GetString("TeachersList", resourceCulture);
             }
         }
     }

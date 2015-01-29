@@ -8,6 +8,7 @@ namespace MusicPlan_Desktop
 {
     public static class Constants
     {
+        public const string TeachersRegion = "TeachersRegion";
         public const string InstrumentsRegion = "InstrumentsRegion";
         public const string StudentsRegion = "StudentsRegion";
         public const string SubjectsRegion = "SubjectsRegion";

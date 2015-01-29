@@ -110,10 +110,12 @@
     <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Modules\StudentsModule.cs" />
     <Compile Include="Modules\SubjectsModule.cs" />
+    <Compile Include="Modules\TeachersModule.cs" />
     <Compile Include="ViewModels\ICrudViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\StudentsViewModel.cs" />
     <Compile Include="ViewModels\SubjectsViewModel.cs" />
+    <Compile Include="ViewModels\TeachersViewModel.cs" />
     <Compile Include="Views\StudentsTabView.xaml.cs">
       <DependentUpon>StudentsTabView.xaml</DependentUpon>
     </Compile>
@@ -123,6 +125,9 @@
     </Compile>
     <Compile Include="Views\SubjectsTabView.xaml.cs">
       <DependentUpon>SubjectsTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TeachersTabView.xaml.cs">
+      <DependentUpon>TeachersTabView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\InstrumentsTabView.xaml">
       <SubType>Form</SubType>
@@ -161,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SubjectsTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TeachersTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

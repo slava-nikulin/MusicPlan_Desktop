@@ -147,6 +147,9 @@
   <data name="EditInsertSubject" xml:space="preserve">
     <value>Добавить/редактировать предмет</value>
   </data>
+  <data name="EditInsertTeacher" xml:space="preserve">
+    <value>Добавить/редактировать преподавателя</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>Имя</value>
   </data>
@@ -242,5 +245,8 @@
   </data>
   <data name="Teachers" xml:space="preserve">
     <value>Преподаватели</value>
+  </data>
+  <data name="TeachersList" xml:space="preserve">
+    <value>Список преподавателей</value>
   </data>
 </root>

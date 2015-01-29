@@ -30,7 +30,7 @@
                     <Grid Background="#FFE5E5E5"/>
                 </TabItem>
                 <TabItem Header="{x:Static resources:ApplicationResources.Teachers}">
-                    <Grid Background="#FFE5E5E5"/>
+                    <ContentControl x:Name="TeachersContent" regions:RegionManager.RegionName="{x:Static consts:Constants.TeachersRegion}" />
                 </TabItem>
                 <TabItem Header="{x:Static resources:ApplicationResources.Subjects}">
                     <ContentControl x:Name="SubjectsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.SubjectsRegion}" />
