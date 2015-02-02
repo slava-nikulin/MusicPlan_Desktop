@@ -16,107 +16,105 @@
     <Grid Background="#FFE5E5E5">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.SubjectsList}" Grid.Row="1">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <DataGrid 
-                           SelectedIndex="{Binding SelectedItemIndex}"
-                           ItemsSource="{Binding Path=ItemsList}"                    
-                            SelectionUnit="FullRow"
-                            Height="500"
-                            SelectionMode="Single" 
-                            Margin="5 10 5 10"
-                            AutoGenerateColumns="False" 
-                            IsReadOnly="False"  CanUserAddRows="False" CanUserSortColumns="True"
-                           RowDetailsVisibilityMode="VisibleWhenSelected">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction 
-                                Command="{Binding Path=DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="MouseDown">
-                            <i:InvokeCommandAction
-                                Command="{Binding Path=DataContext.ClickItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+            <DataGrid 
+                SelectedIndex="{Binding SelectedItemIndex}"
+                ItemsSource="{Binding Path=ItemsList}"                    
+                SelectionUnit="FullRow"
+                Height="500"
+                SelectionMode="Single" 
+                Margin="5 10 5 10"
+                AutoGenerateColumns="False" 
+                IsReadOnly="False"  CanUserAddRows="False" CanUserSortColumns="True"
+                RowDetailsVisibilityMode="VisibleWhenSelected">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction 
+                            Command="{Binding Path=DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseDown">
+                        <i:InvokeCommandAction
+                            Command="{Binding Path=DataContext.ClickItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
 
-                    <DataGrid.RowDetailsTemplate>
-                        <DataTemplate>
-                            <GroupBox Background="AliceBlue" HorizontalAlignment="Center" Margin="10" Header="{x:Static resources:ApplicationResources.Schedules}">
-                                <DataGrid
-                                    SelectionMode="Single" 
-                                    AutoGenerateColumns="False" 
-                                    IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True"
-                                    Margin="10" 
-                                    Height="200"
-                                    ItemsSource="{Binding HoursParameters}"
-                                    SelectedIndex="{Binding Path=DataContext.SelectedSubItemIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}" Binding="{Binding WeeksPerFirstSemester}" />
-                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}" Binding="{Binding HoursPerFirstSemester}" />
-                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}" Binding="{Binding WeeksPerSecondSemester}" />
-                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}" Binding="{Binding HoursPerSecondSemester}" />
-                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.StudyYear}" Binding="{Binding StudyYear}" />
-                                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.ParametersType}" Binding="{Binding Type.Name}" />
-                                        <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
-                                            <DataGridTemplateColumn.CellTemplate >
-                                                <DataTemplate>
-                                                    <Button  Margin="3" Padding="3" Content="{x:Static resources:ApplicationResources.Delete}">
-                                                        <i:Interaction.Triggers>
-                                                            <i:EventTrigger EventName="Click">
-                                                                <i:InvokeCommandAction 
-                                                Command="{Binding Path=DataContext.DeleteSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}" />
-                                                            </i:EventTrigger>
-                                                        </i:Interaction.Triggers>
-                                                    </Button>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <GroupBox Background="AliceBlue" HorizontalAlignment="Center" Margin="10" Header="{x:Static resources:ApplicationResources.Schedules}">
+                            <DataGrid
+                                SelectionMode="Single" 
+                                AutoGenerateColumns="False" 
+                                IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True"
+                                Margin="10" 
+                                Height="200"
+                                ItemsSource="{Binding HoursParameters}"
+                                SelectedIndex="{Binding Path=DataContext.SelectedSubItemIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}" Binding="{Binding WeeksPerFirstSemester}" />
+                                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}" Binding="{Binding HoursPerFirstSemester}" />
+                                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}" Binding="{Binding WeeksPerSecondSemester}" />
+                                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}" Binding="{Binding HoursPerSecondSemester}" />
+                                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.StudyYear}" Binding="{Binding StudyYear}" />
+                                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.ParametersType}" Binding="{Binding Type.Name}" />
+                                    <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate>
+                                                <Button  Margin="3" Padding="3" Content="{x:Static resources:ApplicationResources.Delete}">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="Click">
+                                                            <i:InvokeCommandAction 
+                                                                Command="{Binding Path=DataContext.DeleteSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}" />
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
 
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding DataContext.SelectSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseDown">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding DataContext.ClickSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DataGrid>
+                        </GroupBox>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.Number}" Binding="{Binding Id}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Subject}" Binding="{Binding Name}" />
+                    <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
+                        <DataGridTemplateColumn.CellTemplate >
+                            <DataTemplate>
+                                <Button Margin="5" Padding="5" Content="{x:Static resources:ApplicationResources.Delete}">
                                     <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SelectionChanged">
-                                            <i:InvokeCommandAction
-                                                Command="{Binding DataContext.SelectSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}" />
-                                        </i:EventTrigger>
-                                        <i:EventTrigger EventName="MouseDown">
-                                            <i:InvokeCommandAction
-                                                    Command="{Binding DataContext.ClickSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </DataGrid>
-                            </GroupBox>
-                        </DataTemplate>
-                    </DataGrid.RowDetailsTemplate>
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.Number}" Binding="{Binding Id}" />
-                        <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Subject}" Binding="{Binding Name}" />
-                        <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
-                            <DataGridTemplateColumn.CellTemplate >
-                                <DataTemplate>
-                                    <Button Margin="5" Padding="5" Content="{x:Static resources:ApplicationResources.Delete}">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="Click">
-                                                <i:InvokeCommandAction 
+                                        <i:EventTrigger EventName="Click">
+                                            <i:InvokeCommandAction 
                                                 Command="{Binding Path=DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                                 CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Button>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </ScrollViewer>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
 
 
         </GroupBox>
@@ -138,38 +136,38 @@
                 </Grid.RowDefinitions>
                 <StackPanel Width="950" Grid.Row="0">
                     <Label Content="{x:Static resources:ApplicationResources.Name}" HorizontalAlignment="Left" Margin="15 0 0 0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtInstrumentName}"/>
-                    <TextBox Text="{Binding SelectedItem.Name}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="15,0,0,0" x:Name="TxtInstrumentName" />
+                    <TextBox Text="{Binding SelectedItem.Name}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Margin="15,0,0,0" x:Name="TxtInstrumentName" />
                 </StackPanel>
 
-                <Expander  IsExpanded="{Binding SubItemsInsertUpdateMode}" Margin="0 20 0 20" Grid.Row="1" Header="{x:Static resources:ApplicationResources.AddEditSchedule}">
+                <Expander IsExpanded="{Binding SubItemsInsertUpdateMode}" Margin="0 20 0 20" Grid.Row="1" Header="{x:Static resources:ApplicationResources.AddEditSchedule}">
                     <GroupBox Margin="10"  Header="">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal" Margin="10">
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Margin="10 0 5 10" Orientation="Horizontal">
                                         <Label Content="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}"/>
-                                        <TextBox Text="{Binding SelectedSubItem.WeeksPerFirstSemester}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
+                                        <TextBox Text="{Binding SelectedSubItem.WeeksPerFirstSemester}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
                                     </StackPanel>
                                     <StackPanel Margin="10 0 5 10" Orientation="Horizontal">
                                         <Label Content="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}"/>
-                                        <TextBox Text="{Binding SelectedSubItem.WeeksPerSecondSemester}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
+                                        <TextBox Text="{Binding SelectedSubItem.WeeksPerSecondSemester}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
                                     </StackPanel>
                                 </StackPanel>
-                                <StackPanel Orientation="Vertical">
+                                <StackPanel  Orientation="Vertical">
                                     <StackPanel Margin="10 0 5 10" Orientation="Horizontal">
                                         <Label Content="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}"/>
-                                        <TextBox Text="{Binding SelectedSubItem.HoursPerFirstSemester}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
+                                        <TextBox Text="{Binding SelectedSubItem.HoursPerFirstSemester}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
                                     </StackPanel>
                                     <StackPanel Margin="10 0 5 10" Orientation="Horizontal">
                                         <Label Content="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}"/>
-                                        <TextBox Text="{Binding SelectedSubItem.HoursPerSecondSemester}" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
+                                        <TextBox Text="{Binding SelectedSubItem.HoursPerSecondSemester}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="0"></TextBox>
                                     </StackPanel>
                                 </StackPanel>
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal" Margin="10 0 5 10">
                                         <Label Content="{x:Static resources:ApplicationResources.ParametersType}"/>
                                         <ComboBox
-                            HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
+                            HorizontalAlignment="Left"  VerticalAlignment="Top" Width="220" Margin="0" 
                             IsEditable="False" IsReadOnly="True" 
                             ItemsSource="{Binding SubjectParameterTypes}"
                             SelectedItem="{Binding SelectedSubItem.Type}"
@@ -182,7 +180,7 @@
                                         <Label Content="{x:Static resources:ApplicationResources.StudyYear}"/>
                                         <ComboBox
                                                     IsEnabled="{Binding ApplyForAllStudyYears, Converter={StaticResource BoolInverterConverter}}"
-                                                    HorizontalAlignment="Right" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
+                                                    HorizontalAlignment="Right" VerticalAlignment="Top" Width="220" Margin="0" 
                                                     IsEditable="False" IsReadOnly="True" 
                                                     ItemsSource="{Binding Path=Classes}"
                                                     SelectedItem="{Binding SelectedSubItem.StudyYear}">
