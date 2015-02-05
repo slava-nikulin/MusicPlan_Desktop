@@ -23,18 +23,7 @@ namespace MusicPlan.DAL.Repository
 
         public Student GetSingle(Func<Student, bool> whereClause, params Expression<Func<Student, object>>[] navigationProperties)
         {
-            Student item;
-            using (var context = new ArtCollegeContext())
-            {
-                IQueryable<Student> dbQuery = context.Students;
-
-                dbQuery = navigationProperties.Aggregate(dbQuery, (current, navigationProperty) => current.Include(navigationProperty));
-
-                item = dbQuery
-                    .AsNoTracking()
-                    .FirstOrDefault(whereClause);
-            }
-            return item;
+            throw new NotImplementedException();
         }
 
         public void Add(params Student[] items)

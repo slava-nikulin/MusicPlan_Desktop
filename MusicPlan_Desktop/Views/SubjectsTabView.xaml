@@ -22,15 +22,15 @@
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.SubjectsList}" Grid.Row="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <DataGrid 
-                           SelectedIndex="{Binding SelectedItemIndex}"
-                           ItemsSource="{Binding Path=ItemsList}"                    
-                            SelectionUnit="FullRow"
-                            Height="500"
-                            SelectionMode="Single" 
-                            Margin="5 10 5 10"
-                            AutoGenerateColumns="False" 
-                            IsReadOnly="False"  CanUserAddRows="False" CanUserSortColumns="True"
-                           RowDetailsVisibilityMode="VisibleWhenSelected">
+                    SelectedIndex="{Binding SelectedItemIndex}"
+                    ItemsSource="{Binding Path=ItemsList}"                    
+                    SelectionUnit="FullRow"
+                    Height="300"
+                    SelectionMode="Single" 
+                    Margin="5 10 5 10"
+                    AutoGenerateColumns="False" 
+                    IsReadOnly="False"  CanUserAddRows="False" CanUserSortColumns="True"
+                    RowDetailsVisibilityMode="VisibleWhenSelected">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction 
@@ -69,8 +69,8 @@
                                                         <i:Interaction.Triggers>
                                                             <i:EventTrigger EventName="Click">
                                                                 <i:InvokeCommandAction 
-                                                Command="{Binding Path=DataContext.DeleteSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}" />
+                                                                    Command="{Binding Path=DataContext.DeleteSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}" />
                                                             </i:EventTrigger>
                                                         </i:Interaction.Triggers>
                                                     </Button>
@@ -87,8 +87,8 @@
                                         </i:EventTrigger>
                                         <i:EventTrigger EventName="MouseDown">
                                             <i:InvokeCommandAction
-                                                    Command="{Binding DataContext.ClickSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                                                Command="{Binding DataContext.ClickSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </DataGrid>
@@ -106,8 +106,8 @@
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Click">
                                                 <i:InvokeCommandAction 
-                                                Command="{Binding Path=DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                                                    Command="{Binding Path=DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Button>
@@ -117,8 +117,6 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
-
-
         </GroupBox>
 
         <GroupBox Grid.Row="0" 
@@ -169,23 +167,23 @@
                                     <StackPanel Orientation="Horizontal" Margin="10 0 5 10">
                                         <Label Content="{x:Static resources:ApplicationResources.ParametersType}"/>
                                         <ComboBox
-                            HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
-                            IsEditable="False" IsReadOnly="True" 
-                            ItemsSource="{Binding SubjectParameterTypes}"
-                            SelectedItem="{Binding SelectedSubItem.Type}"
-                            SelectedValue="{Binding SelectedSubItem.Type.Id}"
-                            DisplayMemberPath="Name" SelectedValuePath="Id" >
+                                            HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
+                                            IsEditable="False" IsReadOnly="True" 
+                                            ItemsSource="{Binding SubjectParameterTypes}"
+                                            SelectedItem="{Binding SelectedSubItem.Type}"
+                                            SelectedValue="{Binding SelectedSubItem.Type.Id}"
+                                            DisplayMemberPath="Name" SelectedValuePath="Id" >
 
                                         </ComboBox>
                                     </StackPanel>
                                     <StackPanel HorizontalAlignment="Right" Margin="10 0 5 10" Orientation="Horizontal">
                                         <Label Content="{x:Static resources:ApplicationResources.StudyYear}"/>
                                         <ComboBox
-                                                    IsEnabled="{Binding ApplyForAllStudyYears, Converter={StaticResource BoolInverterConverter}}"
-                                                    HorizontalAlignment="Right" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
-                                                    IsEditable="False" IsReadOnly="True" 
-                                                    ItemsSource="{Binding Path=Classes}"
-                                                    SelectedItem="{Binding SelectedSubItem.StudyYear}">
+                                            IsEnabled="{Binding ApplyForAllStudyYears, Converter={StaticResource BoolInverterConverter}}"
+                                            HorizontalAlignment="Right" Height="23" VerticalAlignment="Top" Width="220" Margin="0" 
+                                            IsEditable="False" IsReadOnly="True" 
+                                            ItemsSource="{Binding Path=Classes}"
+                                            SelectedItem="{Binding SelectedSubItem.StudyYear}">
                                         </ComboBox>
                                     </StackPanel>
                                 </StackPanel>
@@ -198,8 +196,6 @@
                         </StackPanel>
                     </GroupBox>
                 </Expander>
-
-
 
                 <Button 
                     Grid.Row="3" 

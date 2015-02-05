@@ -5,19 +5,134 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:Behaviors="clr-namespace:MusicPlan_Desktop.Behaviors"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:converters="clr-namespace:MusicPlan_Desktop.CLasses">
+    <UserControl.Resources>
+        <converters:SubjectsListToStringConverter x:Key="SubjectsListToStringConverter" />
+    </UserControl.Resources>
+
     <Grid Background="#FFE5E5E5">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>-->
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.TeachersList}" Grid.Row="1">
-            
-            
+            <DataGrid
+                SelectedIndex="{Binding SelectedItemIndex}"
+                ItemsSource="{Binding Path=ItemsList}"                    
+                SelectionUnit="FullRow"
+                Height="350"
+                SelectionMode="Single" 
+                Margin="5 10 5 10"
+                AutoGenerateColumns="False" 
+                IsReadOnly="False"  CanUserAddRows="False" CanUserSortColumns="True"
+                RowDetailsVisibilityMode="VisibleWhenSelected">
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.FirstName}" Binding="{Binding FirstName}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.MiddleName}" Binding="{Binding MiddleName}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.LastName}" Binding="{Binding LastName}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Subjects}" Binding="{Binding Subjects, Converter={StaticResource SubjectsListToStringConverter}}" />
+                    <DataGridTemplateColumn Header="Удалить">
+                        <DataGridTemplateColumn.CellTemplate >
+                            <DataTemplate>
+                                <Button  Margin="5" Padding="5"  Content="{x:Static resources:ApplicationResources.Delete}" 
+                                         Command="{Binding Path=DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                         CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"></Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction
+                            Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </DataGrid>
         </GroupBox>
 
 
-        <GroupBox Grid.Row="0" Header="{x:Static resources:ApplicationResources.EditInsertTeacher}"></GroupBox>
+        <GroupBox Margin="0 10 0 0" HorizontalAlignment="Center" Grid.Row="0" Header="{x:Static resources:ApplicationResources.EditInsertTeacher}">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label Content="{x:Static resources:ApplicationResources.LastName}" />
+                            <TextBox Height="23" Width="200" Text="{Binding SelectedItem.LastName}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label Content="{x:Static resources:ApplicationResources.FirstName}" />
+                            <TextBox Height="23" Width="200" Text="{Binding SelectedItem.FirstName}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label Content="{x:Static resources:ApplicationResources.MiddleName}" />
+                            <TextBox Height="23" Width="200" Text="{Binding SelectedItem.MiddleName}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <GroupBox Width="300" Margin="10" Header="{x:Static resources:ApplicationResources.Subjects}">
+                        <GroupBox.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"
+                                           FontFamily="Georgia"
+                                           FontStyle="Italic"
+                                           FontWeight="Normal"
+                                           Foreground="Black"
+                                           HorizontalAlignment="Stretch"
+                                           TextDecorations="Underline" />
+                            </DataTemplate>
+                        </GroupBox.HeaderTemplate>
+                        <StackPanel>
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                IsReadOnly="False"
+                                CanUserAddRows="False"
+                                CanUserSortColumns="True"
+                                SelectionMode="Extended"
+                                ItemsSource="{Binding AvailableSubjects}"
+                                SelectionUnit="FullRow"
+                                Height="150"
+                                Margin="5 10 5 10">
+                                <i:Interaction.Behaviors>
+                                    <Behaviors:SynchronizeSelectedDataGridItems Selections="{Binding Selections}" />
+                                </i:Interaction.Behaviors>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn IsReadOnly="True" Width="*"
+                                                        Header="{x:Static resources:ApplicationResources.Number}"
+                                                        Binding="{Binding Id}" />
+                                    <DataGridTextColumn IsReadOnly="True" Width="*"
+                                                        Header="{x:Static resources:ApplicationResources.Name}"
+                                                        Binding="{Binding Name}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </GroupBox>
+
+                </StackPanel>
+                <DockPanel >
+                    <Button
+                        Content="{Binding BtnAddButtonContent}"
+                        Command="{Binding AddUpdateCommand}"
+                        CommandParameter="{Binding SelectedItem}"
+                        HorizontalAlignment="Left"
+                        Width="auto" Margin="10 10 0 10" Padding="5" />
+                    <Button
+                        Command="{Binding CancelSelectionCommand}"
+                        Content="{x:Static resources:ApplicationResources.Cancel}"
+                        HorizontalAlignment="Right"
+                        Padding="5" Margin="0 10 10 10" />
+                </DockPanel>
+            </StackPanel>
+            
+        </GroupBox>
+        
     </Grid>
 </UserControl>

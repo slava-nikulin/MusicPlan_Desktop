@@ -2,7 +2,7 @@
 
 namespace MusicPlan.BLL.Models
 {
-    public class Teacher: IModel
+    public class Teacher : IModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

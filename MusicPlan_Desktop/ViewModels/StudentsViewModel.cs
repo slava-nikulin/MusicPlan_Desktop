@@ -122,9 +122,9 @@ namespace MusicPlan_Desktop.ViewModels
 
         public void SelectItem(Student item)
         {
-            if (SelectedItemIndex != -1)
+            if (SelectedItemIndex != -1 && item.Id!= SelectedItem.Id)
             {
-                SelectedItem = (Student)item.DeepClone();
+                SelectedItem = item.DeepClone();
                 Selections.Clear();
                 foreach (var instr in item.Instruments)
                 {
@@ -137,7 +137,7 @@ namespace MusicPlan_Desktop.ViewModels
         public void BindItems()
         {
             var rep = new ArtCollegeGenericDataRepository<Student>();
-            ItemsList = new ObservableCollection<Student>(rep.GetAll(la=>la.Instruments));
+            ItemsList = new ObservableCollection<Student>(rep.GetAll(la=>la.Instruments).OrderBy(la=>la.LastName));
         }
 
         public void DeleteItem(Student item)

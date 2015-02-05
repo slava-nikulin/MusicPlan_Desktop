@@ -42,6 +42,21 @@ namespace MusicPlan_Desktop.CLasses
         }
     }
 
+    [ValueConversion(typeof(ICollection<Subject>), typeof(string))]
+    public class SubjectsListToStringConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return String.Join(string.Format("{0}", Environment.NewLine), ((ICollection<Subject>)value).Select(la => la.Name).ToArray());
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     [ValueConversion(typeof(int), typeof(Visibility))]
     public class IntLargerThenZeroConverter : IValueConverter
     {

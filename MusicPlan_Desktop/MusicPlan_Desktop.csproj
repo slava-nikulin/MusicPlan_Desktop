@@ -101,7 +101,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Behaviors\SynchronizeSelectedItems.cs">
+    <Compile Include="Behaviors\SynchronizeSelectedDataGridItems.cs" />
+    <Compile Include="Behaviors\SynchronizeSelectedListBoxItems.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CLasses\Converters.cs" />

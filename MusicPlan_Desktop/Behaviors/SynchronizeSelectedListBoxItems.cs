@@ -9,17 +9,17 @@ using System.Windows.Interactivity;
 
 namespace MusicPlan_Desktop.Behaviors
 {
-    public class SynchronizeSelectedItems : Behavior<ListBox>
+    public class SynchronizeSelectedListBoxItems : Behavior<ListBox>
     {
         public static readonly DependencyProperty SelectionsProperty =
             DependencyProperty.Register(
                 "Selections",
                 typeof(IList),
-                typeof(SynchronizeSelectedItems),
+                typeof(SynchronizeSelectedListBoxItems),
                 new PropertyMetadata(null, OnSelectionsPropertyChanged));
 
         private bool _updating;
-        private WeakEventHandler<SynchronizeSelectedItems, object, NotifyCollectionChangedEventArgs> _currentWeakHandler;
+        private WeakEventHandler<SynchronizeSelectedListBoxItems, object, NotifyCollectionChangedEventArgs> _currentWeakHandler;
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly",
             Justification = "Dependency property")]
@@ -46,7 +46,7 @@ namespace MusicPlan_Desktop.Behaviors
 
         private static void OnSelectionsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var behavior = d as SynchronizeSelectedItems;
+            var behavior = d as SynchronizeSelectedListBoxItems;
 
             if (behavior != null)
             {
@@ -62,7 +62,7 @@ namespace MusicPlan_Desktop.Behaviors
                     if (notifyCollectionChanged != null)
                     {
                         behavior._currentWeakHandler =
-                            new WeakEventHandler<SynchronizeSelectedItems, object, NotifyCollectionChangedEventArgs>(
+                            new WeakEventHandler<SynchronizeSelectedListBoxItems, object, NotifyCollectionChangedEventArgs>(
                                 behavior,
                                 (instance, sender, args) => instance.OnSelectionsCollectionChanged(sender, args),
                                 (listener) => notifyCollectionChanged.CollectionChanged -= listener.OnEvent);

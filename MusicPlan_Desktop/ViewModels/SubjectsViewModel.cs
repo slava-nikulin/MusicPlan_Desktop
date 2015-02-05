@@ -270,7 +270,7 @@ namespace MusicPlan_Desktop.ViewModels
         public void BindItems()
         {
             var rep = new ArtCollegeGenericDataRepository<Subject>();
-            ItemsList = new ObservableCollection<Subject>((rep.GetAll(la => la.HoursParameters, la => la.HoursParameters.Select(p => p.Type))).OrderBy(la => la.Id));
+            ItemsList = new ObservableCollection<Subject>((rep.GetAll(la => la.HoursParameters, la => la.HoursParameters.Select(p => p.Type))).OrderBy(la => la.Name));
 
             if (SelectedItem.Id != 0)
             {

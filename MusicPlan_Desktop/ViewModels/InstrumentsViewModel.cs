@@ -99,7 +99,7 @@ namespace MusicPlan_Desktop.ViewModels
 
         public void SelectItem(Instrument item)
         {
-            if (SelectedItemIndex != -1)
+            if (SelectedItemIndex != -1 && item.Id != SelectedItem.Id)
             {
                 SelectedItem = item.DeepClone();
                 BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Edit");
@@ -114,7 +114,7 @@ namespace MusicPlan_Desktop.ViewModels
         public void BindItems()
         {
             var rep = new ArtCollegeGenericDataRepository<Instrument>();
-            ItemsList = new ObservableCollection<Instrument>((rep.GetAll()).OrderBy(la=>la.Id));
+            ItemsList = new ObservableCollection<Instrument>((rep.GetAll()).OrderBy(la => la.Name));
         }
 
         public void DeleteItem(Instrument item)

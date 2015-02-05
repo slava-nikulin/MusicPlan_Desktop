@@ -1,103 +1,162 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GeorgeCloney;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.Unity;
 using MusicPlan.BLL.Models;
+using MusicPlan.DAL.Repository;
+using MusicPlan_Desktop.CLasses.Events;
+using MusicPlan_Desktop.Resources;
 
 namespace MusicPlan_Desktop.ViewModels
 {
-    public class TeachersViewModel : ICrudViewModel<Teacher>
+    public class TeachersViewModel : BindableBase, ICrudViewModel<Teacher>
     {
         #region Private fields
+        private Teacher _selectedItem;
+        private ObservableCollection<Teacher> _itemsList;
+        private string _btnAddButtonContent;
+        private int _selectedItemIndex;
+        private ObservableCollection<Subject> _availableSubjects;
+        private readonly ObservableCollection<Subject> _selections = new ObservableCollection<Subject>();
+        #endregion
+
+        #region Constructor
+        public TeachersViewModel(IUnityContainer container)
+        {
+            var eventAggregator = container.Resolve<IEventAggregator>();
+            eventAggregator.GetEvent<SyncDataEvent>().Subscribe(ReBindItems, true);
+            PrepareViewModel();
+        }
+
+        public void PrepareViewModel()
+        {
+            ReBindItems(null);
+            SelectedItem = new Teacher();
+            SelectedItemIndex = -1;
+            AddUpdateCommand = new DelegateCommand<Teacher>(AddUpdateItem);
+            DeleteItemCommand = new DelegateCommand<Teacher>(DeleteItem);
+            SelectItemCommand = new DelegateCommand<Teacher>(SelectItem);
+            CancelSelectionCommand = new DelegateCommand(UnselectItem);
+            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+        }
         #endregion
 
         #region Public properties
+
+        public IList Selections
+        {
+            get { return _selections; }
+        }
+
+        public ObservableCollection<Subject> AvailableSubjects
+        {
+            get { return _availableSubjects; }
+            set { SetProperty(ref _availableSubjects, value); }
+        }
+
         public int SelectedItemIndex
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _selectedItemIndex; }
+            set { SetProperty(ref _selectedItemIndex, value); }
         }
 
         public Teacher SelectedItem
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _selectedItem; }
+            set { SetProperty(ref _selectedItem, value); }
         }
 
         public ObservableCollection<Teacher> ItemsList
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _itemsList; }
+            set { SetProperty(ref _itemsList, value); }
         }
 
         public string BtnAddButtonContent
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { return _btnAddButtonContent; }
+            set { SetProperty(ref _btnAddButtonContent, value); }
         }
 
-        public ICommand AddUpdateCommand
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public ICommand AddUpdateCommand { get; set; }
 
-        public ICommand DeleteItemCommand
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public ICommand DeleteItemCommand { get; set; }
 
-        public ICommand CancelSelectionCommand
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public ICommand CancelSelectionCommand { get; set; }
 
-        public ICommand SelectItemCommand
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public ICommand SelectItemCommand { get; set; }
+
         #endregion
 
         #region ViewModel methods
-        public void PrepareViewModel()
-        {
-            throw new NotImplementedException();
-        }
 
         public void UnselectItem()
         {
-            throw new NotImplementedException();
+            SelectedItem = new Teacher();
+            SelectedItemIndex = -1;
+            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+            Selections.Clear();
         }
 
         public void SelectItem(Teacher item)
         {
-            throw new NotImplementedException();
+            if (SelectedItemIndex != -1 && item.Id != SelectedItem.Id)
+            {
+                SelectedItem = item.DeepClone();
+                Selections.Clear();
+                foreach (var instr in item.Subjects)
+                {
+                    Selections.Add(AvailableSubjects.Single(la => la.Id == instr.Id));
+                }
+                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Edit");
+            }
         }
 
         public void BindItems()
         {
-            throw new NotImplementedException();
+            var rep = new ArtCollegeGenericDataRepository<Teacher>();
+            ItemsList = new ObservableCollection<Teacher>(rep.GetAll(la => la.Subjects).OrderBy(la=>la.LastName));
         }
 
         public void DeleteItem(Teacher item)
         {
-            throw new NotImplementedException();
+            var rep = new ArtCollegeGenericDataRepository<Teacher>();
+            rep.Remove(item);
+            BindItems();
+            UnselectItem();
         }
 
         public void AddUpdateItem(Teacher item)
         {
-            throw new NotImplementedException();
+            item.Subjects = new List<Subject>((IEnumerable<Subject>) Selections);
+            var rep = new TeacherRepository();
+            if (item.Id == 0)
+            {
+                rep.Add(item);
+            }
+            else
+            {
+                rep.Update(item);
+            }
+            BindItems();
+            UnselectItem();
         }
 
         public void ReBindItems(object obj)
         {
-            throw new NotImplementedException();
+            BindItems();
+            var rep = new ArtCollegeGenericDataRepository<Subject>();
+            AvailableSubjects = new ObservableCollection<Subject>(rep.GetAll().OrderBy(la => la.Name));
         }
         #endregion
     }
