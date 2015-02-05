@@ -58,13 +58,31 @@ namespace MusicPlan_Desktop.CLasses
     }
 
     [ValueConversion(typeof(int), typeof(Visibility))]
-    public class IntLargerThenZeroConverter : IValueConverter
+    public class IntLessThenZeroConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is int)
             {
                 return (int)value < 0 ? Visibility.Visible : Visibility.Hidden;
+            }
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    [ValueConversion(typeof(int), typeof(Visibility))]
+    public class IntLargerThenZeroConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is int)
+            {
+                return (int)value > 0 ? Visibility.Visible : Visibility.Hidden;
             }
             return value;
         }

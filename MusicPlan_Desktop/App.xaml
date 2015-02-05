@@ -3,6 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid">
     <Application.Resources>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        
+        <LinearGradientBrush x:Key="NormalBrush" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="White" Offset="0.0"/>
+            <GradientStop Color="LightGray" Offset="1.0"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="NormalBorderBrush" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="Gainsboro" Offset="0.0"/>
+            <GradientStop Color="DarkGray" Offset="1.0"/>
+        </LinearGradientBrush>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{DynamicResource NormalBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}"/>
+            <Setter Property="FontFamily" Value="Verdana" />
+            <Style.Triggers>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         
         <Style TargetType="TextBox">
             <Setter Property="Height" Value="23"/>
@@ -46,10 +78,6 @@
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="FontFamily" Value="Verdana" />
-            
         </Style>
         <Style TargetType="{x:Type xcdg:HierarchicalGroupByControl}">
             <Setter Property="Visibility" Value="Collapsed"/>

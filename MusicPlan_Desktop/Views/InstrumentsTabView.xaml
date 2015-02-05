@@ -7,8 +7,11 @@
              xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
              mc:Ignorable="d ignore"
              xmlns:prism="http://www.codeplex.com/prism"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
-
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:converters="clr-namespace:MusicPlan_Desktop.CLasses">
+    <UserControl.Resources>
+        <converters:IntLargerThenZeroConverter x:Key="IntLargerThenZeroConverter" />
+    </UserControl.Resources>
     <Grid Background="#FFE5E5E5">
 
 
@@ -18,91 +21,26 @@
         </Grid.RowDefinitions>
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.InstrumentsList}" Grid.Row="1">
-<<<<<<< HEAD
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <DataGrid 
-                    Height="500"
+            <DataGrid 
                     SelectedIndex="{Binding SelectedItemIndex}"
                     ItemsSource="{Binding ItemsList}"
                     SelectionMode="Single" 
                     Margin="5 10 5 10"
-                    Name="DgInstruments" 
                     AutoGenerateColumns="False" 
                     IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction
-                                Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
-                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.Number}" Binding="{Binding Id}" />
-                        <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Instrument}" Binding="{Binding Name}" />
-                        <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
-                            <DataGridTemplateColumn.CellTemplate >
-                                <DataTemplate>
-                                    <Button  Margin="5" Padding="5" Content="{x:Static resources:ApplicationResources.Delete}">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="Click">
-                                                <i:InvokeCommandAction 
-                                                    Command="{Binding Path=DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Button>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </ScrollViewer>
-=======
-            <DataGrid   
-                VerticalScrollBarVisibility="Auto"
-                VirtualizingPanel.ScrollUnit="Pixel"
-                SelectedIndex="{Binding SelectedItemIndex}"
-                ItemsSource="{Binding ItemsList}"
-                SelectionMode="Single"
-                Margin="5 10 5 10"
-                Name="DgInstruments"
-                AutoGenerateColumns="False"
-                IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction
-                            Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
-                            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                                Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn IsReadOnly="True"
-                                        Header="{x:Static resources:ApplicationResources.Number}"
-                                        Binding="{Binding Id}" />
-                    <DataGridTextColumn IsReadOnly="True" Width="*"
-                                        Header="{x:Static resources:ApplicationResources.Instrument}"
-                                        Binding="{Binding Name}" />
-                    <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Delete}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Margin="5" Padding="5"
-                                        Content="{x:Static resources:ApplicationResources.Delete}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="Click">
-                                            <i:InvokeCommandAction
-                                                Command="{Binding Path=DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.Number}" Binding="{Binding Id}" />
+                    <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.Instrument}" Binding="{Binding Name}" />
                 </DataGrid.Columns>
             </DataGrid>
->>>>>>> origin/master
         </GroupBox>
 
         <GroupBox Grid.Row="0" 
@@ -132,7 +70,6 @@
                         <Button 
                             DockPanel.Dock="Right"
                             Command="{Binding CancelSelectionCommand}"
-                            Name="BtnCancelInsertInstrument" 
                             Content="{x:Static resources:ApplicationResources.Cancel}" 
                             HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="5" 
                             />
@@ -141,8 +78,9 @@
                             DockPanel.Dock="Right"
                             HorizontalAlignment="Right" Margin="0 0 2 0" VerticalAlignment="Bottom" Padding="5"
                             Content="{x:Static resources:ApplicationResources.Delete}" 
-                            Command="{Binding DeleteCommand}"
-                            CommandParameter="{Binding SelectedItem}"/>
+                            Command="{Binding DeleteItemCommand}"
+                            CommandParameter="{Binding SelectedItem}"
+                            Visibility="{Binding SelectedItem.Id, Converter={StaticResource IntLargerThenZeroConverter}}"/>
                         
                         <Button 
                             DockPanel.Dock="Left"
