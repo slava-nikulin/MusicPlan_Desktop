@@ -30,27 +30,19 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="{x:Static resources:ApplicationResources.Teachers}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ContentControl x:Name="TeachersContent"
-                                    regions:RegionManager.RegionName="{x:Static consts:Constants.TeachersRegion}" />
-                </ScrollViewer>
+                <ContentControl x:Name="TeachersContent"
+                                regions:RegionManager.RegionName="{x:Static consts:Constants.TeachersRegion}" />
             </TabItem>
             <TabItem Header="{x:Static resources:ApplicationResources.Subjects}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ContentControl  x:Name="SubjectsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.SubjectsRegion}" />
-                </ScrollViewer>
+                <ContentControl  x:Name="SubjectsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.SubjectsRegion}" />
             </TabItem>
             <TabItem Header="{x:Static resources:ApplicationResources.Students}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ContentControl x:Name="StudentsContent"
-                                    regions:RegionManager.RegionName="{x:Static consts:Constants.StudentsRegion}" />
-                </ScrollViewer>
+                <ContentControl x:Name="StudentsContent"
+                                regions:RegionManager.RegionName="{x:Static consts:Constants.StudentsRegion}" />
             </TabItem>
             <TabItem Header="{x:Static resources:ApplicationResources.Instruments}">
-                
-                    <ContentControl x:Name="InstrumentsContent"
-                                    regions:RegionManager.RegionName="{x:Static consts:Constants.InstrumentsRegion}" />
-                
+                <ContentControl x:Name="InstrumentsContent"
+                                regions:RegionManager.RegionName="{x:Static consts:Constants.InstrumentsRegion}" />
             </TabItem>
         </TabControl>
 

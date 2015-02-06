@@ -32,11 +32,12 @@ namespace MusicPlan.DAL.Repository
             {
                 foreach (var item in items)
                 {
-                    context.Entry(item).State = EntityState.Added;
-                    foreach (var instrument in item.Subjects)
+                    foreach (var subject in item.Subjects)
                     {
-                        context.Entry(instrument).State = instrument.Id > 0 ? EntityState.Unchanged : EntityState.Added;
+                        subject.Teachers = null;
+                        context.Entry(subject).State = subject.Id > 0 ? EntityState.Unchanged : EntityState.Added;
                     }
+                    context.Entry(item).State = EntityState.Added;
                 }
                 context.SaveChanges();
             }
@@ -62,20 +63,22 @@ namespace MusicPlan.DAL.Repository
 
                         foreach (var navItemToRemove in lstNavItemsToRemove)
                         {
+                            context.Subjects.Attach(navItemToRemove);
                             originalItem.Subjects.Remove(navItemToRemove);
                         }
 
                         foreach (var navItemToAdd in lstInstrToAdd)
                         {
+                            context.Subjects.Attach(navItemToAdd);
                             originalItem.Subjects.Add(navItemToAdd);
                         }
 
-                        foreach (var navItem in originalItem.Subjects)
-                        {
-                            context.Entry(navItem).State = navItem.Id > 0 ? EntityState.Unchanged : EntityState.Added;
-                        }
+                        //foreach (var navItem in originalItem.Subjects)
+                        //{
+                        //    navItem.Teachers = null;
+                        //    context.Entry(navItem).State = navItem.Id > 0 ? EntityState.Unchanged : EntityState.Added;
+                        //}
                     }
-
                 }
                 context.SaveChanges();
             }
@@ -83,7 +86,18 @@ namespace MusicPlan.DAL.Repository
 
         public void Remove(params Teacher[] items)
         {
-            throw new NotImplementedException();
+            using (var context = new ArtCollegeContext())
+            {
+                foreach (var item in items)
+                {
+                    foreach (var subject in item.Subjects)
+                    {
+                        subject.Teachers = null;
+                    }
+                    context.Entry(item).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
+            }
         }
     }
 }

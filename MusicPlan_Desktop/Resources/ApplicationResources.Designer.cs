@@ -115,6 +115,24 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Удалить расписание.
+        /// </summary>
+        public static string DeleteSchedule {
+            get {
+                return ResourceManager.GetString("DeleteSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Удалить предмет.
+        /// </summary>
+        public static string DeleteSubject {
+            get {
+                return ResourceManager.GetString("DeleteSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Редактировать.
         /// </summary>
         public static string Edit {
@@ -336,6 +354,15 @@ namespace MusicPlan_Desktop.Resources {
         public static string Students {
             get {
                 return ResourceManager.GetString("Students", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список студентов.
+        /// </summary>
+        public static string StudentsList {
+            get {
+                return ResourceManager.GetString("StudentsList", resourceCulture);
             }
         }
         

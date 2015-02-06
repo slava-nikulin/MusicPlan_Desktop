@@ -22,12 +22,14 @@ namespace MusicPlan_Desktop.ViewModels
     public class SubjectsViewModel : BindableBase, ICrudViewModel<Subject>
     {
         #region Private fields
+        private object _itemToDelete;
         private Subject _selectedItem;
         private SubjectParameters _selectedSubItem;
         private ObservableCollection<Subject> _itemsList;
         private ObservableCollection<SubjectParameters> _subItemsList;
         private ObservableCollection<SubjectParameterType> _subjectParameterTypes;
         private string _btnAddButtonContent;
+        private string _btnDeleteContent;
         private int _selectedItemIndex;
         private int _selectedSubItemIndex;
         private bool _applyForAllStudyYears;
@@ -52,6 +54,11 @@ namespace MusicPlan_Desktop.ViewModels
 
         #region Public properties
 
+        public object ItemToDelete
+        {
+            get { return _itemToDelete ?? new { Id = 0 }; }
+            set { SetProperty(ref _itemToDelete, value); }
+        }
         public bool SubItemsInsertUpdateMode
         {
             get { return _subItemsInsertUpdateMode; }
@@ -140,11 +147,17 @@ namespace MusicPlan_Desktop.ViewModels
             set { SetProperty(ref _btnAddButtonContent, value); }
         }
 
+        public string BtnDeleteContent
+        {
+            get { return _btnDeleteContent; }
+            set { SetProperty(ref _btnDeleteContent, value); }
+        }
+
         public ICommand AddUpdateCommand { get; set; }
         public ICommand DeleteItemCommand { get; set; }
         public ICommand CancelSelectionCommand { get; set; }
         public ICommand SelectItemCommand { get; set; }
-        public ICommand DeleteSubItemCommand { get; set; }
+        //public ICommand DeleteSubItemCommand { get; set; }
         public ICommand SelectSubItemCommand { get; set; }
         public ICommand ClickItemCommand { get; set; }
         public ICommand ClickSubItemCommand { get; set; }
@@ -161,13 +174,13 @@ namespace MusicPlan_Desktop.ViewModels
             SelectedItemIndex = -1;
             SelectedSubItemIndex = -1;
             AddUpdateCommand = new DelegateCommand<Subject>(AddUpdateItem);
-            DeleteItemCommand = new DelegateCommand<Subject>(DeleteItem);
-            DeleteSubItemCommand = new DelegateCommand<SubjectParameters>(DeleteSubItem);
+            DeleteItemCommand = new DelegateCommand<object>(DeleteItemOrSubItem);
+            //DeleteSubItemCommand = new DelegateCommand<SubjectParameters>(DeleteSubItem);
             SelectItemCommand = new DelegateCommand<Subject>(SelectItem);
             SelectSubItemCommand = new DelegateCommand<SubjectParameters>(SelectSubItem);
             CancelSelectionCommand = new DelegateCommand(UnselectItem);
             ClickItemCommand = new DelegateCommand<Subject>(ClickItem);
-            ClickSubItemCommand = new DelegateCommand<SubjectParameters>(ClickSubItem); 
+            ClickSubItemCommand = new DelegateCommand<SubjectParameters>(ClickSubItem);
             BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectInsert_ParameterInsert");
             PropertyChanged += ChangeProperty;
         }
@@ -207,7 +220,6 @@ namespace MusicPlan_Desktop.ViewModels
                     {
                         BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterInsert");
                     }
-
                 }
                 else
                 {
@@ -217,7 +229,32 @@ namespace MusicPlan_Desktop.ViewModels
             }
             if (e.PropertyName == "ApplyForAllStudyYears")
             {
-                Classes = !ApplyForAllStudyYears ? new List<int> {1, 2, 3, 4, 5} : null;
+                Classes = !ApplyForAllStudyYears ? new List<int> { 1, 2, 3, 4, 5 } : null;
+            }
+            if (e.PropertyName == "SelectedSubItem")
+            {
+                if (SelectedSubItem.Id == 0)
+                {
+                    ItemToDelete = SelectedItem;
+                    BtnDeleteContent = ApplicationResources.DeleteSubject;
+                }
+                else
+                {
+                    ItemToDelete = SelectedSubItem;
+                    BtnDeleteContent = ApplicationResources.DeleteSchedule;
+                }
+            }
+            if (e.PropertyName == "SelectedItem")
+            {
+                if (SelectedItem.Id == 0)
+                {
+                    ItemToDelete = new { Id = 0 };
+                }
+                else
+                {
+                    ItemToDelete = SelectedItem;
+                    BtnDeleteContent = ApplicationResources.DeleteSubject;
+                }
             }
         }
 
@@ -232,14 +269,14 @@ namespace MusicPlan_Desktop.ViewModels
             }
         }
 
-        private void DeleteSubItem(SubjectParameters subItem)
-        {
-            var rep = new SubjectParametersRepository();
-            rep.Remove(subItem);
-            UnselectSubItem();
-            BindItems();
-            SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == SelectedItem.Id));
-        }
+        //private void DeleteSubItem(SubjectParameters subItem)
+        //{
+        //    var rep = new SubjectParametersRepository();
+        //    rep.Remove(subItem);
+        //    UnselectSubItem();
+        //    BindItems();
+        //    SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == SelectedItem.Id));
+        //}
 
         public void UnselectSubItem()
         {
@@ -282,11 +319,30 @@ namespace MusicPlan_Desktop.ViewModels
         }
 
         public void DeleteItem(Subject item)
+        {}
+
+        public void DeleteItemOrSubItem(object item)
         {
-            var rep = new SubjectRepository();
-            rep.Remove(item);
-            BindItems();
-            UnselectItem();
+            var subject = item as Subject;
+            if (subject != null)
+            {
+                var rep = new SubjectRepository();
+                rep.Remove(subject);
+                BindItems();
+                UnselectItem();
+            }
+            else
+            {
+                var items = item as SubjectParameters;
+                if (items != null)
+                {
+                    var rep = new SubjectParametersRepository();
+                    rep.Remove(items);
+                    UnselectSubItem();
+                    BindItems();
+                    SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == SelectedItem.Id));
+                }
+            }
         }
 
         public void AddUpdateItem(Subject item)

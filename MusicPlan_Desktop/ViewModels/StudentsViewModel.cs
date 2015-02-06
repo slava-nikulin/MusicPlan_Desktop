@@ -109,7 +109,7 @@ namespace MusicPlan_Desktop.ViewModels
         {
             BindItems();
             var rep = new ArtCollegeGenericDataRepository<Instrument>();
-            AvailableInstruments = new ObservableCollection<Instrument>(rep.GetAll().OrderBy(la => la.Id));
+            AvailableInstruments = new ObservableCollection<Instrument>(rep.GetAll().OrderBy(la => la.Name));
         }
 
         public void UnselectItem()

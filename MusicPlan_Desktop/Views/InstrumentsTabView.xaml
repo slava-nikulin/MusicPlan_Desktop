@@ -13,8 +13,6 @@
         <converters:IntLargerThenZeroConverter x:Key="IntLargerThenZeroConverter" />
     </UserControl.Resources>
     <Grid Background="#FFE5E5E5">
-
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -22,17 +20,18 @@
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.InstrumentsList}" Grid.Row="1">
             <DataGrid 
-                    SelectedIndex="{Binding SelectedItemIndex}"
-                    ItemsSource="{Binding ItemsList}"
-                    SelectionMode="Single" 
-                    Margin="5 10 5 10"
-                    AutoGenerateColumns="False" 
-                    IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True">
+                VirtualizingPanel.ScrollUnit="Pixel"
+                SelectedIndex="{Binding SelectedItemIndex}"
+                ItemsSource="{Binding ItemsList}"
+                SelectionMode="Single" 
+                Margin="5 10 5 10"
+                AutoGenerateColumns="False" 
+                IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction
-                                Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
-                                CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                            Command="{Binding DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                            CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
@@ -66,14 +65,12 @@
                             HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" Name="TxtInstrumentName"/>
                     </StackPanel>
                     <DockPanel Margin="0 10 0 0">
-
                         <Button 
                             DockPanel.Dock="Right"
                             Command="{Binding CancelSelectionCommand}"
                             Content="{x:Static resources:ApplicationResources.Cancel}" 
                             HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="5" 
                             />
-                        
                         <Button
                             DockPanel.Dock="Right"
                             HorizontalAlignment="Right" Margin="0 0 2 0" VerticalAlignment="Bottom" Padding="5"
@@ -81,10 +78,8 @@
                             Command="{Binding DeleteItemCommand}"
                             CommandParameter="{Binding SelectedItem}"
                             Visibility="{Binding SelectedItem.Id, Converter={StaticResource IntLargerThenZeroConverter}}"/>
-                        
                         <Button 
                             DockPanel.Dock="Left"
-                            Name="BtnAddInstrument" 
                             HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="5"
                             Content="{Binding BtnAddButtonContent}" 
                             Command="{Binding AddUpdateCommand}"

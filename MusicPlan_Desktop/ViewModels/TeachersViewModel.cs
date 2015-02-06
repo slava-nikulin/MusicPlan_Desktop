@@ -114,9 +114,9 @@ namespace MusicPlan_Desktop.ViewModels
             {
                 SelectedItem = item.DeepClone();
                 Selections.Clear();
-                foreach (var instr in item.Subjects)
+                foreach (var subj in item.Subjects)
                 {
-                    Selections.Add(AvailableSubjects.Single(la => la.Id == instr.Id));
+                    Selections.Add(AvailableSubjects.Single(la => la.Id == subj.Id));
                 }
                 BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Edit");
             }
@@ -130,7 +130,7 @@ namespace MusicPlan_Desktop.ViewModels
 
         public void DeleteItem(Teacher item)
         {
-            var rep = new ArtCollegeGenericDataRepository<Teacher>();
+            var rep = new TeacherRepository();
             rep.Remove(item);
             BindItems();
             UnselectItem();

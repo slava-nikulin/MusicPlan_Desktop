@@ -88,7 +88,6 @@ namespace MusicPlan.DAL.Repository
                 {
                     foreach (var param in item.HoursParameters)
                     {
-                        
                         var existedParamType = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == param.Type.Id);
                         if (existedParamType == null)
                         {
