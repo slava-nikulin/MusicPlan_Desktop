@@ -18,10 +18,8 @@ namespace MusicPlan.BLL.ExtendedModels
             Student = student;
             foreach (var subject in subjects)
             {
-                AvailableSubjects.Add(new SubjectsScheduleViewModel(subject));
+                AvailableSubjects.Add(new SubjectsScheduleViewModel(subject, student.StudyYear));
             }
         }
     }
-
-    
 }

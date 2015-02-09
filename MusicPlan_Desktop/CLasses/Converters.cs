@@ -93,4 +93,23 @@ namespace MusicPlan_Desktop.CLasses
         }
     }
 
+    [ValueConversion(typeof(int), typeof(string))]
+    public class StudentConverterToName : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var student = value as Student;
+            if (student != null)
+            {
+                return string.Format("{0} {1}", student.LastName, student.FirstName);
+            }
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 }

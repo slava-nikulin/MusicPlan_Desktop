@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="MusicPlan_Desktop.Views.SchedulesTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:MusicPlan_Desktop.Behaviors"
+             xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:converters="clr-namespace:MusicPlan_Desktop.CLasses">
+    <UserControl.Resources>
+        <converters:StudentConverterToName x:Key="StudentConverterToName" />
+    </UserControl.Resources>
+
+    <Grid Background="#FFE5E5E5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+        
+        <DataGrid 
+            RowDetailsVisibilityMode="Visible"
+            Grid.Row="0"
+            ItemsSource="{Binding StudentsList}"
+            SelectedIndex="{Binding SelectedStudentIndex}"
+            CanUserAddRows="False"
+            SelectionMode="Single"
+            VirtualizingPanel.ScrollUnit="Pixel"
+            AutoGenerateColumns="False"
+            IsReadOnly="True">
+     
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Student}" Header="{x:Static resources:ApplicationResources.Student}"/>
+            </DataGrid.Columns>
+            
+        </DataGrid>
+    </Grid>
+</UserControl>

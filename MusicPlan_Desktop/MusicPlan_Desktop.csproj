@@ -109,14 +109,19 @@
     <Compile Include="CLasses\Enums.cs" />
     <Compile Include="CLasses\Events\SyncDataEvent.cs" />
     <Compile Include="Modules\MainModule.cs" />
+    <Compile Include="Modules\SchedulesModule.cs" />
     <Compile Include="Modules\StudentsModule.cs" />
     <Compile Include="Modules\SubjectsModule.cs" />
     <Compile Include="Modules\TeachersModule.cs" />
     <Compile Include="ViewModels\ICrudViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SchedulesViewModel.cs" />
     <Compile Include="ViewModels\StudentsViewModel.cs" />
     <Compile Include="ViewModels\SubjectsViewModel.cs" />
     <Compile Include="ViewModels\TeachersViewModel.cs" />
+    <Compile Include="Views\SchedulesTabView.xaml.cs">
+      <DependentUpon>SchedulesTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StudentsTabView.xaml.cs">
       <DependentUpon>StudentsTabView.xaml</DependentUpon>
     </Compile>
@@ -158,6 +163,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\SchedulesTabView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\StudentsTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
