@@ -17,19 +17,13 @@
             </Setter>
         </Style>
 
-        <Style TargetType="{x:Type ListViewItem}">
-            <Setter Property="Template">
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="ItemTemplate">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListViewItem}">
-                        <Border Name="Border" Padding="2" SnapsToDevicePixels="true" Background="White" Margin="0">
-                            <ContentPresenter/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="LightSteelBlue"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected, Mode=TwoWay}" Content="{Binding Name}">
+                        </CheckBox>
+                    </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -52,7 +46,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <Style TargetType="TextBox">
             <Setter Property="Height" Value="23"/>
         </Style>
@@ -108,7 +102,7 @@
         </Style>
 
         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="MistyRose"/>
-  
+
     </Application.Resources>
-   
+
 </Application>

@@ -86,7 +86,7 @@
                             </DataTemplate>
                         </GroupBox.HeaderTemplate>
                         <StackPanel>
-                            <ListView 
+                            <ListBox 
                                 MaxHeight="150"
                                 VirtualizingPanel.ScrollUnit="Pixel"
                                 ItemsSource="{Binding AvailableSubjects}"
@@ -99,12 +99,8 @@
                                 <i:Interaction.Behaviors>
                                     <behaviors:SynchronizeSelectedListBoxItems Selections="{Binding Selections}"/>
                                 </i:Interaction.Behaviors>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListView>
+
+                            </ListBox>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
