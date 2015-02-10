@@ -295,11 +295,29 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Сохранить.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Расписание на семестр.
         /// </summary>
         public static string Schedule {
             get {
                 return ResourceManager.GetString("Schedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Распределение на {0} курс.
+        /// </summary>
+        public static string ScheduleForSpecificYear {
+            get {
+                return ResourceManager.GetString("ScheduleForSpecificYear", resourceCulture);
             }
         }
         

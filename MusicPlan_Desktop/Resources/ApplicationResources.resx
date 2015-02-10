@@ -195,8 +195,14 @@
   <data name="Refresh" xml:space="preserve">
     <value>Обновить данные на форме</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
   <data name="Schedule" xml:space="preserve">
     <value>Расписание на семестр</value>
+  </data>
+  <data name="ScheduleForSpecificYear" xml:space="preserve">
+    <value>Распределение на {0} курс</value>
   </data>
   <data name="Schedules" xml:space="preserve">
     <value>Список расписаний предмета</value>

@@ -27,7 +27,8 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="{x:Static resources:ApplicationResources.StudyProgram}">
-                <Grid Background="#FFE5E5E5"/>
+                <ContentControl x:Name="SchedulesContent"
+                                regions:RegionManager.RegionName="{x:Static consts:Constants.SchedulesRegion}" />
             </TabItem>
             <TabItem Header="{x:Static resources:ApplicationResources.Teachers}">
                 <ContentControl x:Name="TeachersContent"

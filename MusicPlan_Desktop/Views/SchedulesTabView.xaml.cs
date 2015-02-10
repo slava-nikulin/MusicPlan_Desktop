@@ -21,7 +21,7 @@ namespace MusicPlan_Desktop.Views
     /// </summary>
     public partial class SchedulesTabView : UserControl
     {
-        public SchedulesTabView(SchedulesViewModel viewModel)
+        public SchedulesTabView(SchedulesMainViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

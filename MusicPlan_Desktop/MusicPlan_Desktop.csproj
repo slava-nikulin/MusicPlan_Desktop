@@ -89,12 +89,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.Controls.v5.4">
-      <HintPath>..\packages\Xceed.Wpf.Controls.5.4.14473.13530\lib\net40\Xceed.Wpf.Controls.v5.4.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.DataGrid.v5.4">
-      <HintPath>..\packages\Xceed.Wpf.DataGrid.5.4.14473.13530\lib\net40\Xceed.Wpf.DataGrid.v5.4.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -115,7 +109,8 @@
     <Compile Include="Modules\TeachersModule.cs" />
     <Compile Include="ViewModels\ICrudViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SchedulesViewModel.cs" />
+    <Compile Include="ViewModels\ScheduleByYearViewModel.cs" />
+    <Compile Include="ViewModels\SchedulesMainViewModel.cs" />
     <Compile Include="ViewModels\StudentsViewModel.cs" />
     <Compile Include="ViewModels\SubjectsViewModel.cs" />
     <Compile Include="ViewModels\TeachersViewModel.cs" />

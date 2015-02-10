@@ -11,7 +11,7 @@ using MusicPlan.DAL.Repository;
 
 namespace MusicPlan_Desktop.ViewModels
 {
-    public class SchedulesViewModel : BindableBase
+    public class ScheduleByYearViewModel : BindableBase
     {
         #region Private fields
         private ObservableCollection<StudentsScheduleViewModel> _studentsList;
@@ -33,9 +33,10 @@ namespace MusicPlan_Desktop.ViewModels
 
         #endregion
         #region Constructor
-        public SchedulesViewModel(int studyYear)
+        public ScheduleByYearViewModel(int studyYear)
         {
             BindItems(studyYear);
+            SelectedStudentIndex = -1;
         }
 
         private void BindItems(int studyYear)
