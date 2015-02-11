@@ -19,14 +19,10 @@
         </Grid.RowDefinitions>
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.InstrumentsList}" Grid.Row="1">
-            <DataGrid 
-                VirtualizingPanel.ScrollUnit="Pixel"
+            <DataGrid
                 SelectedIndex="{Binding SelectedItemIndex}"
                 ItemsSource="{Binding ItemsList}"
-                SelectionMode="Single" 
-                Margin="5 10 5 10"
-                AutoGenerateColumns="False" 
-                IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True">
+                Margin="5 10 5 10">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction

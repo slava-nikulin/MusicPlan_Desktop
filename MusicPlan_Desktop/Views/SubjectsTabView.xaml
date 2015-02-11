@@ -22,16 +22,9 @@
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.SubjectsList}" Grid.Row="1">
             <DataGrid 
-                SelectionUnit="FullRow"
-                VirtualizingPanel.ScrollUnit="Pixel"
                 SelectedIndex="{Binding SelectedItemIndex}"
                 ItemsSource="{Binding Path=ItemsList}"                    
-                SelectionMode="Single" 
                 Margin="5 10 5 10"
-                AutoGenerateColumns="False" 
-                IsReadOnly="False" 
-                CanUserAddRows="False" 
-                CanUserSortColumns="True"
                 RowDetailsVisibilityMode="VisibleWhenSelected">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -50,17 +43,11 @@
                     <DataTemplate>
                         <GroupBox Background="AliceBlue" HorizontalAlignment="Center" Margin="10" Header="{x:Static resources:ApplicationResources.Schedules}">
                             <DataGrid
-                                SelectionUnit="FullRow"
-                                VirtualizingPanel.ScrollUnit="Pixel"
-                                SelectionMode="Single" 
-                                AutoGenerateColumns="False" 
-                                IsReadOnly="False" CanUserResizeColumns="True" CanUserAddRows="False" CanUserSortColumns="True"
-                                Margin="10" 
                                 Height="200"
                                 ItemsSource="{Binding HoursParameters}"
                                 SelectedIndex="{Binding Path=DataContext.SelectedSubItemIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}" Binding="{Binding WeeksPerFirstSemester}" />
+                                    <DataGridTextColumn  Header="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}" Binding="{Binding WeeksPerFirstSemester}" />
                                     <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.FirstSemesterHoursPerWeekCount}" Binding="{Binding HoursPerFirstSemester}" />
                                     <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterWeeksCount}" Binding="{Binding WeeksPerSecondSemester}" />
                                     <DataGridTextColumn IsReadOnly="True" Header="{x:Static resources:ApplicationResources.SecondSemesterHoursPerWeekCount}" Binding="{Binding HoursPerSecondSemester}" />

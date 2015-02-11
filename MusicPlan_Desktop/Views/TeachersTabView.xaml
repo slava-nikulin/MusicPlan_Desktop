@@ -23,13 +23,8 @@
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.TeachersList}" Grid.Row="1">
             <DataGrid
                 SelectedIndex="{Binding SelectedItemIndex}"
-                ItemsSource="{Binding Path=ItemsList}"                    
-                SelectionUnit="FullRow"
-                SelectionMode="Single" 
-                Margin="5 10 5 10"
-                AutoGenerateColumns="False" 
-                IsReadOnly="False"  CanUserAddRows="False" CanUserSortColumns="True"
-                RowDetailsVisibilityMode="VisibleWhenSelected">
+                ItemsSource="{Binding Path=ItemsList}"       
+                Margin="5 10 5 10">
                 <DataGrid.Columns>
                     <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.LastName}" Binding="{Binding LastName}" />
                     <DataGridTextColumn IsReadOnly="True" Width="*" Header="{x:Static resources:ApplicationResources.FirstName}" Binding="{Binding FirstName}" />

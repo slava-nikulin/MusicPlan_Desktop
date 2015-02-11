@@ -11,6 +11,8 @@ namespace MusicPlan.BLL.Models
         public virtual ICollection<Teacher> Teachers { get; set; }
         public virtual ICollection<SubjectStudent> SubjectToStudents { get; set; }
 
+        public string DisplayName { get { return Name; } }
+
         public Subject()
         {
             HoursParameters = new List<SubjectParameters>();

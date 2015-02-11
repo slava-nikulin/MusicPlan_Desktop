@@ -21,14 +21,9 @@
 
         <GroupBox Margin="50 20 50 20" Header="{x:Static resources:ApplicationResources.StudentsList}" Grid.Row="1">
             <DataGrid 
-                VirtualizingPanel.ScrollUnit="Pixel"
                 SelectedIndex="{Binding SelectedItemIndex}"
                 ItemsSource="{Binding ItemsList}"
-                SelectionMode="Single" 
-                Margin="5 10 5 10" 
-                AutoGenerateColumns="False" IsReadOnly="False" CanUserResizeColumns="True" 
-                CanUserAddRows="False" CanUserSortColumns="True">
-
+                Margin="5 10 5 10">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction
@@ -54,7 +49,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Grid.Row="0" Orientation="Vertical">
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Label Content="{x:Static resources:ApplicationResources.LastName}" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top"  Target="{Binding ElementName=TxtStudentLastName}"/>
                         <TextBox Text="{Binding SelectedItem.LastName}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"  Name="TxtStudentLastName" Margin="0,10,0,0"/>

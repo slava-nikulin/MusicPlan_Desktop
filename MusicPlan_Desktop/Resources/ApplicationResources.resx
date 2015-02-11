@@ -267,4 +267,7 @@
   <data name="TeachersList" xml:space="preserve">
     <value>Список преподавателей</value>
   </data>
+  <data name="Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
 </root>

@@ -509,5 +509,14 @@ namespace MusicPlan_Desktop.Resources {
                 return ResourceManager.GetString("TeachersList", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Тип.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
     }
 }

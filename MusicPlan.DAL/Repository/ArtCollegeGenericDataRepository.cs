@@ -29,8 +29,8 @@ namespace MusicPlan.DAL.Repository
             List<T> list;
             using (var context = new ArtCollegeContext())
             {
+                context.Configuration.ProxyCreationEnabled = false;
                 IQueryable<T> dbQuery = context.Set<T>();
-
                 dbQuery = navigationProperties.Aggregate(dbQuery, (current, navigationProperty) => current.Include(navigationProperty));
 
                 list = dbQuery

@@ -40,8 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtendedModels\StudentsScheduleViewModel.cs" />
-    <Compile Include="ExtendedModels\SubjectsScheduleViewModel.cs" />
     <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\Instrument.cs" />
     <Compile Include="Models\Student.cs" />

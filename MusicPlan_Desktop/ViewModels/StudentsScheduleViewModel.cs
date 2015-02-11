@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Practices.Prism.Mvvm;
 using MusicPlan.BLL.Models;
 
-namespace MusicPlan.BLL.ExtendedModels
+namespace MusicPlan_Desktop.ViewModels
 {
-    public class StudentsScheduleViewModel
+    public class StudentsScheduleViewModel:BindableBase
     {
-        public List<SubjectScheduleViewModel> AvailableSubjects { get; set; }
+        private List<SubjectScheduleViewModel> _availableSubjects;
+
+        public List<SubjectScheduleViewModel> AvailableSubjects
+        {
+            get { return _availableSubjects; }
+            set { SetProperty(ref _availableSubjects, value); }
+        }
+
         public Student Student { get; set; }
 
         public StudentsScheduleViewModel(Student student, IEnumerable<Subject> subjects)

@@ -111,7 +111,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ScheduleByYearViewModel.cs" />
     <Compile Include="ViewModels\SchedulesMainViewModel.cs" />
+    <Compile Include="ViewModels\StudentsScheduleViewModel.cs" />
     <Compile Include="ViewModels\StudentsViewModel.cs" />
+    <Compile Include="ViewModels\SubjectScheduleViewModel.cs" />
     <Compile Include="ViewModels\SubjectsViewModel.cs" />
     <Compile Include="ViewModels\TeachersViewModel.cs" />
     <Compile Include="Views\SchedulesTabView.xaml.cs">

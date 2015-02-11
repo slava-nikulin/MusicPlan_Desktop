@@ -73,6 +73,11 @@ namespace MusicPlan.DAL
             {
                 m.MapKey("TypeId");
             });
+
+            modelBuilder.Entity<SubjectParameters>().Ignore(p => p.DisplayName);
+            modelBuilder.Entity<Teacher>().Ignore(t => t.DisplayName);
+            modelBuilder.Entity<Instrument>().Ignore(t => t.DisplayName);
+            modelBuilder.Entity<Subject>().Ignore(t => t.DisplayName);
         }
     }
 }

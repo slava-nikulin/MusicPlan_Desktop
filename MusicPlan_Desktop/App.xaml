@@ -4,6 +4,14 @@
              xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
              xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources">
     <Application.Resources>
+        <Style TargetType="DataGrid">
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserDeleteRows" Value="False" />
+            <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />
+            <Setter Property="SelectionMode" Value="Single" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+        </Style>
+        
         <Style TargetType="DataGridCell">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="5"/>
@@ -22,7 +30,7 @@
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected, Mode=TwoWay}" Content="{Binding Name}">
+                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected, Mode=TwoWay}" Content="{Binding DisplayName}">
                         </CheckBox>
                     </DataTemplate>
                 </Setter.Value>

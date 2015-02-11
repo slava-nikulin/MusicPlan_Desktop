@@ -18,7 +18,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Margin="0 10 0 10" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="0">
@@ -29,49 +28,79 @@
                 SelectedValue="{Binding SelectedYear}"/>
         </StackPanel>
 
-        <StackPanel Visibility="{Binding Path=IsMainGridVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" Orientation="Vertical">
-            <GroupBox  
-                Style="{StaticResource GroupBoxSchedule}"
-                Margin="50 20 50 20"
-                Header="{Binding Path=DataContext.SelectedYear, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                DataContext="{Binding Path=MainContainerDataContext}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <DataGrid 
-                        Margin="10"
-                        Grid.Row="0"
-                        RowDetailsVisibilityMode="Visible"
-                        ItemsSource="{Binding StudentsList}"
-                        SelectedIndex="{Binding SelectedStudentIndex}"
-                        CanUserAddRows="False"
-                        SelectionMode="Single"
-                        VirtualizingPanel.ScrollUnit="Pixel"
-                        AutoGenerateColumns="False"
-                        IsReadOnly="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn 
-                                Binding="{Binding Student, Converter={StaticResource StudentConverterToName}}" 
-                                Width="*"
-                                Header="{x:Static resources:ApplicationResources.Student}"/>
-                        </DataGrid.Columns>
+        <GroupBox  
+            Visibility="{Binding Path=DataContext.IsMainGridVisible, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Converter={StaticResource BooleanToVisibilityConverter}}" 
+            Grid.Row="1"
+            Style="{StaticResource GroupBoxSchedule}"
+            Margin="50 20 50 20"
+            Header="{Binding Path=DataContext.SelectedYear, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+            DataContext="{Binding Path=MainContainerDataContext}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DataGrid 
+                    Margin="10"
+                    Grid.Row="0"
+                    RowDetailsVisibilityMode="Visible"
+                    ItemsSource="{Binding StudentsList}"
+                    SelectedIndex="{Binding SelectedStudentIndex}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn 
+                            IsReadOnly="True"
+                            Binding="{Binding Student, Converter={StaticResource StudentConverterToName}}" 
+                            Width="*"
+                            Header="{x:Static resources:ApplicationResources.Student}"/>
+                    </DataGrid.Columns>
 
-                        <DataGrid.RowDetailsTemplate>
-                            <DataTemplate>
-                                <!--
-                                TODO:
-                                -->      
-                            </DataTemplate>
-                        </DataGrid.RowDetailsTemplate>
-                    </DataGrid>
-                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0 10 0 0" Grid.Row="1">
-                        <Button Padding="5" Margin="0 0 50 0" Content="{x:Static resources:ApplicationResources.Save}" />
-                        <Button Padding="5" Margin="50 0 0 0" Content="{x:Static resources:ApplicationResources.Cancel}" />
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-        </StackPanel>
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <DataGrid
+                                HorizontalAlignment="Center"
+                                Width="Auto"
+                                ItemsSource="{Binding AvailableSubjects}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Subject.Name}"
+                                        Header="{x:Static resources:ApplicationResources.Subject}"/>
+                                    <DataGridTextColumn
+                                        Header="{x:Static resources:ApplicationResources.Type}"
+                                        IsReadOnly="True"
+                                        Binding="{Binding SubjectParameter.DisplayName}"
+                                        />
+                                    <DataGridTemplateColumn Header="{x:Static resources:ApplicationResources.Teachers}">
+
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ListBox 
+                                                    MaxHeight="100"
+                                                    VirtualizingPanel.ScrollUnit="Pixel"
+                                                    ItemsSource="{Binding Subject.Teachers}"
+                                                    SelectionMode="Multiple" 
+                                                    Width="220"
+                                                    DisplayMemberPath="InitialsLastName">
+                                                    <i:Interaction.Behaviors>
+                                                        <behaviors:SynchronizeSelectedListBoxItems 
+                                                            Selections="{Binding Selections}"/>
+                                                    </i:Interaction.Behaviors>
+
+                                                </ListBox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                </DataGrid>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0 10 0 0" Grid.Row="1">
+                    <Button Padding="5" Margin="0 0 50 0" Content="{x:Static resources:ApplicationResources.Save}" />
+                    <Button Padding="5" Margin="50 0 0 0" Content="{x:Static resources:ApplicationResources.Cancel}" />
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+ 
     </Grid>
 </UserControl>
