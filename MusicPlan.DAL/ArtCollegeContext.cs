@@ -78,6 +78,7 @@ namespace MusicPlan.DAL
             modelBuilder.Entity<Teacher>().Ignore(t => t.DisplayName);
             modelBuilder.Entity<Instrument>().Ignore(t => t.DisplayName);
             modelBuilder.Entity<Subject>().Ignore(t => t.DisplayName);
+            modelBuilder.Entity<Student>().Ignore(t => t.DisplayName);
         }
     }
 }

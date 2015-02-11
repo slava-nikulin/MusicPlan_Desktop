@@ -32,12 +32,6 @@ namespace MusicPlan_Desktop.ViewModels
             set { SetProperty(ref _scheduleHeader, value); }
         }
 
-        public bool IsMainGridVisible
-        {
-            get { return _isMainGridVisible; }
-            set { SetProperty(ref _isMainGridVisible, value); }
-        }
-
         public List<int> Classes
         {
             get { return new List<int> {1, 2, 3, 4, 5}; }
@@ -55,7 +49,6 @@ namespace MusicPlan_Desktop.ViewModels
             set
             {
                 _selectedYear = value;
-                IsMainGridVisible = true;
                 ScheduleHeader = string.Format(ApplicationResources.ScheduleForSpecificYear, _selectedYear);
                 MainContainerDataContext =
                     _container.Resolve<ScheduleByYearViewModel>(new ParameterOverride("studyYear", _selectedYear),
@@ -69,7 +62,6 @@ namespace MusicPlan_Desktop.ViewModels
         public SchedulesMainViewModel(IUnityContainer container)
         {
             _container = container;
-            IsMainGridVisible = false;
         }
         #endregion
 

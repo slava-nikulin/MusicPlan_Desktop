@@ -10,7 +10,8 @@ namespace MusicPlan.BLL.Models
     {
         public virtual Subject Subject { get; set; }
         public virtual Student Student { get; set; }
-        public virtual SubjectParameterType BindType { get; set; }
+        public virtual SubjectParameterType SubjectType { get; set; }
+        public virtual Instrument Instrument { get; set; }
 
         public int Id { get; set; }
     }

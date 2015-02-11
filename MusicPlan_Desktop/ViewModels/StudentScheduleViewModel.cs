@@ -5,7 +5,7 @@ using MusicPlan.BLL.Models;
 
 namespace MusicPlan_Desktop.ViewModels
 {
-    public class StudentsScheduleViewModel:BindableBase
+    public class StudentScheduleViewModel:BindableBase
     {
         private List<SubjectScheduleViewModel> _availableSubjects;
 
@@ -16,11 +16,13 @@ namespace MusicPlan_Desktop.ViewModels
         }
 
         public Student Student { get; set; }
+        public Instrument Instrument { get; set; }
 
-        public StudentsScheduleViewModel(Student student, IEnumerable<Subject> subjects)
+        public StudentScheduleViewModel(Student student, IEnumerable<Subject> subjects, Instrument instrument)
         {
             AvailableSubjects = new List<SubjectScheduleViewModel>();
             Student = student;
+            Instrument = instrument;
             foreach (var subject in subjects)
             {
                 foreach (var param in subject.HoursParameters.Where(la=>la.StudyYear==student.StudyYear))

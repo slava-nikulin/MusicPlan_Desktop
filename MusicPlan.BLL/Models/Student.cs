@@ -16,6 +16,8 @@ namespace MusicPlan.BLL.Models
         public virtual ICollection<Instrument> Instruments { get; set; }
         public virtual ICollection<SubjectStudent> SubjectToStudents { get; set; }
 
+        public string DisplayName { get { return string.Format("{0} {1}", FirstName, LastName); } }
+
         public Student()
         {
             Instruments = new List<Instrument>();
