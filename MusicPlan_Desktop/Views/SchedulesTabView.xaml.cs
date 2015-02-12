@@ -40,36 +40,38 @@ namespace MusicPlan_Desktop.Views
             GetValue(sender);
         }
 
-        private void FrameworkElement_OnInitialized(object sender, EventArgs e)
+        private void DataGrid_Initialized(object sender, EventArgs e)
         {
             GetValue(sender);
         }
         
         private static void GetValue(object sender)
         {
-            var dataGrid = (DataGrid) sender;
-            var source = dataGrid.ItemsSource as DataTable;
-            if (source == null) return;
-            foreach (DataColumn col in source.Columns.Cast<DataColumn>().Skip(2))
-            {
-                StringReader stringReader = new StringReader(
-                    string.Format("<DataTemplate " +
-                                  "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">" +
-                                  "xmlns:i=\"http://schemas.microsoft.com/expression/2010/interactivity\"" +
-                                  "<ListBox MaxHeight=\"100\" VirtualizingPanel.ScrollUnit=\"Pixel\" ItemsSource=\"{{Binding Path=['{0}'].Subject.Teachers}}\" SelectionMode=\"Multiple\"" +
-                                  "Width=\"220\" DisplayMemberPath=\"DisplayName\"> <i:Interaction.Behaviors> <behaviors:SynchronizeSelectedListBoxItems " +
-                                  "Selections=\"{{Binding Path=['{0}'].Selections}}\" /></i:Interaction.Behaviors></ListBox></DataTemplate>",
-                        col.ColumnName)
-                    );
-                XmlReader xmlReader = XmlReader.Create(stringReader);
-                var datatemplate = XamlReader.Load(xmlReader) as DataTemplate;
-
-
-                DataGridTemplateColumn dgtc = new DataGridTemplateColumn();
-                dgtc.Header = col.ColumnName;
-                dgtc.CellTemplate = datatemplate;
-                dataGrid.Columns.Add(dgtc);
-            }
+            //var dataGrid = (DataGrid) sender;
+            //var source = dataGrid.ItemsSource as DataView;
+            //if (source == null) return;
+            //foreach (DataColumn col in source.Table.Columns.Cast<DataColumn>().Skip(2))
+            //{
+            //    var strTemplate =
+            //        string.Format("<DataTemplate>" +
+            //                      "<ListBox MaxHeight=\"100\" VirtualizingPanel.ScrollUnit=\"Pixel\" ItemsSource=\"{{Binding Path=[{0}].Subject.Teachers}}\" SelectionMode=\"Multiple\" " +
+            //                      "Width=\"220\" DisplayMemberPath=\"DisplayName\"> <i:Interaction.Behaviors> <behaviors:SynchronizeSelectedListBoxItems " +
+            //                      "Selections=\"{{Binding Path=[{0}].Selections}}\" /></i:Interaction.Behaviors>" +
+            //                      "</ListBox>" +
+            //                      "</DataTemplate>",
+            //            col.ColumnName);
+            //    var parserContext = new ParserContext();
+            //    parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            //    parserContext.XmlnsDictionary.Add("i", "http://schemas.microsoft.com/expression/2010/interactivity");
+            //    parserContext.XmlnsDictionary.Add("behaviors", "clr-namespace:MusicPlan_Desktop.Behaviors");
+            //    var datatemplate = XamlReader.Parse(strTemplate, parserContext) as DataTemplate;
+            //    DataGridTemplateColumn dgtc = new DataGridTemplateColumn
+            //    {
+            //        Header = col.ColumnName,
+            //        CellTemplate = datatemplate
+            //    };
+            //    dataGrid.Columns.Add(dgtc);
+            //}
         }
     }
 }

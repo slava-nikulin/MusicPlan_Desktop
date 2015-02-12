@@ -15,6 +15,11 @@ namespace MusicPlan_Desktop.ViewModels
         }
 
         public Subject Subject { get; set; }
+
+        public string DisplayName
+        {
+            get { return string.Format("{0} ({1})", Subject.DisplayName, SubjectParameter.Type.ShortDisplayName); }
+        }
         public SubjectParameters SubjectParameter { get; set; }
 
         public SubjectScheduleViewModel(Subject subject, SubjectParameters parameter)

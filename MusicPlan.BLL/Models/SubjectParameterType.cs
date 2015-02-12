@@ -4,10 +4,6 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
-        public SubjectParameterType()
-        {
-            
-        }
+        public string ShortDisplayName { get { return string.Format("{0}.", Name.Substring(0, 4)); } }
     }
 }

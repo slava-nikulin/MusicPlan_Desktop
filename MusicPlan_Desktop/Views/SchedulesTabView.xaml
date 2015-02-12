@@ -40,13 +40,10 @@
                         <Setter.Value>
                             <ControlTemplate>
                                 <GroupBox
-                                    Visibility="{Binding Path=DataContext.IsMainGridVisible, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Converter={StaticResource BooleanToVisibilityConverter}}"
                                     Style="{StaticResource GroupBoxSchedule}"
                                     Margin="50 20 50 20"
                                     Header="{Binding Path=DataContext.SelectedYear, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-                                    DataContext="{Binding Path=MainContainerDataContext}"
-                                    
-                                    >
+                                    DataContext="{Binding Path=MainContainerDataContext}">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*" />
@@ -55,42 +52,21 @@
                                         <DataGrid
                                             Margin="10"
                                             Grid.Row="0"
-                                            RowDetailsVisibilityMode="Visible"
                                             DataContextChanged="FrameworkElement_OnDataContextChanged"
-                                            DataContext="{Binding MainDt}"
-                                            ItemsSource="{Binding MainDt}"
-                                            SelectedIndex="{Binding SelectedStudentIndex}">
+                                            ItemsSource="{Binding MainDt.DefaultView, Mode=OneWay}"
+                                            SelectedIndex="{Binding Path=DataContext.SelectedStudentIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
+                                            Initialized="DataGrid_Initialized">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn
                                                     IsReadOnly="True"
                                                     Binding="{Binding Student, Converter={StaticResource StudentConverterToName}}"
                                                     Width="*"
-                                                    Header="{x:Static resources:ApplicationResources.Student}" />
+                                                    Header="{Binding [stud]}" />
                                                 <DataGridTextColumn
                                                     IsReadOnly="True"
                                                     Binding="{Binding Student.Instrument}"
                                                     Width="*"
                                                     Header="{x:Static resources:ApplicationResources.Instrument}" />
-
-                                                <DataGridTemplateColumn>
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ListBox
-                                                                MaxHeight="100"
-                                                                VirtualizingPanel.ScrollUnit="Pixel"
-                                                                ItemsSource="{Binding Subject.Teachers}"
-                                                                SelectionMode="Multiple"
-                                                                Width="220"
-                                                                DisplayMemberPath="InitialsLastName">
-                                                                <i:Interaction.Behaviors>
-                                                                    <behaviors:SynchronizeSelectedListBoxItems
-                                                                        Selections="{Binding Selections}" />
-                                                                </i:Interaction.Behaviors>
-
-                                                            </ListBox>
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                </DataGridTemplateColumn>
                                             </DataGrid.Columns>
                                         </DataGrid>
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"
@@ -101,11 +77,11 @@
                                                     Content="{x:Static resources:ApplicationResources.Cancel}" />
                                         </StackPanel>
                                     </Grid>
-                                </GroupBox></ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ContentControl.Style>
-        </ContentControl>
-    </Grid>
-</UserControl>
+                                    </GroupBox></ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </Grid>
+        </UserControl>

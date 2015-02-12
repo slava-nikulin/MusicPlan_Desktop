@@ -22,6 +22,7 @@ namespace MusicPlan_Desktop.ViewModels
         private int _studyYear;
         private ObservableCollection<SubjectScheduleViewModel> _availableSubjects;
         private IEventAggregator _eventAggregator;
+        private DataTable _mainDt;
 
         #endregion
 
@@ -34,7 +35,11 @@ namespace MusicPlan_Desktop.ViewModels
             set { SetProperty(ref _availableSubjects, value); }
         }
 
-        public DataTable MainDt { get; set; }
+        public DataTable MainDt
+        {
+            get { return _mainDt; }
+            set { SetProperty(ref _mainDt, value); }
+        }
 
         public ObservableCollection<StudentScheduleViewModel> StudentsList
         {
@@ -110,7 +115,7 @@ namespace MusicPlan_Desktop.ViewModels
                 dt.Columns.Add(new DataColumn
                 {
                     DataType = typeof (SubjectScheduleViewModel),
-                    ColumnName = subj.Subject.DisplayName
+                    ColumnName = subj.DisplayName
                 });
             }
 
@@ -121,7 +126,7 @@ namespace MusicPlan_Desktop.ViewModels
                 newRow["instr"] = stud.Instrument.Name;
                 foreach (var subj in stud.AvailableSubjects)
                 {
-                    newRow[subj.Subject.DisplayName] = subj;
+                    newRow[subj.DisplayName] = subj;
                 }
                 dt.Rows.Add(newRow);
             }
