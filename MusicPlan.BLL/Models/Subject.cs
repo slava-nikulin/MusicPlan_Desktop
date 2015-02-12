@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace MusicPlan.BLL.Models
 {
@@ -8,6 +9,10 @@ namespace MusicPlan.BLL.Models
         public string Name { get; set; }
 
         public virtual ICollection<SubjectParameters> HoursParameters { get; set; }
+        public virtual ICollection<SubjectParameters> HoursParametersSorted { get
+        {
+            return HoursParameters.OrderBy(la => la.StudyYear).ToList();
+        } }
         public virtual ICollection<Teacher> Teachers { get; set; }
         public virtual ICollection<SubjectStudent> SubjectToStudents { get; set; }
 

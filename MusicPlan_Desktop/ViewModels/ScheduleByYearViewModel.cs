@@ -80,7 +80,7 @@ namespace MusicPlan_Desktop.ViewModels
                 }
             }
             var rep = new ArtCollegeGenericDataRepository<Student>();
-            var allStudents = new ObservableCollection<Student>(rep.GetList(la => la.StudyYear == studyYear));
+            var allStudents = new ObservableCollection<Student>(rep.GetList(la => la.StudyYear == studyYear, la=>la.Instruments));
             StudentsList = new ObservableCollection<StudentScheduleViewModel>();
             foreach (var student in allStudents)
             {

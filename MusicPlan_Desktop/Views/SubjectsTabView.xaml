@@ -44,7 +44,7 @@
                         <GroupBox Background="AliceBlue" HorizontalAlignment="Center" Margin="10" Header="{x:Static resources:ApplicationResources.Schedules}">
                             <DataGrid
                                 Height="200"
-                                ItemsSource="{Binding HoursParameters}"
+                                ItemsSource="{Binding HoursParametersSorted}"
                                 SelectedIndex="{Binding Path=DataContext.SelectedSubItemIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn  Header="{x:Static resources:ApplicationResources.FirstSemesterWeeksCount}" Binding="{Binding WeeksPerFirstSemester}" />
