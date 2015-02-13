@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MusicPlan.BLL.Models
 {
-    public class SubjectStudent: IModel
+    public class StudentToSubject: IModel
     {
-        public virtual Subject Subject { get; set; }
+        public virtual ICollection<Teacher> Teachers { get; set; }
         public virtual Student Student { get; set; }
         public virtual SubjectParameterType SubjectType { get; set; }
         public virtual Instrument Instrument { get; set; }

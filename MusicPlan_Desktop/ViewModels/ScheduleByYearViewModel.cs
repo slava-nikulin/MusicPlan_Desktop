@@ -5,12 +5,15 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
 using MusicPlan.BLL.Models;
 using MusicPlan.DAL.Repository;
 using MusicPlan_Desktop.CLasses.Events;
+using MusicPlan_Desktop.Resources;
 
 namespace MusicPlan_Desktop.ViewModels
 {
@@ -27,7 +30,7 @@ namespace MusicPlan_Desktop.ViewModels
         #endregion
 
         #region Public properties
-
+        public ICommand SaveCommand { get; set; }
 
         public ObservableCollection<SubjectScheduleViewModel> AvailableSubjects
         {
@@ -61,6 +64,12 @@ namespace MusicPlan_Desktop.ViewModels
             RebindItems(_studyYear);
             _eventAggregator = container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<SyncDataEvent>().Subscribe(RebindItems, true);
+            SaveCommand = new DelegateCommand(SaveSchedule);
+        }
+
+        private void SaveSchedule()
+        {
+            var a = MainDt;
         }
 
         private void RebindItems(object obj)
@@ -100,17 +109,17 @@ namespace MusicPlan_Desktop.ViewModels
             {
                 new DataColumn
                 {
-                    ColumnName = "stud",
+                    ColumnName = ApplicationResources.Student,
                     DataType = typeof (string)
                 },
                 new DataColumn
                 {
-                    ColumnName = "instr",
+                    ColumnName = ApplicationResources.Instrument,
                     DataType = typeof (string)
                 }
             });
 
-            foreach (var subj in StudentsList.First().AvailableSubjects)
+            foreach (var subj in AvailableSubjects)
             {
                 dt.Columns.Add(new DataColumn
                 {
@@ -122,8 +131,8 @@ namespace MusicPlan_Desktop.ViewModels
             foreach (var stud in StudentsList)
             {
                 var newRow = dt.NewRow();
-                newRow["stud"] = stud.Student.DisplayName;
-                newRow["instr"] = stud.Instrument.Name;
+                newRow[ApplicationResources.Student] = stud.Student.DisplayName;
+                newRow[ApplicationResources.Instrument] = stud.Instrument.Name;
                 foreach (var subj in stud.AvailableSubjects)
                 {
                     newRow[subj.DisplayName] = subj;

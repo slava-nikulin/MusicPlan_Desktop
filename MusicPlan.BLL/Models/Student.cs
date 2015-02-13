@@ -14,14 +14,14 @@ namespace MusicPlan.BLL.Models
         public int StudyYear { get; set; }
 
         public virtual ICollection<Instrument> Instruments { get; set; }
-        public virtual ICollection<SubjectStudent> SubjectToStudents { get; set; }
+        public virtual ICollection<StudentToSubject> StudentToSubject { get; set; }
 
         public string DisplayName { get { return string.Format("{0} {1}", FirstName, LastName); } }
 
         public Student()
         {
             Instruments = new List<Instrument>();
-            SubjectToStudents = new List<SubjectStudent>();
+            StudentToSubject = new List<StudentToSubject>();
         }
 
     }

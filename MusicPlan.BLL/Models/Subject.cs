@@ -9,12 +9,11 @@ namespace MusicPlan.BLL.Models
         public string Name { get; set; }
 
         public virtual ICollection<SubjectParameters> HoursParameters { get; set; }
-        public virtual ICollection<SubjectParameters> HoursParametersSorted { get
+        public ICollection<SubjectParameters> HoursParametersSorted { get
         {
             return HoursParameters.OrderBy(la => la.StudyYear).ToList();
         } }
         public virtual ICollection<Teacher> Teachers { get; set; }
-        public virtual ICollection<SubjectStudent> SubjectToStudents { get; set; }
 
         public string DisplayName { get { return Name; } }
 
@@ -22,7 +21,6 @@ namespace MusicPlan.BLL.Models
         {
             HoursParameters = new List<SubjectParameters>();
             Teachers = new List<Teacher>();
-            SubjectToStudents = new List<SubjectStudent>();
         }
     }
 }

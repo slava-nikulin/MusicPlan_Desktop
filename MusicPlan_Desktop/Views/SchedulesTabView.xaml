@@ -10,8 +10,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              xmlns:converters="clr-namespace:MusicPlan_Desktop.CLasses">
     <UserControl.Resources>
-        <converters:StudentConverterToName x:Key="StudentConverterToName" />
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:IntLargerThenZeroConverter x:Key="IntLargerThenZeroConverter" />
     </UserControl.Resources>
 
     <Grid Background="#FFE5E5E5">
@@ -49,39 +48,34 @@
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
+
                                         <DataGrid
                                             Margin="10"
                                             Grid.Row="0"
-                                            DataContextChanged="FrameworkElement_OnDataContextChanged"
-                                            ItemsSource="{Binding MainDt.DefaultView, Mode=OneWay}"
-                                            SelectedIndex="{Binding Path=DataContext.SelectedStudentIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
+                                            ItemsSource="{Binding Path=MainDt.DefaultView, Mode=OneWay}"
+                                            SelectedIndex="{Binding Path=SelectedStudentIndex}" 
+                                            MouseLeave="DataGrid_OnMouseLeave"
                                             Initialized="DataGrid_Initialized">
-                                            <DataGrid.Columns>
-                                                <DataGridTextColumn
-                                                    IsReadOnly="True"
-                                                    Binding="{Binding Student, Converter={StaticResource StudentConverterToName}}"
-                                                    Width="*"
-                                                    Header="{Binding [stud]}" />
-                                                <DataGridTextColumn
-                                                    IsReadOnly="True"
-                                                    Binding="{Binding Student.Instrument}"
-                                                    Width="*"
-                                                    Header="{x:Static resources:ApplicationResources.Instrument}" />
-                                            </DataGrid.Columns>
+                                            <DataGrid.Resources>
+                                                <Style TargetType="DataGridRow">
+                                                    <EventSetter Event="MouseEnter" Handler="Row_MouseEnter"/>
+                                                </Style>
+                                            </DataGrid.Resources>
+
                                         </DataGrid>
                                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"
                                                     Margin="0 10 0 0" Grid.Row="1">
                                             <Button Padding="5" Margin="0 0 50 0"
+                                                    Command="{Binding SaveCommand}"
                                                     Content="{x:Static resources:ApplicationResources.Save}" />
-                                            <Button Padding="5" Margin="50 0 0 0"
-                                                    Content="{x:Static resources:ApplicationResources.Cancel}" />
                                         </StackPanel>
                                     </Grid>
-                                    </GroupBox></ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ContentControl.Style>
-                </ContentControl>
-            </Grid>
-        </UserControl>
+                                </GroupBox>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+    </Grid>
+</UserControl>

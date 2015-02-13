@@ -18,7 +18,7 @@ namespace MusicPlan.DAL
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<SubjectParameters> SubjectsParameters { get; set; }
         public DbSet<SubjectParameterType> ParameterTypes { get; set; }
-        public DbSet<SubjectStudent> SubjectsToStudents { get; set; } 
+        public DbSet<StudentToSubject> StudentsToTeachers { get; set; } 
 
         public ArtCollegeContext(): base("ArtCollegeDbConnection")
         {
@@ -32,7 +32,7 @@ namespace MusicPlan.DAL
             modelBuilder.Entity<Subject>().HasKey(su => su.Id);
             modelBuilder.Entity<Teacher>().HasKey(t => t.Id);
             modelBuilder.Entity<SubjectParameterType>().HasKey(la => la.Id);
-            modelBuilder.Entity<SubjectStudent>().HasKey(sp => sp.Id);
+            modelBuilder.Entity<StudentToSubject>().HasKey(sp => sp.Id);
             modelBuilder.Entity<SubjectParameters>().HasKey(sp => sp.Id);
 
             modelBuilder.Entity<Student>()
@@ -44,14 +44,20 @@ namespace MusicPlan.DAL
                     m.MapRightKey("InstrumentId");
                 });
 
-            modelBuilder.Entity<Student>().HasMany(st => st.SubjectToStudents).WithRequired(su=>su.Student).Map(m =>
+            modelBuilder.Entity<StudentToSubject>().HasRequired(la => la.Instrument).WithMany().Map(m =>
             {
-                m.MapKey("StudentId");
+                m.MapKey("InstrumentId");
             });
 
-            modelBuilder.Entity<Subject>().HasMany(su => su.SubjectToStudents).WithRequired(t => t.Subject).Map(m =>
+            modelBuilder.Entity<StudentToSubject>().HasMany(sts => sts.Teachers).WithMany().Map(m =>
             {
-                m.MapKey("SubjectId");
+                m.MapLeftKey("StudentToSubjectId");
+                m.MapRightKey("TeacherId");
+            });
+
+            modelBuilder.Entity<Student>().HasMany(st => st.StudentToSubject).WithRequired(su=>su.Student).Map(m =>
+            {
+                m.MapKey("StudentId");
             });
 
             modelBuilder.Entity<Subject>().HasMany(su => su.Teachers).WithMany(t => t.Subjects).Map(m =>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using MusicPlan_Desktop.Behaviors;
 using MusicPlan_Desktop.Resources;
 using MusicPlan_Desktop.ViewModels;
 
@@ -35,43 +37,81 @@ namespace MusicPlan_Desktop.Views
             DataContext = viewModel;
         }
 
-        private void FrameworkElement_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            GetValue(sender);
-        }
-
         private void DataGrid_Initialized(object sender, EventArgs e)
         {
-            GetValue(sender);
+            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
+            if (dpd != null)
+            {
+                dpd.AddValueChanged((DataGrid)sender, DataGrid_OnItemsourceChanged);
+            }
+            BindColumns(sender);
         }
-        
-        private static void GetValue(object sender)
+
+        private void DataGrid_OnItemsourceChanged(object sender, EventArgs e)
         {
-            //var dataGrid = (DataGrid) sender;
-            //var source = dataGrid.ItemsSource as DataView;
-            //if (source == null) return;
-            //foreach (DataColumn col in source.Table.Columns.Cast<DataColumn>().Skip(2))
-            //{
-            //    var strTemplate =
-            //        string.Format("<DataTemplate>" +
-            //                      "<ListBox MaxHeight=\"100\" VirtualizingPanel.ScrollUnit=\"Pixel\" ItemsSource=\"{{Binding Path=[{0}].Subject.Teachers}}\" SelectionMode=\"Multiple\" " +
-            //                      "Width=\"220\" DisplayMemberPath=\"DisplayName\"> <i:Interaction.Behaviors> <behaviors:SynchronizeSelectedListBoxItems " +
-            //                      "Selections=\"{{Binding Path=[{0}].Selections}}\" /></i:Interaction.Behaviors>" +
-            //                      "</ListBox>" +
-            //                      "</DataTemplate>",
-            //            col.ColumnName);
-            //    var parserContext = new ParserContext();
-            //    parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-            //    parserContext.XmlnsDictionary.Add("i", "http://schemas.microsoft.com/expression/2010/interactivity");
-            //    parserContext.XmlnsDictionary.Add("behaviors", "clr-namespace:MusicPlan_Desktop.Behaviors");
-            //    var datatemplate = XamlReader.Parse(strTemplate, parserContext) as DataTemplate;
-            //    DataGridTemplateColumn dgtc = new DataGridTemplateColumn
-            //    {
-            //        Header = col.ColumnName,
-            //        CellTemplate = datatemplate
-            //    };
-            //    dataGrid.Columns.Add(dgtc);
-            //}
+            BindColumns(sender);
+        }
+
+        private static void BindColumns(object sender)
+        {
+            MainDataGrid = sender as DataGrid;
+            if (MainDataGrid == null) return;
+            MainDataGrid.Columns.Clear();
+            var source = MainDataGrid.ItemsSource as DataView;
+            if (source == null) return;
+            var columns = source.Table.Columns.Cast<DataColumn>().ToArray();
+            
+            var parserContext = new ParserContext();
+            parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            parserContext.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+            var resourcesType = typeof(ApplicationResources);
+            parserContext.XmlnsDictionary.Add("resources", string.Format("clr-namespace:{0};assembly={1}", resourcesType.Namespace, resourcesType.Assembly.FullName));
+
+            var studTemplateString = "<DataGridTextColumn IsReadOnly=\"True\" Binding=\"{Binding [0]}\" Width=\"*\" Header=\"{x:Static resources:ApplicationResources.Student}\" />";
+            var textColumn = XamlReader.Parse(studTemplateString, parserContext) as DataGridTextColumn;
+            MainDataGrid.Columns.Add(textColumn);
+
+            studTemplateString = "<DataGridTextColumn IsReadOnly=\"True\" Binding=\"{Binding [1]}\" Width=\"*\" Header=\"{x:Static resources:ApplicationResources.Instrument}\" />";
+            textColumn = XamlReader.Parse(studTemplateString, parserContext) as DataGridTextColumn;
+            MainDataGrid.Columns.Add(textColumn);
+
+            for (var i = 2; i < columns.Length; i++)
+            {
+                var strTemplate =
+                    string.Format("<DataTemplate>" +
+                                  "<ListBox MaxHeight=\"100\" VirtualizingPanel.ScrollUnit=\"Pixel\" ItemsSource=\"{{Binding Path=[{0}].Subject.Teachers}}\" SelectionMode=\"Multiple\" " +
+                                  "Width=\"220\" DisplayMemberPath=\"DisplayName\"> " +
+                                  "<i:Interaction.Behaviors> <behaviors:SynchronizeSelectedListBoxItems " +
+                                  "Selections=\"{{Binding Path=[{0}].Selections}}\" /></i:Interaction.Behaviors>" +
+                                  "</ListBox>" +
+                                  "</DataTemplate>", i);
+
+                parserContext = new ParserContext();
+                parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+                parserContext.XmlnsDictionary.Add("i", "http://schemas.microsoft.com/expression/2010/interactivity");
+                var listBoxSelectionType = typeof (SynchronizeSelectedListBoxItems);
+                parserContext.XmlnsDictionary.Add("behaviors", string.Format("clr-namespace:{0};assembly={1}", listBoxSelectionType.Namespace, listBoxSelectionType.Assembly.FullName));
+                var datatemplate = XamlReader.Parse(strTemplate, parserContext) as DataTemplate;
+                var dgtc = new DataGridTemplateColumn
+                {
+                    Header = columns[i].ColumnName,
+                    CellTemplate = datatemplate
+                };
+                dgtc.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+                MainDataGrid.Columns.Add(dgtc);
+            }
+        }
+
+        public static DataGrid MainDataGrid { get; set; }
+
+        private void Row_MouseEnter(object sender, MouseEventArgs e)
+        {
+            MainDataGrid.SelectedIndex = MainDataGrid.ItemContainerGenerator.IndexFromContainer((DataGridRow)sender);
+        }
+
+        private void DataGrid_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            MainDataGrid.SelectedIndex = -1;
         }
     }
 }
