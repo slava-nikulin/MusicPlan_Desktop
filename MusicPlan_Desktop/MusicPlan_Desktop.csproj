@@ -107,6 +107,7 @@
     <Compile Include="Modules\StudentsModule.cs" />
     <Compile Include="Modules\SubjectsModule.cs" />
     <Compile Include="Modules\TeachersModule.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ICrudViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ScheduleByYearViewModel.cs" />

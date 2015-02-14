@@ -214,17 +214,19 @@ namespace MusicPlan_Desktop.ViewModels
                 {
                     if (SelectedSubItemIndex == -1 && SelectedItemIndex == -1)
                     {
-                        BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectInsert_ParameterInsert");
+                        BtnAddButtonContent = ApplicationResources.SubjectInsert_ParameterInsert;
                     }
                     else if (SelectedSubItemIndex == -1 && SelectedItemIndex > -1)
                     {
-                        BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterInsert");
+                        BtnAddButtonContent = ApplicationResources.SubjectEdit_ParameterInsert;
                     }
                 }
                 else
                 {
                     UnselectSubItem();
-                    BtnAddButtonContent = ApplicationResources.ResourceManager.GetString(SelectedItemIndex > -1 ? "SubjectEdit" : "SubjectInsert");
+                    BtnAddButtonContent = SelectedItemIndex > -1
+                        ? ApplicationResources.SubjectEdit
+                        : ApplicationResources.SubjectInsert;
                 }
             }
             if (e.PropertyName == "ApplyForAllStudyYears")
@@ -265,25 +267,18 @@ namespace MusicPlan_Desktop.ViewModels
                 ApplyForAllStudyYears = false;
                 SubItemsInsertUpdateMode = true;
                 SelectedSubItem = subItem.DeepClone();
-                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectEdit_ParameterEdit");
+                BtnAddButtonContent = ApplicationResources.SubjectEdit_ParameterEdit;
             }
         }
-
-        //private void DeleteSubItem(SubjectParameters subItem)
-        //{
-        //    var rep = new SubjectParametersRepository();
-        //    rep.Remove(subItem);
-        //    UnselectSubItem();
-        //    BindItems();
-        //    SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == SelectedItem.Id));
-        //}
 
         public void UnselectSubItem()
         {
             ApplyForAllStudyYears = false;
             SelectedSubItem = new SubjectParameters();
             SelectedSubItemIndex = -1;
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString(SubItemsInsertUpdateMode ? "SubjectEdit_ParameterInsert" : "SubjectEdit");
+            BtnAddButtonContent = SubItemsInsertUpdateMode
+                ? ApplicationResources.SubjectEdit_ParameterInsert
+                : ApplicationResources.SubjectEdit;
         }
 
         public void UnselectItem()
@@ -291,7 +286,9 @@ namespace MusicPlan_Desktop.ViewModels
             UnselectSubItem();
             SelectedItem = new Subject();
             SelectedItemIndex = -1;
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString(SubItemsInsertUpdateMode ? "SubjectInsert_ParameterInsert" : "SubjectInsert");
+            BtnAddButtonContent = SubItemsInsertUpdateMode
+                ? ApplicationResources.SubjectInsert_ParameterInsert
+                : ApplicationResources.SubjectInsert;
         }
 
         public void SelectItem(Subject item)
@@ -300,14 +297,19 @@ namespace MusicPlan_Desktop.ViewModels
             {
                 UnselectSubItem();
                 SelectedItem = item.DeepClone();
-                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString(SubItemsInsertUpdateMode ? "SubjectEdit_ParameterInsert" : "SubjectEdit");
+                BtnAddButtonContent = SubItemsInsertUpdateMode
+                    ? ApplicationResources.SubjectEdit_ParameterInsert
+                    : ApplicationResources.SubjectEdit;
             }
         }
 
         public void BindItems()
         {
             var rep = new ArtCollegeGenericDataRepository<Subject>();
-            ItemsList = new ObservableCollection<Subject>((rep.GetAll(la => la.HoursParameters, la => la.HoursParameters.Select(p => p.Type))).OrderBy(la => la.Name));
+            ItemsList =
+                new ObservableCollection<Subject>(
+                    (rep.GetAll(la => la.HoursParameters, la => la.HoursParameters.Select(p => p.Type))).OrderBy(
+                        la => la.Name));
 
             if (SelectedItem.Id != 0)
             {

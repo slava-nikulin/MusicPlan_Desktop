@@ -1,17 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Microsoft.Practices.Prism.Mvvm;
 using MusicPlan.BLL.Models;
+using MusicPlan_Desktop.Annotations;
 
 namespace MusicPlan_Desktop.ViewModels
 {
-    public class SubjectScheduleViewModel:BindableBase
+    [Serializable]
+    public class SubjectScheduleViewModel : INotifyPropertyChanged
     {
-        private List<Teacher> _selections;
+        private ObservableCollection<Teacher> _selections;
 
-        public List<Teacher> Selections
+        public ObservableCollection<Teacher> Selections
         {
             get { return _selections; }
-            set { SetProperty(ref _selections, value); }
+            set
+            {
+                _selections = value;
+                OnPropertyChanged();
+            }
         }
 
         public Subject Subject { get; set; }
@@ -24,9 +34,18 @@ namespace MusicPlan_Desktop.ViewModels
 
         public SubjectScheduleViewModel(Subject subject, SubjectParameters parameter)
         {
-            Selections = new List<Teacher>();
+            Selections = new ObservableCollection<Teacher>();
             SubjectParameter = parameter;
             Subject = subject;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

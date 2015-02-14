@@ -1,5 +1,8 @@
-﻿namespace MusicPlan.BLL.Models
+﻿using System;
+
+namespace MusicPlan.BLL.Models
 {
+    [Serializable]
     public class SubjectParameterType : IModel
     {
         public int Id { get; set; }

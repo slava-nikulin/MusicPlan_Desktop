@@ -2,6 +2,7 @@
 
 namespace MusicPlan.BLL.Models
 {
+    [Serializable]
     public class SubjectParameters : IModel, ICloneable
     {
         public int Id { get; set; }

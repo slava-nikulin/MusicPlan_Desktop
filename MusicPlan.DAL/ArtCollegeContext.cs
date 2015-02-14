@@ -18,11 +18,14 @@ namespace MusicPlan.DAL
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<SubjectParameters> SubjectsParameters { get; set; }
         public DbSet<SubjectParameterType> ParameterTypes { get; set; }
-        public DbSet<StudentToSubject> StudentsToTeachers { get; set; } 
+        public DbSet<StudentToTeacher> StudentsToTeachers { get; set; } 
 
         public ArtCollegeContext(): base("ArtCollegeDbConnection")
         {
-            Database.SetInitializer(new ArtCollegeDatabaseInitializer());
+            if (!Database.Exists())
+            {
+                Database.SetInitializer(new ArtCollegeDatabaseInitializer());
+            }
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -32,7 +35,7 @@ namespace MusicPlan.DAL
             modelBuilder.Entity<Subject>().HasKey(su => su.Id);
             modelBuilder.Entity<Teacher>().HasKey(t => t.Id);
             modelBuilder.Entity<SubjectParameterType>().HasKey(la => la.Id);
-            modelBuilder.Entity<StudentToSubject>().HasKey(sp => sp.Id);
+            modelBuilder.Entity<StudentToTeacher>().HasKey(sp => sp.Id);
             modelBuilder.Entity<SubjectParameters>().HasKey(sp => sp.Id);
 
             modelBuilder.Entity<Student>()
@@ -44,15 +47,24 @@ namespace MusicPlan.DAL
                     m.MapRightKey("InstrumentId");
                 });
 
-            modelBuilder.Entity<StudentToSubject>().HasRequired(la => la.Instrument).WithMany().Map(m =>
+            modelBuilder.Entity<StudentToTeacher>().HasRequired(la => la.Instrument).WithMany().Map(m =>
             {
                 m.MapKey("InstrumentId");
             });
 
-            modelBuilder.Entity<StudentToSubject>().HasMany(sts => sts.Teachers).WithMany().Map(m =>
+            modelBuilder.Entity<StudentToTeacher>().HasRequired(sts => sts.Teacher).WithMany().Map(m =>
             {
-                m.MapLeftKey("StudentToSubjectId");
-                m.MapRightKey("TeacherId");
+                m.MapKey("TeacherId");
+            });
+
+            modelBuilder.Entity<StudentToTeacher>().HasRequired(sts => sts.Subject).WithMany().Map(m =>
+            {
+                m.MapKey("SubjectId");
+            });
+
+            modelBuilder.Entity<StudentToTeacher>().HasRequired(sts => sts.SubjectType).WithMany().Map(m =>
+            {
+                m.MapKey("SubjectTypeId");
             });
 
             modelBuilder.Entity<Student>().HasMany(st => st.StudentToSubject).WithRequired(su=>su.Student).Map(m =>

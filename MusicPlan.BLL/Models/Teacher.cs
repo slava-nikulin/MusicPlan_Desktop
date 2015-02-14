@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MusicPlan.BLL.Models;
 
 namespace MusicPlan.BLL.Models
 {
+    [Serializable]
     public class Teacher : IModel
     {
         public int Id { get; set; }

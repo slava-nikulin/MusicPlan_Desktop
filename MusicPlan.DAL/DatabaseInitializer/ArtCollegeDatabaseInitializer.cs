@@ -9,10 +9,12 @@ using MusicPlan.BLL.Models;
 
 namespace MusicPlan.DAL.DatabaseInitializer
 {
-    public class ArtCollegeDatabaseInitializer : CreateDatabaseIfNotExists<ArtCollegeContext>
+    public class ArtCollegeDatabaseInitializer : IDatabaseInitializer<ArtCollegeContext>
     {
-        protected override void Seed(ArtCollegeContext context)
+        public void InitializeDatabase(ArtCollegeContext context)
         {
+            context.Database.CreateIfNotExists();
+
             context.ParameterTypes.AddRange(new[]
             {
                 new SubjectParameterType

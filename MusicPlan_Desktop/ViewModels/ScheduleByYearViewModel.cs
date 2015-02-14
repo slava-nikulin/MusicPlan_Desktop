@@ -20,11 +20,10 @@ namespace MusicPlan_Desktop.ViewModels
     public class ScheduleByYearViewModel : BindableBase
     {
         #region Private fields
-        private ObservableCollection<StudentScheduleViewModel> _studentsList;
+
         private int _selectedStudentIndex;
-        private int _studyYear;
-        private ObservableCollection<SubjectScheduleViewModel> _availableSubjects;
-        private IEventAggregator _eventAggregator;
+        private readonly int _studyYear;
+        private readonly IEventAggregator _eventAggregator;
         private DataTable _mainDt;
 
         #endregion
@@ -32,22 +31,10 @@ namespace MusicPlan_Desktop.ViewModels
         #region Public properties
         public ICommand SaveCommand { get; set; }
 
-        public ObservableCollection<SubjectScheduleViewModel> AvailableSubjects
-        {
-            get { return _availableSubjects; }
-            set { SetProperty(ref _availableSubjects, value); }
-        }
-
         public DataTable MainDt
         {
             get { return _mainDt; }
             set { SetProperty(ref _mainDt, value); }
-        }
-
-        public ObservableCollection<StudentScheduleViewModel> StudentsList
-        {
-            get { return _studentsList; }
-            set { SetProperty(ref _studentsList, value); }
         }
 
         public int SelectedStudentIndex
@@ -69,7 +56,35 @@ namespace MusicPlan_Desktop.ViewModels
 
         private void SaveSchedule()
         {
-            var a = MainDt;
+            var studRepo = new StudentRepository();
+            foreach (DataRow row in MainDt.Rows)
+            {
+                var studentScheduleViewModel = row[ApplicationResources.Student] as StudentScheduleViewModel;
+                var student =
+                    studRepo.GetSingle(
+                        la => studentScheduleViewModel != null && la.Id == studentScheduleViewModel.Student.Id,
+                        la => la.Instruments, la => la.StudentToSubject,
+                        la => la.StudentToSubject.Select(la1 => la1.Instrument),
+                        la => la.StudentToSubject.Select(la1 => la1.Subject),
+                        la => la.StudentToSubject.Select(la1 => la1.Teacher),
+                        la => la.StudentToSubject.Select(la1 => la1.SubjectType));
+                student.StudentToSubject.Clear();
+                for (var i = 1; i < MainDt.Columns.Count; i++)
+                {
+                    var subjectScheduleViewModule = row[i] as SubjectScheduleViewModel;
+                    foreach (var selectedTeacher in subjectScheduleViewModule.Selections)
+                    {
+                        student.StudentToSubject.Add(new StudentToTeacher
+                        {
+                            Instrument = studentScheduleViewModel.Instrument,
+                            Subject = subjectScheduleViewModule.Subject,
+                            SubjectType = subjectScheduleViewModule.SubjectParameter.Type,
+                            Teacher = selectedTeacher
+                        });
+                    }
+                }
+                studRepo.Update(student);
+            }
         }
 
         private void RebindItems(object obj)
@@ -81,26 +96,26 @@ namespace MusicPlan_Desktop.ViewModels
         private void BindItems(int studyYear)
         {
             var rep1 = new ArtCollegeGenericDataRepository<Subject>();
-            var allSubjects =
+            var availableSubjects =
                 new ObservableCollection<Subject>(
                     rep1.GetList(la => la.HoursParameters.Any(param => param.StudyYear == studyYear), la => la.Teachers,
                         la => la.HoursParameters, la => la.HoursParameters.Select(p => p.Type)));
-            AvailableSubjects = new ObservableCollection<SubjectScheduleViewModel>();
-            foreach (var subject in allSubjects)
+            var availableSubjectViewModels = new ObservableCollection<SubjectScheduleViewModel>();
+            foreach (var subject in availableSubjects)
             {
                 foreach (var param in subject.HoursParameters.Where(la => la.StudyYear == studyYear))
                 {
-                    AvailableSubjects.Add(new SubjectScheduleViewModel(subject, param));
+                    availableSubjectViewModels.Add(new SubjectScheduleViewModel(subject, param));
                 }
             }
-            var rep = new ArtCollegeGenericDataRepository<Student>();
-            var allStudents = new ObservableCollection<Student>(rep.GetList(la => la.StudyYear == studyYear, la=>la.Instruments));
-            StudentsList = new ObservableCollection<StudentScheduleViewModel>();
-            foreach (var student in allStudents)
+            var rep2 = new ArtCollegeGenericDataRepository<Student>();
+            var allStudentsByStudyYear = new ObservableCollection<Student>(rep2.GetList(la => la.StudyYear == studyYear, la => la.Instruments));
+            var studentsViewModelList = new ObservableCollection<StudentScheduleViewModel>();
+            foreach (var student in allStudentsByStudyYear)
             {
                 foreach (var instr in student.Instruments)
                 {
-                    StudentsList.Add(new StudentScheduleViewModel(student, allSubjects, instr));
+                    studentsViewModelList.Add(new StudentScheduleViewModel(student, availableSubjectViewModels, instr));
                 }
             }
 
@@ -110,31 +125,35 @@ namespace MusicPlan_Desktop.ViewModels
                 new DataColumn
                 {
                     ColumnName = ApplicationResources.Student,
-                    DataType = typeof (string)
-                },
-                new DataColumn
-                {
-                    ColumnName = ApplicationResources.Instrument,
-                    DataType = typeof (string)
+                    DataType = typeof (StudentScheduleViewModel)
                 }
             });
 
-            foreach (var subj in AvailableSubjects)
+            foreach (var subj in availableSubjectViewModels)
             {
                 dt.Columns.Add(new DataColumn
                 {
-                    DataType = typeof (SubjectScheduleViewModel),
+                    DataType = typeof(SubjectScheduleViewModel),
                     ColumnName = subj.DisplayName
                 });
             }
 
-            foreach (var stud in StudentsList)
+            var rep3 = new ArtCollegeGenericDataRepository<StudentToTeacher>();
+            foreach (var stud in studentsViewModelList)
             {
                 var newRow = dt.NewRow();
-                newRow[ApplicationResources.Student] = stud.Student.DisplayName;
-                newRow[ApplicationResources.Instrument] = stud.Instrument.Name;
+                newRow[ApplicationResources.Student] = stud;
                 foreach (var subj in stud.AvailableSubjects)
                 {
+                    var bindedTeachers = new ObservableCollection<Teacher>(
+                        rep3.GetList(
+                            la =>
+                                subj.SubjectParameter.Type.Id == la.SubjectType.Id
+                                && la.Student.Id == stud.Student.Id
+                                && la.Subject.Id == subj.Subject.Id,
+                                la => la.Student, la => la.Subject, la => la.SubjectType, la => la.Teacher)
+                            .Select(la => la.Teacher));
+                    subj.Selections = bindedTeachers;
                     newRow[subj.DisplayName] = subj;
                 }
                 dt.Rows.Add(newRow);

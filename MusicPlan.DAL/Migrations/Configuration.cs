@@ -1,18 +1,16 @@
+using System.Data.Entity.Migrations;
+
 namespace MusicPlan.DAL.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<MusicPlan.DAL.ArtCollegeContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ArtCollegeContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
         }
 
-        protected override void Seed(MusicPlan.DAL.ArtCollegeContext context)
+        protected override void Seed(ArtCollegeContext context)
         {
             //  This method will be called after migrating to the latest version.
 
