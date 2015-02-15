@@ -99,7 +99,7 @@ namespace MusicPlan_Desktop.ViewModels
             DeleteItemCommand = new DelegateCommand<Student>(DeleteItem);
             SelectItemCommand = new DelegateCommand<Student>(SelectItem);
             CancelSelectionCommand = new DelegateCommand(UnselectItem);
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+            BtnAddButtonContent = ApplicationResources.Insert;
         }
 
         #endregion
@@ -116,7 +116,7 @@ namespace MusicPlan_Desktop.ViewModels
         {
             SelectedItem = new Student();
             SelectedItemIndex = -1;
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+            BtnAddButtonContent = ApplicationResources.Insert;
             Selections.Clear();
         }
 
@@ -130,14 +130,16 @@ namespace MusicPlan_Desktop.ViewModels
                 {
                     Selections.Add(AvailableInstruments.Single(la=>la.Id == instr.Id));
                 }
-                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Edit");
+                BtnAddButtonContent = ApplicationResources.Edit;
             }
         }
 
         public void BindItems()
         {
             var rep = new ArtCollegeGenericDataRepository<Student>();
-            ItemsList = new ObservableCollection<Student>(rep.GetAll(la=>la.Instruments).OrderBy(la=>la.LastName));
+            ItemsList =
+                new ObservableCollection<Student>(
+                    rep.GetAll(la => la.Instruments, la => la.StudentToSubject).OrderBy(la => la.LastName));
         }
 
         public void DeleteItem(Student item)

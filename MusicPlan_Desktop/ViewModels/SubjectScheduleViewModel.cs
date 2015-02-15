@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,18 +11,13 @@ using MusicPlan_Desktop.Annotations;
 namespace MusicPlan_Desktop.ViewModels
 {
     [Serializable]
-    public class SubjectScheduleViewModel : INotifyPropertyChanged
+    public class SubjectScheduleViewModel
     {
-        private ObservableCollection<Teacher> _selections;
+        private IList _selections = new ObservableCollection<Teacher>();
 
-        public ObservableCollection<Teacher> Selections
+        public IList Selections
         {
             get { return _selections; }
-            set
-            {
-                _selections = value;
-                OnPropertyChanged();
-            }
         }
 
         public Subject Subject { get; set; }
@@ -34,7 +30,6 @@ namespace MusicPlan_Desktop.ViewModels
 
         public SubjectScheduleViewModel(Subject subject, SubjectParameters parameter)
         {
-            Selections = new ObservableCollection<Teacher>();
             SubjectParameter = parameter;
             Subject = subject;
         }

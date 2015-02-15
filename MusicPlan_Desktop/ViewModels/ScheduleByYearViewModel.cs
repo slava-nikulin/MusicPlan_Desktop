@@ -30,6 +30,7 @@ namespace MusicPlan_Desktop.ViewModels
 
         #region Public properties
         public ICommand SaveCommand { get; set; }
+        public ICommand DataGridLoaded { get; set; }
 
         public DataTable MainDt
         {
@@ -52,6 +53,32 @@ namespace MusicPlan_Desktop.ViewModels
             _eventAggregator = container.Resolve<IEventAggregator>();
             _eventAggregator.GetEvent<SyncDataEvent>().Subscribe(RebindItems, true);
             SaveCommand = new DelegateCommand(SaveSchedule);
+            DataGridLoaded = new DelegateCommand(LoadSelections);
+        }
+
+        private void LoadSelections()
+        {
+            var rep3 = new ArtCollegeGenericDataRepository<StudentToTeacher>();
+            foreach (DataRow row in MainDt.Rows)
+            {
+                var stud = (StudentScheduleViewModel)row[0];
+                for (var i = 1; i < MainDt.Columns.Count; i++)
+                {
+                    var subj = ((SubjectScheduleViewModel)row[i]);
+                    var bindedTeachers =
+                        rep3.GetList(
+                            la =>
+                                subj.SubjectParameter.Type.Id == la.SubjectType.Id
+                                && la.Student.Id == stud.Student.Id
+                                && la.Subject.Id == subj.Subject.Id
+                                && la.Instrument.Id == stud.Instrument.Id,
+                            la => la.Student, la => la.Subject, la => la.SubjectType, la => la.Teacher, la => la.Instrument);
+                    foreach (var t in bindedTeachers)
+                    {
+                        subj.Selections.Add(subj.Subject.Teachers.Single(la=>la.Id == t.Teacher.Id));
+                    }
+                }
+            }
         }
 
         private void SaveSchedule()
@@ -72,7 +99,7 @@ namespace MusicPlan_Desktop.ViewModels
                 for (var i = 1; i < MainDt.Columns.Count; i++)
                 {
                     var subjectScheduleViewModule = row[i] as SubjectScheduleViewModel;
-                    foreach (var selectedTeacher in subjectScheduleViewModule.Selections)
+                    foreach (Teacher selectedTeacher in subjectScheduleViewModule.Selections)
                     {
                         student.StudentToSubject.Add(new StudentToTeacher
                         {
@@ -90,6 +117,7 @@ namespace MusicPlan_Desktop.ViewModels
         private void RebindItems(object obj)
         {
             BindItems(_studyYear);
+            LoadSelections();
             SelectedStudentIndex = -1;
         }
 
@@ -138,27 +166,30 @@ namespace MusicPlan_Desktop.ViewModels
                 });
             }
 
-            var rep3 = new ArtCollegeGenericDataRepository<StudentToTeacher>();
+            //var rep3 = new ArtCollegeGenericDataRepository<StudentToTeacher>();
             foreach (var stud in studentsViewModelList)
             {
                 var newRow = dt.NewRow();
                 newRow[ApplicationResources.Student] = stud;
                 foreach (var subj in stud.AvailableSubjects)
                 {
-                    var bindedTeachers = new ObservableCollection<Teacher>(
-                        rep3.GetList(
-                            la =>
-                                subj.SubjectParameter.Type.Id == la.SubjectType.Id
-                                && la.Student.Id == stud.Student.Id
-                                && la.Subject.Id == subj.Subject.Id,
-                                la => la.Student, la => la.Subject, la => la.SubjectType, la => la.Teacher)
-                            .Select(la => la.Teacher));
-                    subj.Selections = bindedTeachers;
+                    //var bindedTeachers = new ObservableCollection<Teacher>(
+                    //    rep3.GetList(
+                    //        la =>
+                    //            subj.SubjectParameter.Type.Id == la.SubjectType.Id
+                    //            && la.Student.Id == stud.Student.Id
+                    //            && la.Subject.Id == subj.Subject.Id,
+                    //            la => la.Student, la => la.Subject, la => la.SubjectType, la => la.Teacher)
+                    //        .Select(la => la.Teacher));
+                    //foreach (var t in bindedTeachers)
+                    //{
+                    //    subj.Selections.Add(t);
+                    //}
                     newRow[subj.DisplayName] = subj;
                 }
                 dt.Rows.Add(newRow);
             }
-
+            dt.DefaultView.Sort = string.Format("{0} {1}", dt.Columns[0].ColumnName, "ASC"); 
             MainDt = dt;
         }
 

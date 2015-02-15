@@ -55,7 +55,15 @@
                                             ItemsSource="{Binding Path=MainDt.DefaultView, Mode=OneWay}"
                                             SelectedIndex="{Binding Path=SelectedStudentIndex}" 
                                             MouseLeave="DataGrid_OnMouseLeave"
-                                            Initialized="DataGrid_Initialized">
+                                            Initialized="DataGrid_Initialized" Loaded="DataGrid_Loaded"
+                                            >
+
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Loaded">
+                                                    <i:InvokeCommandAction Command="{Binding DataGridLoaded}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+
                                             <DataGrid.Resources>
                                                 <Style TargetType="DataGridRow">
                                                     <EventSetter Event="MouseEnter" Handler="Row_MouseEnter"/>

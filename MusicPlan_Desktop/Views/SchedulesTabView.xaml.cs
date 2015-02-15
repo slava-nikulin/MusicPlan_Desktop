@@ -38,6 +38,11 @@ namespace MusicPlan_Desktop.Views
             DataContext = viewModel;
         }
 
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+        }
+
         private void DataGrid_Initialized(object sender, EventArgs e)
         {
             var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid));
@@ -113,6 +118,11 @@ namespace MusicPlan_Desktop.Views
         private void DataGrid_OnMouseLeave(object sender, MouseEventArgs e)
         {
             MainDataGrid.SelectedIndex = -1;
+        }
+
+        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            var a = 0;
         }
     }
 }

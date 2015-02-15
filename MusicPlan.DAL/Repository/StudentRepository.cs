@@ -76,16 +76,27 @@ namespace MusicPlan.DAL.Repository
                         foreach (var instrumentToRemove in lstInstrToRemove)
                         {
                             originalItem.Instruments.Remove(instrumentToRemove);
+                            var teacherBindings =
+                                context.StudentsToTeachers.Where(la => la.Instrument.Id == instrumentToRemove.Id);
+                            foreach (var b in teacherBindings)
+                            {
+                                context.StudentsToTeachers.Remove(b);
+                            }
                         }
 
                         foreach (var instrumentToAdd in lstInstrToAdd)
                         {
-                            originalItem.Instruments.Add(instrumentToAdd);
-                        }
-
-                        foreach (var instrument in originalItem.Instruments)
-                        {
-                            context.Entry(instrument).State = instrument.Id > 0 ? EntityState.Unchanged : EntityState.Added;
+                            var existedInstrument =
+                                context.Instruments.Local.SingleOrDefault(la => la.Id == instrumentToAdd.Id);
+                            if (existedInstrument != null)
+                            {
+                                originalItem.Instruments.Add(existedInstrument);
+                            }
+                            else
+                            {
+                                context.Entry(instrumentToAdd).State = instrumentToAdd.Id > 0 ? EntityState.Unchanged : EntityState.Added;
+                                originalItem.Instruments.Add(instrumentToAdd);
+                            }
                         }
 
                         //Subject to teacher bindings
