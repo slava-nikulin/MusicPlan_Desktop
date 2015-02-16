@@ -7,7 +7,7 @@ namespace MusicPlan.BLL.Models
     [Serializable]
     public class Subject: IModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
 
         public virtual ICollection<SubjectParameters> HoursParameters { get; set; }

@@ -5,7 +5,7 @@ namespace MusicPlan.BLL.Models
     [Serializable]
     public class SubjectParameters : IModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public int WeeksPerFirstSemester { get; set; }
         public int WeeksPerSecondSemester { get; set; }
         public int HoursPerFirstSemester { get; set; }

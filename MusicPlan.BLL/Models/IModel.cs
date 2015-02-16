@@ -2,6 +2,6 @@
 {
     interface IModel
     {
-        int Id { get; set; }
+        long Id { get; set; }
     }
 }

@@ -57,14 +57,14 @@ namespace MusicPlan_Desktop.CLasses
         }
     }
 
-    [ValueConversion(typeof(int), typeof(Visibility))]
+    [ValueConversion(typeof(long), typeof(Visibility))]
     public class IntLessThenZeroConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value is int)
+            if (value is long)
             {
-                return (int)value < 0 ? Visibility.Visible : Visibility.Hidden;
+                return (long)value < 0 ? Visibility.Visible : Visibility.Hidden;
             }
             return value;
         }
@@ -75,14 +75,14 @@ namespace MusicPlan_Desktop.CLasses
         }
     }
 
-    [ValueConversion(typeof(int), typeof(Visibility))]
+    [ValueConversion(typeof(long), typeof(Visibility))]
     public class IntLargerThenZeroConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value is int)
+            if (value is long)
             {
-                return (int)value > 0 ? Visibility.Visible : Visibility.Hidden;
+                return (long)value > 0 ? Visibility.Visible : Visibility.Hidden;
             }
             return value;
         }

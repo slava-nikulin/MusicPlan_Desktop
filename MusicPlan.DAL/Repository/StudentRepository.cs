@@ -102,20 +102,23 @@ namespace MusicPlan.DAL.Repository
                         }
 
                         //Subject to teacher bindings
-                        var lstSubjBindToRemove =
-                            originalItem.StudentToTeachers.Where(origBind => item.StudentToTeachers.All(la => la.Id != origBind.Id)).ToList();
+                        //var lstSubjBindToRemove =
+                        //    originalItem.StudentToTeachers.Where(origBind => item.StudentToTeachers.All(la => la.Id != origBind.Id)).ToList();
 
-                        foreach (var subjBindToRemove in lstSubjBindToRemove)
-                        {
-                            context.StudentsToTeachers.Remove(subjBindToRemove);
-                            item.StudentToTeachers.Remove(item.StudentToTeachers.SingleOrDefault(la => la.Id == subjBindToRemove.Id));
-                        }
+                        
+                        context.StudentsToTeachers.RemoveRange(originalItem.StudentToTeachers);
 
-                        var lstSubjBindToAdd =
-                            item.StudentToTeachers.Where(newItem => originalItem.StudentToTeachers.All(la => la.Id != newItem.Id))
-                                .ToList();
+                        //foreach (var subjBindToRemove in lstSubjBindToRemove)
+                        //{
+                        //    context.StudentsToTeachers.Remove(subjBindToRemove);
+                        //    item.StudentToTeachers.Remove(item.StudentToTeachers.SingleOrDefault(la => la.Id == subjBindToRemove.Id));
+                        //}
 
-                        foreach (var subjBindToAdd in lstSubjBindToAdd)
+                        //var lstSubjBindToAdd =
+                        //    item.StudentToTeachers.Where(newItem => originalItem.StudentToTeachers.All(la => la.Id != newItem.Id))
+                        //        .ToList();
+
+                        foreach (var subjBindToAdd in item.StudentToTeachers)
                         {
                             //instruments
                             var existedInstrument =
@@ -129,59 +132,67 @@ namespace MusicPlan.DAL.Repository
                                 subjBindToAdd.Instrument = existedInstrument;
                             }
                             Teacher existedTeacher;
-                            if (context.Subjects.Local.SingleOrDefault(p => p.Id == subjBindToAdd.Subject.Id) == null)
+
+                            //parameters and types
+                            SubjectParameterType existedType;
+                            foreach (var parameter in subjBindToAdd.Subject.HoursParameters)
                             {
-                                //parameters and types
-                                SubjectParameterType existedType;
-                                foreach (var parameter in subjBindToAdd.Subject.HoursParameters)
+                                parameter.Subject = null;
+                                if (context.SubjectsParameters.Local.SingleOrDefault(p => p.Id == parameter.Id) == null)
                                 {
-                                    parameter.Subject = null;
-                                    if (context.SubjectsParameters.Local.SingleOrDefault(p => p.Id == parameter.Id) == null)
+                                    existedType = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == parameter.Type.Id);
+                                    if (existedType == null)
                                     {
-                                        existedType = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == parameter.Type.Id);
-                                        if (existedType == null)
-                                        {
-                                            context.Entry(parameter.Type).State = EntityState.Unchanged;
-                                        }
-                                        else
-                                        {
-                                            parameter.Type = existedType;
-                                        }
-                                        context.Entry(parameter).State = EntityState.Unchanged;
-                                    }
-                                }
-                                existedType = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == subjBindToAdd.SubjectType.Id);
-                                if (existedType == null)
-                                {
-                                    context.Entry(subjBindToAdd.SubjectType).State = EntityState.Unchanged;
-                                }
-                                else
-                                {
-                                    subjBindToAdd.SubjectType = existedType;
-                                }
-                                //teachers
-                                var existedTeachers = new List<Teacher>();
-                                foreach (var teacher in subjBindToAdd.Subject.Teachers)
-                                {
-                                    teacher.Subjects = null;
-                                    existedTeacher = context.Teachers.Local.SingleOrDefault(p => p.Id == teacher.Id);
-                                    if (existedTeacher == null)
-                                    {
-                                        context.Entry(teacher).State = EntityState.Unchanged;
+                                        context.Entry(parameter.Type).State = EntityState.Unchanged;
                                     }
                                     else
                                     {
-                                        existedTeachers.Add(existedTeacher);
+                                        parameter.Type = existedType;
                                     }
+                                    context.Entry(parameter).State = EntityState.Unchanged;
                                 }
-                                foreach (var t in existedTeachers)
+                            }
+                            existedType = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == subjBindToAdd.SubjectType.Id);
+                            if (existedType == null)
+                            {
+                                context.Entry(subjBindToAdd.SubjectType).State = EntityState.Unchanged;
+                            }
+                            else
+                            {
+                                subjBindToAdd.SubjectType = existedType;
+                            }
+                            //teachers
+                            var existedTeachers = new List<Teacher>();
+                            foreach (var teacher in subjBindToAdd.Subject.Teachers)
+                            {
+                                teacher.Subjects = null;
+                                existedTeacher = context.Teachers.Local.SingleOrDefault(p => p.Id == teacher.Id);
+                                if (existedTeacher == null)
                                 {
-                                    var teacherToRemove = subjBindToAdd.Subject.Teachers.Single(la => la.Id == t.Id);
-                                    subjBindToAdd.Subject.Teachers.Remove(teacherToRemove);
-                                    subjBindToAdd.Subject.Teachers.Add(t);
+                                    context.Entry(teacher).State = EntityState.Unchanged;
                                 }
+                                else
+                                {
+                                    existedTeachers.Add(existedTeacher);
+                                }
+                            }
+                            foreach (var t in existedTeachers)
+                            {
+                                var teacherToRemove = subjBindToAdd.Subject.Teachers.Single(la => la.Id == t.Id);
+                                subjBindToAdd.Subject.Teachers.Remove(teacherToRemove);
+                                subjBindToAdd.Subject.Teachers.Add(t);
+                            }
+                            var existedSubject = context.Subjects.Local.SingleOrDefault(p => p.Id == subjBindToAdd.Subject.Id);
+                            if (existedSubject == null)
+                            {
                                 context.Entry(subjBindToAdd.Subject).State = EntityState.Unchanged;
                             }
+                            else
+                            {
+                                subjBindToAdd.Subject = existedSubject;
+                            }
+                            //context.Entry(subjBindToAdd.Subject).State = EntityState.Unchanged;
+
                             existedTeacher = context.Teachers.Local.SingleOrDefault(p => p.Id == subjBindToAdd.Teacher.Id);
                             if (existedTeacher == null)
                             {

@@ -14,6 +14,6 @@ namespace MusicPlan.BLL.Models
         public virtual SubjectParameterType SubjectType { get; set; }
         public virtual Instrument Instrument { get; set; }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 }
