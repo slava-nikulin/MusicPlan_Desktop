@@ -26,6 +26,7 @@ namespace MusicPlan.DAL.Repository
             Student item;
             using (var context = new ArtCollegeContext())
             {
+                context.Configuration.ProxyCreationEnabled = false;
                 IQueryable<Student> dbQuery = context.Set<Student>();
 
                 dbQuery = navigationProperties.Aggregate(dbQuery, (current, navigationProperty) => current.Include(navigationProperty));
@@ -80,6 +81,7 @@ namespace MusicPlan.DAL.Repository
                                 context.StudentsToTeachers.Where(la => la.Instrument.Id == instrumentToRemove.Id);
                             foreach (var b in teacherBindings)
                             {
+                                item.StudentToTeachers.Remove(item.StudentToTeachers.SingleOrDefault(la => la.Id == b.Id));
                                 context.StudentsToTeachers.Remove(b);
                             }
                         }
@@ -101,17 +103,17 @@ namespace MusicPlan.DAL.Repository
 
                         //Subject to teacher bindings
                         var lstSubjBindToRemove =
-                            originalItem.StudentToSubject.Where(
-                                origBind => item.StudentToSubject.All(la => la.Id != origBind.Id)).ToList();
-
-                        var lstSubjBindToAdd =
-                            item.StudentToSubject.Where(newItem => originalItem.StudentToSubject.All(la => la.Id != newItem.Id))
-                                .ToList();
+                            originalItem.StudentToTeachers.Where(origBind => item.StudentToTeachers.All(la => la.Id != origBind.Id)).ToList();
 
                         foreach (var subjBindToRemove in lstSubjBindToRemove)
                         {
-                            originalItem.StudentToSubject.Remove(subjBindToRemove);
+                            context.StudentsToTeachers.Remove(subjBindToRemove);
+                            item.StudentToTeachers.Remove(item.StudentToTeachers.SingleOrDefault(la => la.Id == subjBindToRemove.Id));
                         }
+
+                        var lstSubjBindToAdd =
+                            item.StudentToTeachers.Where(newItem => originalItem.StudentToTeachers.All(la => la.Id != newItem.Id))
+                                .ToList();
 
                         foreach (var subjBindToAdd in lstSubjBindToAdd)
                         {
@@ -189,7 +191,7 @@ namespace MusicPlan.DAL.Repository
                             {
                                 subjBindToAdd.Teacher = existedTeacher;
                             }
-                            originalItem.StudentToSubject.Add(subjBindToAdd);
+                            originalItem.StudentToTeachers.Add(subjBindToAdd);
                             context.Entry(subjBindToAdd).State = subjBindToAdd.Id > 0 ? EntityState.Unchanged : EntityState.Added;
                         }
                     }
@@ -200,7 +202,28 @@ namespace MusicPlan.DAL.Repository
 
         public void Remove(params Student[] items)
         {
-            throw new NotImplementedException();
+            using (var context = new ArtCollegeContext())
+            {
+                foreach (var item in items)
+                {
+                    foreach (var instrument in item.Instruments)
+                    {
+                        var existedInstrument = context.Instruments.Local.SingleOrDefault(p => p.Id == instrument.Id);
+                        if (existedInstrument == null)
+                        {
+                            context.Entry(instrument).State = EntityState.Unchanged;
+                        }
+                    }
+                    foreach (var bind in item.StudentToTeachers)
+                    {
+                        context.StudentsToTeachers.Remove(
+                            context.StudentsToTeachers.SingleOrDefault(la => la.Id == bind.Id));
+                    }
+                    item.StudentToTeachers.Clear();
+                    context.Entry(item).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
+            }
         }
     }
 }

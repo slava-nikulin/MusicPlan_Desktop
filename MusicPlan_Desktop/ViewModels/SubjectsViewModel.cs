@@ -330,8 +330,8 @@ namespace MusicPlan_Desktop.ViewModels
             {
                 var rep = new SubjectRepository();
                 rep.Remove(subject);
-                BindItems();
                 UnselectItem();
+                BindItems();
             }
             else
             {
@@ -345,6 +345,7 @@ namespace MusicPlan_Desktop.ViewModels
                     SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == SelectedItem.Id));
                 }
             }
+            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
         }
 
         public void AddUpdateItem(Subject item)
@@ -370,6 +371,7 @@ namespace MusicPlan_Desktop.ViewModels
                 }
                 repSubject.Add(item);
                 BindItems();
+                _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
                 SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == item.Id));
                 UnselectSubItem();
                 return;
@@ -400,8 +402,10 @@ namespace MusicPlan_Desktop.ViewModels
             }
             repSubject.Update(item);
             BindItems();
+            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
             SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == item.Id));
             UnselectSubItem();
+            
         }
 
         public void ReBindItems(object obj)

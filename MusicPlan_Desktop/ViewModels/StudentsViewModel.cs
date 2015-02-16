@@ -139,15 +139,16 @@ namespace MusicPlan_Desktop.ViewModels
             var rep = new ArtCollegeGenericDataRepository<Student>();
             ItemsList =
                 new ObservableCollection<Student>(
-                    rep.GetAll(la => la.Instruments, la => la.StudentToSubject).OrderBy(la => la.LastName));
+                    rep.GetAll(la => la.Instruments, la => la.StudentToTeachers).OrderBy(la => la.LastName));
         }
 
         public void DeleteItem(Student item)
         {
-            var rep = new ArtCollegeGenericDataRepository<Student>();
+            var rep = new StudentRepository();
             rep.Remove(item);
             BindItems();
             UnselectItem();
+            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
         }
 
         public void AddUpdateItem(Student item)
@@ -164,6 +165,7 @@ namespace MusicPlan_Desktop.ViewModels
             }
             BindItems();
             UnselectItem();
+            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
         }
         #endregion
     }

@@ -67,7 +67,7 @@ namespace MusicPlan.DAL
                 m.MapKey("SubjectTypeId");
             });
 
-            modelBuilder.Entity<Student>().HasMany(st => st.StudentToSubject).WithRequired(su=>su.Student).Map(m =>
+            modelBuilder.Entity<Student>().HasMany(st => st.StudentToTeachers).WithRequired(su=>su.Student).Map(m =>
             {
                 m.MapKey("StudentId");
             });

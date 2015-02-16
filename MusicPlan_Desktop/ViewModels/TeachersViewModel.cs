@@ -28,13 +28,14 @@ namespace MusicPlan_Desktop.ViewModels
         private int _selectedItemIndex;
         private ObservableCollection<Subject> _availableSubjects;
         private readonly ObservableCollection<Subject> _selections = new ObservableCollection<Subject>();
+        private IEventAggregator _eventAggregator;
         #endregion
 
         #region Constructor
         public TeachersViewModel(IUnityContainer container)
         {
-            var eventAggregator = container.Resolve<IEventAggregator>();
-            eventAggregator.GetEvent<SyncDataEvent>().Subscribe(ReBindItems, true);
+            _eventAggregator = container.Resolve<IEventAggregator>();
+            _eventAggregator.GetEvent<SyncDataEvent>().Subscribe(ReBindItems, true);
             PrepareViewModel();
         }
 
@@ -134,6 +135,7 @@ namespace MusicPlan_Desktop.ViewModels
             rep.Remove(item);
             BindItems();
             UnselectItem();
+            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
         }
 
         public void AddUpdateItem(Teacher item)
@@ -150,6 +152,7 @@ namespace MusicPlan_Desktop.ViewModels
             }
             BindItems();
             UnselectItem();
+            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
         }
 
         public void ReBindItems(object obj)

@@ -3,7 +3,7 @@
 namespace MusicPlan.BLL.Models
 {
     [Serializable]
-    public class SubjectParameters : IModel, ICloneable
+    public class SubjectParameters : IModel
     {
         public int Id { get; set; }
         public int WeeksPerFirstSemester { get; set; }
@@ -30,11 +30,6 @@ namespace MusicPlan.BLL.Models
         public SubjectParameters()
         {
             Type = new SubjectParameterType();
-        }
-
-        public object Clone()
-        {
-            return (SubjectParameters)MemberwiseClone();
         }
     }
 }

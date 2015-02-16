@@ -55,8 +55,7 @@
                                             ItemsSource="{Binding Path=MainDt.DefaultView, Mode=OneWay}"
                                             SelectedIndex="{Binding Path=SelectedStudentIndex}" 
                                             MouseLeave="DataGrid_OnMouseLeave"
-                                            Initialized="DataGrid_Initialized" Loaded="DataGrid_Loaded"
-                                            >
+                                            Initialized="DataGrid_Initialized">
 
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="Loaded">

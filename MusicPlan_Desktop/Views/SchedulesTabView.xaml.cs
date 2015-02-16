@@ -84,7 +84,6 @@ namespace MusicPlan_Desktop.Views
 
             for (var i = 1; i < columns.Count; i++)
             {
-                //TODO selections
                 var strTemplate =
                     string.Format("<DataTemplate>" +
                                   "<ListBox MaxHeight=\"100\" VirtualizingPanel.ScrollUnit=\"Pixel\" ItemsSource=\"{{Binding Path=[{0}].Subject.Teachers}}\" SelectionMode=\"Multiple\" " +
@@ -118,11 +117,6 @@ namespace MusicPlan_Desktop.Views
         private void DataGrid_OnMouseLeave(object sender, MouseEventArgs e)
         {
             MainDataGrid.SelectedIndex = -1;
-        }
-
-        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            var a = 0;
         }
     }
 }

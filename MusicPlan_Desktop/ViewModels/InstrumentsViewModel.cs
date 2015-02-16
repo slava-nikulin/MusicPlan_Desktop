@@ -86,7 +86,7 @@ namespace MusicPlan_Desktop.ViewModels
             DeleteItemCommand = new DelegateCommand<Instrument>(DeleteItem);
             SelectItemCommand = new DelegateCommand<Instrument>(SelectItem);
             CancelSelectionCommand = new DelegateCommand(UnselectItem);
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+            BtnAddButtonContent = ApplicationResources.Insert;
 
         }
 
@@ -94,7 +94,7 @@ namespace MusicPlan_Desktop.ViewModels
         {
             SelectedItem = new Instrument();
             SelectedItemIndex = -1;
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Insert");
+            BtnAddButtonContent = ApplicationResources.Insert;
         }
 
         public void SelectItem(Instrument item)
@@ -102,7 +102,7 @@ namespace MusicPlan_Desktop.ViewModels
             if (SelectedItemIndex != -1 && item.Id != SelectedItem.Id)
             {
                 SelectedItem = item.DeepClone();
-                BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("Edit");
+                BtnAddButtonContent = ApplicationResources.Edit;
             }
         }
 
@@ -123,6 +123,7 @@ namespace MusicPlan_Desktop.ViewModels
             rep.Remove(item);
             BindItems();
             UnselectItem();
+            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
         }
 
         public void AddUpdateItem(Instrument item)
@@ -138,6 +139,7 @@ namespace MusicPlan_Desktop.ViewModels
             }
             BindItems();
             UnselectItem();
+            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
         }
         #endregion
     }

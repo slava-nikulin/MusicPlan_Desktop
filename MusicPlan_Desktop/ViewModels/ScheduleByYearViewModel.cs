@@ -55,7 +55,9 @@ namespace MusicPlan_Desktop.ViewModels
             SaveCommand = new DelegateCommand(SaveSchedule);
             DataGridLoaded = new DelegateCommand(LoadSelections);
         }
+        #endregion
 
+        #region ViewModel methods
         private void LoadSelections()
         {
             var rep3 = new ArtCollegeGenericDataRepository<StudentToTeacher>();
@@ -75,7 +77,11 @@ namespace MusicPlan_Desktop.ViewModels
                             la => la.Student, la => la.Subject, la => la.SubjectType, la => la.Teacher, la => la.Instrument);
                     foreach (var t in bindedTeachers)
                     {
-                        subj.Selections.Add(subj.Subject.Teachers.Single(la=>la.Id == t.Teacher.Id));
+                        var itemToAdd = subj.Subject.Teachers.Single(la => la.Id == t.Teacher.Id);
+                        if (itemToAdd != null && subj.Selections.Cast<Teacher>().All(la => la.Id != itemToAdd.Id))
+                        {
+                            subj.Selections.Add(itemToAdd);
+                        }
                     }
                 }
             }
@@ -84,24 +90,33 @@ namespace MusicPlan_Desktop.ViewModels
         private void SaveSchedule()
         {
             var studRepo = new StudentRepository();
+            var studentsToUpdate = new List<Student>();
             foreach (DataRow row in MainDt.Rows)
             {
                 var studentScheduleViewModel = row[ApplicationResources.Student] as StudentScheduleViewModel;
                 var student =
                     studRepo.GetSingle(
                         la => studentScheduleViewModel != null && la.Id == studentScheduleViewModel.Student.Id,
-                        la => la.Instruments, la => la.StudentToSubject,
-                        la => la.StudentToSubject.Select(la1 => la1.Instrument),
-                        la => la.StudentToSubject.Select(la1 => la1.Subject),
-                        la => la.StudentToSubject.Select(la1 => la1.Teacher),
-                        la => la.StudentToSubject.Select(la1 => la1.SubjectType));
-                student.StudentToSubject.Clear();
+                        la => la.Instruments, la => la.StudentToTeachers,
+                        la => la.StudentToTeachers.Select(la1 => la1.Instrument),
+                        la => la.StudentToTeachers.Select(la1 => la1.Subject),
+                        la => la.StudentToTeachers.Select(la1 => la1.Teacher),
+                        la => la.StudentToTeachers.Select(la1 => la1.SubjectType));
+                if (studentsToUpdate.All(la => la.Id != student.Id))
+                {
+                    student.StudentToTeachers.Clear();
+                }
+                else
+                {
+                    student = studentsToUpdate.SingleOrDefault(la => la.Id == student.Id);
+                }
+
                 for (var i = 1; i < MainDt.Columns.Count; i++)
                 {
                     var subjectScheduleViewModule = row[i] as SubjectScheduleViewModel;
                     foreach (Teacher selectedTeacher in subjectScheduleViewModule.Selections)
                     {
-                        student.StudentToSubject.Add(new StudentToTeacher
+                        student.StudentToTeachers.Add(new StudentToTeacher
                         {
                             Instrument = studentScheduleViewModel.Instrument,
                             Subject = subjectScheduleViewModule.Subject,
@@ -110,8 +125,18 @@ namespace MusicPlan_Desktop.ViewModels
                         });
                     }
                 }
-                studRepo.Update(student);
+                if (studentsToUpdate.All(la => la.Id != student.Id))
+                {
+                    studentsToUpdate.Add(student);
+                }
+                
             }
+
+            foreach (var stud in studentsToUpdate)
+            {
+                studRepo.Update(stud);
+            }
+            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
         }
 
         private void RebindItems(object obj)
@@ -166,37 +191,19 @@ namespace MusicPlan_Desktop.ViewModels
                 });
             }
 
-            //var rep3 = new ArtCollegeGenericDataRepository<StudentToTeacher>();
             foreach (var stud in studentsViewModelList)
             {
                 var newRow = dt.NewRow();
                 newRow[ApplicationResources.Student] = stud;
                 foreach (var subj in stud.AvailableSubjects)
                 {
-                    //var bindedTeachers = new ObservableCollection<Teacher>(
-                    //    rep3.GetList(
-                    //        la =>
-                    //            subj.SubjectParameter.Type.Id == la.SubjectType.Id
-                    //            && la.Student.Id == stud.Student.Id
-                    //            && la.Subject.Id == subj.Subject.Id,
-                    //            la => la.Student, la => la.Subject, la => la.SubjectType, la => la.Teacher)
-                    //        .Select(la => la.Teacher));
-                    //foreach (var t in bindedTeachers)
-                    //{
-                    //    subj.Selections.Add(t);
-                    //}
                     newRow[subj.DisplayName] = subj;
                 }
                 dt.Rows.Add(newRow);
             }
-            dt.DefaultView.Sort = string.Format("{0} {1}", dt.Columns[0].ColumnName, "ASC"); 
+            dt.DefaultView.Sort = string.Format("{0} {1}", dt.Columns[0].ColumnName, "ASC");
             MainDt = dt;
         }
-
-        #endregion
-
-        #region ViewModel methods
-
         #endregion
     }
 }
