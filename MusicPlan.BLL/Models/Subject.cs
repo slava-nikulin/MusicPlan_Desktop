@@ -11,10 +11,12 @@ namespace MusicPlan.BLL.Models
         public string Name { get; set; }
 
         public virtual ICollection<SubjectParameters> HoursParameters { get; set; }
-        public ICollection<SubjectParameters> HoursParametersSorted { get
+
+        public ICollection<SubjectParameters> HoursParametersSorted
         {
-            return HoursParameters.OrderBy(la => la.StudyYear).ToList();
-        } }
+            get { return HoursParameters.OrderBy(la => la.StudyYear).ToList(); }
+        }
+
         public virtual ICollection<Teacher> Teachers { get; set; }
 
         public string DisplayName { get { return Name; } }

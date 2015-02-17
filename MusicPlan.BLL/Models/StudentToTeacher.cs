@@ -14,6 +14,16 @@ namespace MusicPlan.BLL.Models
         public virtual SubjectParameterType SubjectType { get; set; }
         public virtual Instrument Instrument { get; set; }
 
+        public SubjectParameters Hours
+        {
+            get
+            {
+                return
+                    Subject.HoursParameters.SingleOrDefault(
+                        la => la.StudyYear == Student.StudyYear && la.Type.Id == SubjectType.Id);
+            }
+        }
+
         public long Id { get; set; }
     }
 }

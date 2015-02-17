@@ -56,7 +56,7 @@ namespace MusicPlan_Desktop.ViewModels
 
         public object ItemToDelete
         {
-            get { return _itemToDelete ?? new { Id = 0 }; }
+            get { return _itemToDelete ?? new { Id = (long)0 }; }
             set { SetProperty(ref _itemToDelete, value); }
         }
         public bool SubItemsInsertUpdateMode
@@ -250,7 +250,7 @@ namespace MusicPlan_Desktop.ViewModels
             {
                 if (SelectedItem.Id == 0)
                 {
-                    ItemToDelete = new { Id = 0 };
+                    ItemToDelete = new { Id = (long)0 };
                 }
                 else
                 {

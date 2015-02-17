@@ -37,6 +37,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML">
+      <HintPath>..\packages\ClosedXML.0.76.0\lib\net40-client\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="GeorgeCloney">
       <HintPath>..\packages\GeorgeCloney.1.1.1.17\lib\net40\GeorgeCloney.dll</HintPath>
     </Reference>
@@ -102,6 +109,7 @@
     <Compile Include="CLasses\Enums.cs" />
     <Compile Include="CLasses\Events\SyncDataEvent.cs" />
     <Compile Include="Modules\MainModule.cs" />
+    <Compile Include="Modules\PreloadsModule.cs" />
     <Compile Include="Modules\SchedulesModule.cs" />
     <Compile Include="Modules\StudentsModule.cs" />
     <Compile Include="Modules\SubjectsModule.cs" />
@@ -109,13 +117,18 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ICrudViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\PreloadViewModel.cs" />
     <Compile Include="ViewModels\ScheduleByYearViewModel.cs" />
     <Compile Include="ViewModels\SchedulesMainViewModel.cs" />
     <Compile Include="ViewModels\StudentScheduleViewModel.cs" />
     <Compile Include="ViewModels\StudentsViewModel.cs" />
     <Compile Include="ViewModels\SubjectScheduleViewModel.cs" />
     <Compile Include="ViewModels\SubjectsViewModel.cs" />
+    <Compile Include="ViewModels\TeacherHoursPreloadViewModel.cs" />
     <Compile Include="ViewModels\TeachersViewModel.cs" />
+    <Compile Include="Views\PreloadsTabView.xaml.cs">
+      <DependentUpon>PreloadsTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SchedulesTabView.xaml.cs">
       <DependentUpon>SchedulesTabView.xaml</DependentUpon>
     </Compile>
@@ -160,6 +173,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\PreloadsTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SchedulesTabView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

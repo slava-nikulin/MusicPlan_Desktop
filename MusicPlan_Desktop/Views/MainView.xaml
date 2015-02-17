@@ -18,13 +18,14 @@
 
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{x:Static resources:ApplicationResources.Commands}">
-                <MenuItem Header="{x:Static resources:ApplicationResources.Refresh}" Command="{Binding SyncDataCommand}"></MenuItem>
+                <!--<MenuItem Header="{x:Static resources:ApplicationResources.Refresh}" Command="{Binding SyncDataCommand}"></MenuItem>-->
             </MenuItem>
         </Menu>
 
         <TabControl >
             <TabItem Header="{x:Static resources:ApplicationResources.TeacherOverLoading}">
-                <Grid Background="#FFE5E5E5"/>
+                <ContentControl x:Name="PreloadContent"
+                                regions:RegionManager.RegionName="{x:Static consts:Constants.PreloadRegion}" />
             </TabItem>
             <TabItem Header="{x:Static resources:ApplicationResources.StudyProgram}">
                 <ContentControl x:Name="SchedulesContent"

@@ -100,23 +100,8 @@ namespace MusicPlan.DAL.Repository
                                 originalItem.Instruments.Add(instrumentToAdd);
                             }
                         }
-
-                        //Subject to teacher bindings
-                        //var lstSubjBindToRemove =
-                        //    originalItem.StudentToTeachers.Where(origBind => item.StudentToTeachers.All(la => la.Id != origBind.Id)).ToList();
-
                         
                         context.StudentsToTeachers.RemoveRange(originalItem.StudentToTeachers);
-
-                        //foreach (var subjBindToRemove in lstSubjBindToRemove)
-                        //{
-                        //    context.StudentsToTeachers.Remove(subjBindToRemove);
-                        //    item.StudentToTeachers.Remove(item.StudentToTeachers.SingleOrDefault(la => la.Id == subjBindToRemove.Id));
-                        //}
-
-                        //var lstSubjBindToAdd =
-                        //    item.StudentToTeachers.Where(newItem => originalItem.StudentToTeachers.All(la => la.Id != newItem.Id))
-                        //        .ToList();
 
                         foreach (var subjBindToAdd in item.StudentToTeachers)
                         {
@@ -135,22 +120,39 @@ namespace MusicPlan.DAL.Repository
 
                             //parameters and types
                             SubjectParameterType existedType;
-                            foreach (var parameter in subjBindToAdd.Subject.HoursParameters)
+                            var existedParameters = new List<SubjectParameters>();
+                            for (int index = 0; index < subjBindToAdd.Subject.HoursParameters.ToArray().Length; index++)
                             {
-                                parameter.Subject = null;
-                                if (context.SubjectsParameters.Local.SingleOrDefault(p => p.Id == parameter.Id) == null)
+                                var parameter = subjBindToAdd.Subject.HoursParameters.ToArray()[index];
+                                //
+
+                                existedType =
+                                    context.ParameterTypes.Local.SingleOrDefault(p => p.Id == parameter.Type.Id);
+                                if (existedType == null)
                                 {
-                                    existedType = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == parameter.Type.Id);
-                                    if (existedType == null)
-                                    {
-                                        context.Entry(parameter.Type).State = EntityState.Unchanged;
-                                    }
-                                    else
-                                    {
-                                        parameter.Type = existedType;
-                                    }
+                                    context.Entry(parameter.Type).State = EntityState.Unchanged;
+                                }
+                                else
+                                {
+                                    parameter.Type = existedType;
+                                }
+                                var existedParam =
+                                    context.SubjectsParameters.Local.SingleOrDefault(p => p.Id == parameter.Id);
+                                if (existedParam == null)
+                                {
+                                    parameter.Subject = null;
                                     context.Entry(parameter).State = EntityState.Unchanged;
                                 }
+                                else
+                                {
+                                    existedParameters.Add(existedParam);
+                                }
+                            }
+                            foreach (var existedParam in existedParameters)
+                            {
+                                var paramToremove = subjBindToAdd.Subject.HoursParameters.Single(la => la.Id == existedParam.Id);
+                                subjBindToAdd.Subject.HoursParameters.Remove(paramToremove);
+                                subjBindToAdd.Subject.HoursParameters.Add(existedParam);
                             }
                             existedType = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == subjBindToAdd.SubjectType.Id);
                             if (existedType == null)
@@ -165,10 +167,10 @@ namespace MusicPlan.DAL.Repository
                             var existedTeachers = new List<Teacher>();
                             foreach (var teacher in subjBindToAdd.Subject.Teachers)
                             {
-                                teacher.Subjects = null;
                                 existedTeacher = context.Teachers.Local.SingleOrDefault(p => p.Id == teacher.Id);
                                 if (existedTeacher == null)
                                 {
+                                    teacher.Subjects = null;
                                     context.Entry(teacher).State = EntityState.Unchanged;
                                 }
                                 else

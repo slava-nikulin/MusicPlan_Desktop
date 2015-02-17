@@ -17,10 +17,14 @@ namespace MusicPlan.BLL.Models
             {
                 return string.Format("{0}*{1}+{2}*{3}={4} ({5}.)", WeeksPerFirstSemester,
                     HoursPerFirstSemester, WeeksPerSecondSemester,
-                    HoursPerSecondSemester,
-                    WeeksPerFirstSemester * HoursPerFirstSemester +
-                    WeeksPerSecondSemester * HoursPerSecondSemester, Type.Name.Substring(0,4));
+                    HoursPerSecondSemester, TotalHours
+                    , Type.Name.Substring(0,4));
             }
+        }
+
+        public int TotalHours
+        {
+            get { return WeeksPerFirstSemester*HoursPerFirstSemester + WeeksPerSecondSemester*HoursPerSecondSemester; }
         }
 
         public virtual Subject Subject { get; set; }

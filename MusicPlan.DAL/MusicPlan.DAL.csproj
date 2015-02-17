@@ -67,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ArtCollegeGenericDataRepository.cs" />
     <Compile Include="Repository\IGenericDataRepository.cs" />
+    <Compile Include="Repository\InstrumentRepositury.cs" />
     <Compile Include="Repository\StudentRepository.cs" />
     <Compile Include="Repository\SubjectParametersRepository.cs" />
     <Compile Include="Repository\SubjectRepository.cs" />

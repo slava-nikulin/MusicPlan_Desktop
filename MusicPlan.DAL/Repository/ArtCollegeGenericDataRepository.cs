@@ -7,11 +7,6 @@ using System.Linq.Expressions;
 
 namespace MusicPlan.DAL.Repository
 {
-    /// <summary>
-    /// Entity framework is not for working with derived context
-    /// Take my advice - USE ADO.NET ;)
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class ArtCollegeGenericDataRepository<T> : IGenericDataRepository<T> where T : class
     {
         public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)

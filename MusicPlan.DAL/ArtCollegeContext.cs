@@ -99,6 +99,8 @@ namespace MusicPlan.DAL
             modelBuilder.Entity<Student>().Ignore(t => t.DisplayName);
             modelBuilder.Entity<SubjectParameterType>().Ignore(t => t.ShortDisplayName);
             modelBuilder.Entity<Subject>().Ignore(t => t.HoursParametersSorted);
+            modelBuilder.Entity<SubjectParameters>().Ignore(t => t.TotalHours);
+            modelBuilder.Entity<StudentToTeacher>().Ignore(t => t.Hours);
         }
     }
 }

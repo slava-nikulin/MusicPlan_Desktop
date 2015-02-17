@@ -53,6 +53,12 @@ namespace MusicPlan_Desktop
                 ModuleName = schedulesModule.Name,
                 ModuleType = schedulesModule.AssemblyQualifiedName
             });
+            var preloadsModule = typeof(PreloadsModule);
+            moduleCatalog.AddModule(new ModuleInfo
+            {
+                ModuleName = preloadsModule.Name,
+                ModuleType = preloadsModule.AssemblyQualifiedName
+            });
 
             return moduleCatalog;
         }

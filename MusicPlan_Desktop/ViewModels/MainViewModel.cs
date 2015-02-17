@@ -18,18 +18,18 @@ namespace MusicPlan_Desktop.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private IUnityContainer _container;
 
-        public ICommand SyncDataCommand { get; set; }
+        //public ICommand SyncDataCommand { get; set; }
 
         public MainViewModel(IUnityContainer container)
         {
             _container = container;
             _eventAggregator = _container.Resolve<IEventAggregator>();
-            SyncDataCommand = new DelegateCommand(SyncData);
+            //SyncDataCommand = new DelegateCommand(SyncData);
         }
 
-        private void SyncData()
-        {
-            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
-        }
+        //private void SyncData()
+        //{
+        //    _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
+        //}
     }
 }

@@ -70,6 +70,15 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ArtCollegeScheduleHelper.
+        /// </summary>
+        public static string ApplicationDocumentsFolder {
+            get {
+                return ResourceManager.GetString("ApplicationDocumentsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Добавить расписание этого типа для всех курсов?.
         /// </summary>
         public static string ApplyForAllStudyYears {
@@ -178,6 +187,15 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Экспортировать в Excel для печати.
+        /// </summary>
+        public static string ExportToExcel {
+            get {
+                return ResourceManager.GetString("ExportToExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя.
         /// </summary>
         public static string FirstName {
@@ -201,6 +219,15 @@ namespace MusicPlan_Desktop.Resources {
         public static string FirstSemesterWeeksCount {
             get {
                 return ResourceManager.GetString("FirstSemesterWeeksCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Часы.
+        /// </summary>
+        public static string Hours {
+            get {
+                return ResourceManager.GetString("Hours", resourceCulture);
             }
         }
         
@@ -484,11 +511,29 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Преподаватель.
+        /// </summary>
+        public static string Teacher {
+            get {
+                return ResourceManager.GetString("Teacher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Нагрузка.
         /// </summary>
         public static string TeacherOverLoading {
             get {
                 return ResourceManager.GetString("TeacherOverLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Преднагрузка преподавателя.
+        /// </summary>
+        public static string TeacherPreload {
+            get {
+                return ResourceManager.GetString("TeacherPreload", resourceCulture);
             }
         }
         
@@ -507,6 +552,15 @@ namespace MusicPlan_Desktop.Resources {
         public static string TeachersList {
             get {
                 return ResourceManager.GetString("TeachersList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Итого: {0}.
+        /// </summary>
+        public static string TotalHours {
+            get {
+                return ResourceManager.GetString("TotalHours", resourceCulture);
             }
         }
         
