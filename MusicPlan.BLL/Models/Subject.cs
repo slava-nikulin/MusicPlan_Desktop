@@ -21,6 +21,8 @@ namespace MusicPlan.BLL.Models
 
         public string DisplayName { get { return Name; } }
 
+        public string ShortName { get; set; }
+
         public Subject()
         {
             HoursParameters = new List<SubjectParameters>();

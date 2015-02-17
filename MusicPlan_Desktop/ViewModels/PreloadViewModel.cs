@@ -108,7 +108,7 @@ namespace MusicPlan_Desktop.ViewModels
                     HoursTotal = la.Hours.TotalHours,
                     HoursFormula = la.Hours.DisplayName,
                     SubjectType = la.Hours.Type,
-                    SubjectName = la.Subject.Name,
+                    SubjectName = la.Subject.ShortName,
                     Comment = string.Empty,
                     HoursCount1Semester = la.Hours.HoursPerFirstSemester,
                     HoursCount2Semester = la.Hours.HoursPerSecondSemester,
@@ -145,6 +145,7 @@ namespace MusicPlan_Desktop.ViewModels
             ws.Cell("A1").Style.Font.SetBold();
             ws.Range("A1:J1").Merge();
             ws.Cell("A1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            ws.Cell("A1").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
 
             ws.Cell("A2").Value = "\"Музыкальное искусство эстрады\"";
             ws.Cell("A2").Style.Font.FontSize = 15;
@@ -152,15 +153,18 @@ namespace MusicPlan_Desktop.ViewModels
             ws.Cell("A2").Style.Font.SetItalic();
             ws.Range("A2:J2").Merge();
             ws.Cell("A2").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            ws.Cell("A2").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
 
             ws.Cell("A3").Value = "дневное отделение";
             ws.Range("A3:J3").Merge();
             ws.Cell("A3").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            ws.Cell("A3").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
 
             var title = string.Format("Преднагрузка. Преподаватель {0}", SelectedTeacher.DisplayName);
             ws.Cell("A4").Value = title;
             ws.Range("A4:J4").Merge();
             ws.Cell("A4").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            ws.Cell("A4").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
             ws.Cell("A4")
                 .RichText.Substring(title.Length - 1 - SelectedTeacher.DisplayName.Length)
                 .SetItalic()
@@ -170,8 +174,7 @@ namespace MusicPlan_Desktop.ViewModels
             ws.Cell("A5").Value = string.Format("На {0} учебный год", years);
             ws.Range("A5:J5").Merge();
             ws.Cell("A5").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-            //ws.Column("A").AdjustToContents();
+            ws.Cell("A5").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
 
             var table = ws.Range("A7:J8");
 
@@ -200,25 +203,46 @@ namespace MusicPlan_Desktop.ViewModels
             table.Style.Border.OutsideBorder = XLBorderStyleValues.Medium;
             table.Style.Border.InsideBorder = XLBorderStyleValues.Medium;
 
-            var groups = HoursPreload.GroupBy(la => la.SubjectType).ToArray();
-            var tableBody = ws.Range("A9:J" + (9 + HoursPreload.Count + groups.Length));
+            var groups = HoursPreload.GroupBy(la => new {Id = la.SubjectType.Id, Name = la.SubjectType.Name}).ToArray();
+            var lastRow = (9 + HoursPreload.Count + groups.Length);
+            var tableBody = ws.Range("A9:J" + lastRow);
             tableBody.Style.Border.OutsideBorder = XLBorderStyleValues.Medium;
+            tableBody.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
 
-            //TODO:
-            //var index = 1;
-            //foreach (var group in groups)
-            //{
-            //    tableBody.Cell("A"+index).Value = group.Key.Name;
-            //    tableBody.Range(string.Format("A{0}:J{0}", index)).Merge();
-            //    foreach (var row in group)
-            //    {
-            //        tableBody.Cell("A"+index+1).Value = 
-            //    }
-                
-            //}
-
-
+            var index = 1;
+            var counter = 1;
+            foreach (var group in groups)
+            {
+                tableBody.Cell("A"+index).Value = group.Key.Name;
+                tableBody.Range(string.Format("A{0}:J{0}", index))
+                    .Merge()
+                    .Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                index++;
+                foreach (var row in group)
+                {
+                    tableBody.Cell("A" + index).Value = counter;
+                    tableBody.Cell("B" + index).Value = row.StudentName;
+                    tableBody.Cell("C" + index).Value = row.SubjectName;
+                    tableBody.Cell("D" + index).Value = row.StudyYear;
+                    tableBody.Cell("E" + index).Value = row.HoursCount1Semester;
+                    tableBody.Cell("F" + index).Value = row.HoursCount2Semester;
+                    tableBody.Cell("G" + index).Value = row.WeeksCount1Semester;
+                    tableBody.Cell("H" + index).Value = row.WeeksCount2Semester;
+                    tableBody.Cell("I" + index).Value = row.HoursTotal;
+                    index++;
+                    counter++;
+                }
+            }
+            
+            tableBody.Cell("A" + index).Value = "Всего часов за учебный год: " + TotalHours;
+            tableBody.Range(string.Format("A{0}:J{0}", index))
+                    .Merge()
+                    .Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            
+            ws.Rows().AdjustToContents();
             wb.SaveAs(filePath);
+
+            System.Diagnostics.Process.Start(filePath);
         }
 
         private void ReBindItems(object obj)

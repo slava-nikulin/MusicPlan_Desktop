@@ -332,6 +332,7 @@ namespace MusicPlan_Desktop.ViewModels
                 rep.Remove(subject);
                 UnselectItem();
                 BindItems();
+                _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
             }
             else
             {
@@ -342,10 +343,10 @@ namespace MusicPlan_Desktop.ViewModels
                     rep.Remove(items);
                     UnselectSubItem();
                     BindItems();
+                    _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
                     SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == SelectedItem.Id));
                 }
             }
-            _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
         }
 
         public void AddUpdateItem(Subject item)

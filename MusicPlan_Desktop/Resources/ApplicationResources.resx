@@ -225,6 +225,9 @@
   <data name="SelectStudyYear" xml:space="preserve">
     <value>Выберите курс</value>
   </data>
+  <data name="ShortName" xml:space="preserve">
+    <value>Сокращенное название</value>
+  </data>
   <data name="StandatdParameters" xml:space="preserve">
     <value>Обычные часы</value>
   </data>
