@@ -12,13 +12,13 @@
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" Name="MainStatusBar">
             <StatusBarItem>
-                <TextBlock Name="LblStatusMessage" Text="123" />
+                <TextBlock FontWeight="Bold" Text="{Binding StatusMessage}" />
             </StatusBarItem>
         </StatusBar>
 
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{x:Static resources:ApplicationResources.Commands}">
-                <!--<MenuItem Header="{x:Static resources:ApplicationResources.Refresh}" Command="{Binding SyncDataCommand}"></MenuItem>-->
+                <MenuItem Header="{x:Static resources:ApplicationResources.UpgradeStudents}" Command="{Binding UpgradeStudentsCommand}"></MenuItem>
             </MenuItem>
         </Menu>
 

@@ -13,12 +13,35 @@ namespace MusicPlan.DAL.Repository
     {
         public IList<Student> GetAll(params Expression<Func<Student, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            List<Student> list;
+            using (var context = new ArtCollegeContext())
+            {
+                context.Configuration.ProxyCreationEnabled = false;
+                IQueryable<Student> dbQuery = context.Set<Student>();
+
+                dbQuery = navigationProperties.Aggregate(dbQuery, (current, navigationProperty) => current.Include(navigationProperty));
+
+                list = dbQuery.AsNoTracking().Where(la => !la.IsGraduated).ToList();
+            }
+            return list;
         }
 
         public IList<Student> GetList(Func<Student, bool> @where, params Expression<Func<Student, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            List<Student> list;
+            using (var context = new ArtCollegeContext())
+            {
+                context.Configuration.ProxyCreationEnabled = false;
+                IQueryable<Student> dbQuery = context.Set<Student>();
+                dbQuery = navigationProperties.Aggregate(dbQuery, (current, navigationProperty) => current.Include(navigationProperty));
+
+                list = dbQuery
+                    .AsNoTracking()
+                    .Where(la => !la.IsGraduated)
+                    .Where(@where)
+                    .ToList();
+            }
+            return list;
         }
 
         public Student GetSingle(Func<Student, bool> whereClause, params Expression<Func<Student, object>>[] navigationProperties)
@@ -32,6 +55,7 @@ namespace MusicPlan.DAL.Repository
                 dbQuery = navigationProperties.Aggregate(dbQuery, (current, navigationProperty) => current.Include(navigationProperty));
 
                 item = dbQuery
+                    .Where(la => !la.IsGraduated)
                     .AsNoTracking()
                     .FirstOrDefault(whereClause);
             }
@@ -234,6 +258,26 @@ namespace MusicPlan.DAL.Repository
                     }
                     item.StudentToTeachers.Clear();
                     context.Entry(item).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
+            }
+        }
+
+        public void UpgradeAllStudents()
+        {
+            using (var context = new ArtCollegeContext())
+            {
+                context.StudentsToTeachers.RemoveRange(context.StudentsToTeachers);
+                foreach (var stud in context.Students)
+                {
+                    if (stud.StudyYear == 5)
+                    {
+                        stud.IsGraduated = true;
+                    }
+                    else
+                    {
+                       stud.StudyYear++; 
+                    }
                 }
                 context.SaveChanges();
             }

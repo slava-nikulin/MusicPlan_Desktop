@@ -13,7 +13,7 @@
         <converters:IntLargerThenZeroConverter x:Key="IntLargerThenZeroConverter" />
         <converters:InstrumentsListToStringConverter x:Key="InstrumentsListToStringConverter" />
     </UserControl.Resources>
-    <Grid Background="#FFE5E5E5">
+    <Grid Background="#E7F9E9">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>

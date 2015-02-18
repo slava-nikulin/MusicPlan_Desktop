@@ -84,6 +84,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -107,6 +108,7 @@
     </Compile>
     <Compile Include="CLasses\Converters.cs" />
     <Compile Include="CLasses\Enums.cs" />
+    <Compile Include="CLasses\Events\ShowStatusMessageEvent.cs" />
     <Compile Include="CLasses\Events\SyncDataEvent.cs" />
     <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Modules\PreloadsModule.cs" />
@@ -126,6 +128,9 @@
     <Compile Include="ViewModels\SubjectsViewModel.cs" />
     <Compile Include="ViewModels\TeacherHoursPreloadViewModel.cs" />
     <Compile Include="ViewModels\TeachersViewModel.cs" />
+    <Compile Include="Views\ErrorPopupView.xaml.cs">
+      <DependentUpon>ErrorPopupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PreloadsTabView.xaml.cs">
       <DependentUpon>PreloadsTabView.xaml</DependentUpon>
     </Compile>
@@ -145,6 +150,10 @@
     <Compile Include="Views\TeachersTabView.xaml.cs">
       <DependentUpon>TeachersTabView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ErrorPopupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\InstrumentsTabView.xaml">
       <SubType>Form</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -242,7 +251,9 @@
       <Name>MusicPlan.DAL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\musicnotation.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

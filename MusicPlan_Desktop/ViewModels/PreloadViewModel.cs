@@ -235,6 +235,7 @@ namespace MusicPlan_Desktop.ViewModels
             }
             
             tableBody.Cell("A" + index).Value = "Всего часов за учебный год: " + TotalHours;
+            tableBody.Cell("A" + index).Style.Font.SetBold();
             tableBody.Range(string.Format("A{0}:J{0}", index))
                     .Merge()
                     .Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);

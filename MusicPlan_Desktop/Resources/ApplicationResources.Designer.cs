@@ -187,6 +187,15 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ошибка: {0}.
+        /// </summary>
+        public static string ErrorStringFormat {
+            get {
+                return ResourceManager.GetString("ErrorStringFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Экспортировать в Excel для печати.
         /// </summary>
         public static string ExportToExcel {
@@ -246,6 +255,33 @@ namespace MusicPlan_Desktop.Resources {
         public static string Instrument {
             get {
                 return ResourceManager.GetString("Instrument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Инструмент добавлен.
+        /// </summary>
+        public static string InstrumentAdded {
+            get {
+                return ResourceManager.GetString("InstrumentAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Инструмент удален.
+        /// </summary>
+        public static string InstrumentDeleted {
+            get {
+                return ResourceManager.GetString("InstrumentDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Инструмент отредактирован.
+        /// </summary>
+        public static string InstrumentEdited {
+            get {
+                return ResourceManager.GetString("InstrumentEdited", resourceCulture);
             }
         }
         
@@ -340,6 +376,42 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Расписание предмета на курс удалено.
+        /// </summary>
+        public static string ScheduleDeleted {
+            get {
+                return ResourceManager.GetString("ScheduleDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дублирование расписания.
+        /// </summary>
+        public static string ScheduleError {
+            get {
+                return ResourceManager.GetString("ScheduleError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выберите тип добавляемых параметров.
+        /// </summary>
+        public static string ScheduleErrorEmptyType {
+            get {
+                return ResourceManager.GetString("ScheduleErrorEmptyType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ошибка при добавлении/редактировании расписания.
+        /// </summary>
+        public static string ScheduleErrorTitle {
+            get {
+                return ResourceManager.GetString("ScheduleErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Распределение на {0} курс.
         /// </summary>
         public static string ScheduleForSpecificYear {
@@ -354,6 +426,15 @@ namespace MusicPlan_Desktop.Resources {
         public static string Schedules {
             get {
                 return ResourceManager.GetString("Schedules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Распределение сохранено.
+        /// </summary>
+        public static string ScheduleSaved {
+            get {
+                return ResourceManager.GetString("ScheduleSaved", resourceCulture);
             }
         }
         
@@ -412,6 +493,33 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Студент добавлен.
+        /// </summary>
+        public static string StudentAdded {
+            get {
+                return ResourceManager.GetString("StudentAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Студент удален.
+        /// </summary>
+        public static string StudentDeleted {
+            get {
+                return ResourceManager.GetString("StudentDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Студент отредактирован.
+        /// </summary>
+        public static string StudentEdited {
+            get {
+                return ResourceManager.GetString("StudentEdited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Студенты.
         /// </summary>
         public static string Students {
@@ -426,6 +534,15 @@ namespace MusicPlan_Desktop.Resources {
         public static string StudentsList {
             get {
                 return ResourceManager.GetString("StudentsList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Все студенты переведены на следующий курс..
+        /// </summary>
+        public static string StudentsUpgraded {
+            get {
+                return ResourceManager.GetString("StudentsUpgraded", resourceCulture);
             }
         }
         
@@ -457,6 +574,24 @@ namespace MusicPlan_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Предмет добавлен.
+        /// </summary>
+        public static string SubjectAdded {
+            get {
+                return ResourceManager.GetString("SubjectAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Предмет удален.
+        /// </summary>
+        public static string SubjectDeleted {
+            get {
+                return ResourceManager.GetString("SubjectDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Редактировать предмет.
         /// </summary>
         public static string SubjectEdit {
@@ -480,6 +615,33 @@ namespace MusicPlan_Desktop.Resources {
         public static string SubjectEdit_ParameterInsert {
             get {
                 return ResourceManager.GetString("SubjectEdit_ParameterInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Предмет отредактирован.
+        /// </summary>
+        public static string SubjectEdited {
+            get {
+                return ResourceManager.GetString("SubjectEdited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дублирование предмета.
+        /// </summary>
+        public static string SubjectError {
+            get {
+                return ResourceManager.GetString("SubjectError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ошибка при добавлении/редактировании предмета.
+        /// </summary>
+        public static string SubjectErrorTitle {
+            get {
+                return ResourceManager.GetString("SubjectErrorTitle", resourceCulture);
             }
         }
         
@@ -525,6 +687,33 @@ namespace MusicPlan_Desktop.Resources {
         public static string Teacher {
             get {
                 return ResourceManager.GetString("Teacher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Преподаватель добавлен.
+        /// </summary>
+        public static string TeacherAdded {
+            get {
+                return ResourceManager.GetString("TeacherAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Преподаватель удален.
+        /// </summary>
+        public static string TeacherDeleted {
+            get {
+                return ResourceManager.GetString("TeacherDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Преподаватель отредактирован.
+        /// </summary>
+        public static string TeacherEdited {
+            get {
+                return ResourceManager.GetString("TeacherEdited", resourceCulture);
             }
         }
         
@@ -579,6 +768,15 @@ namespace MusicPlan_Desktop.Resources {
         public static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Перевести всех студентов на следующий курс.
+        /// </summary>
+        public static string UpgradeStudents {
+            get {
+                return ResourceManager.GetString("UpgradeStudents", resourceCulture);
             }
         }
     }

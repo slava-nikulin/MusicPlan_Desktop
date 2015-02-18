@@ -6,6 +6,8 @@
              xmlns:resources="clr-namespace:MusicPlan_Desktop.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:prism="http://www.codeplex.com/prism"
+             xmlns:views="clr-namespace:MusicPlan_Desktop.Views"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:converters="clr-namespace:MusicPlan_Desktop.CLasses">
 
@@ -14,7 +16,18 @@
         <converters:IntLessThenZeroConverter x:Key="IntLessThenZeroConverter" />
         <converters:IntLargerThenZeroConverter x:Key="IntLargerThenZeroConverter" />
     </UserControl.Resources>
-    <Grid Background="#FFE5E5E5">
+
+    <i:Interaction.Triggers>
+        <prism:InteractionRequestTrigger SourceObject="{Binding ErrorPopupViewRequest, Mode=OneWay}">
+            <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
+                <prism:PopupWindowAction.WindowContent>
+                    <views:ErrorPopupView Width="600"/>
+                </prism:PopupWindowAction.WindowContent>
+            </prism:PopupWindowAction>
+        </prism:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Background="#E7F9E9">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>

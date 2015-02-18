@@ -124,6 +124,7 @@ namespace MusicPlan_Desktop.ViewModels
             BindItems();
             UnselectItem();
             _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
+            _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.InstrumentDeleted);
         }
 
         public void AddUpdateItem(Instrument item)
@@ -132,10 +133,12 @@ namespace MusicPlan_Desktop.ViewModels
             if (item.Id == 0)
             {
                 rep.Add(item);
+                _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.InstrumentAdded);
             }
             else
             {
-                rep.Update(item);
+                 rep.Update(item);
+                _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.InstrumentEdited);
             }
             BindItems();
             UnselectItem();

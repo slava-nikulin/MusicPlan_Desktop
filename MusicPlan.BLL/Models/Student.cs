@@ -12,6 +12,7 @@ namespace MusicPlan.BLL.Models
         public string LastName { get; set; }
         public string MiddleName { get; set; }
         public int StudyYear { get; set; }
+        public bool IsGraduated { get; set; }
 
         public virtual ICollection<Instrument> Instruments { get; set; }
         public virtual ICollection<StudentToTeacher> StudentToTeachers { get; set; }

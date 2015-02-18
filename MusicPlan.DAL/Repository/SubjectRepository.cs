@@ -13,7 +13,17 @@ namespace MusicPlan.DAL.Repository
     {
         public IList<Subject> GetAll(params Expression<Func<Subject, object>>[] navigationProperties)
         {
-            throw new NotImplementedException();
+            List<Subject> list;
+            using (var context = new ArtCollegeContext())
+            {
+                context.Configuration.ProxyCreationEnabled = false;
+                IQueryable<Subject> dbQuery = context.Set<Subject>();
+
+                dbQuery = navigationProperties.Aggregate(dbQuery, (current, navigationProperty) => current.Include(navigationProperty));
+
+                list = dbQuery.AsNoTracking().ToList();
+            }
+            return list;
         }
 
         public IList<Subject> GetList(Func<Subject, bool> @where, params Expression<Func<Subject, object>>[] navigationProperties)
@@ -59,10 +69,12 @@ namespace MusicPlan.DAL.Repository
             {
                 foreach (var item in items)
                 {
+                    var origItem = context.Subjects.Include(la => la.HoursParameters).Include(la => la.HoursParameters.Select(la1=>la1.Type)).SingleOrDefault(la => la.Id == item.Id);
+                    context.Entry(origItem).CurrentValues.SetValues(item);
                     foreach (var param in item.HoursParameters)
                     {
-                        param.Subject = null;
                         var existedParam = context.ParameterTypes.Local.SingleOrDefault(p => p.Id == param.Type.Id);
+                        param.Subject = null;
 
                         if (existedParam == null)
                         {
@@ -72,10 +84,25 @@ namespace MusicPlan.DAL.Repository
                         {
                             param.Type = existedParam;
                         }
-                        context.Entry(param).State = param.Id > 0 ? EntityState.Modified : EntityState.Added;
+
+                        var origParamItem = context.SubjectsParameters.SingleOrDefault(la => la.Id == param.Id);
+                        if (origParamItem != null)
+                        {
+                            context.Entry(origParamItem).CurrentValues.SetValues(param);
+                            origParamItem.Type = param.Type;
+                        }
+                        else
+                        {
+                            //context.Entry(param).State = EntityState.Added;
+                            origItem.HoursParameters.Add(param);
+                        }
+                        
+                        //
                     }
-                    context.Entry(item).State = EntityState.Modified;
+                    //context.SubjectsParameters.Attach()
+                    //context.Entry(item).State = EntityState.Modified;
                 }
+               // bool a = context.ChangeTracker.HasChanges();
                 context.SaveChanges();
             }
         }

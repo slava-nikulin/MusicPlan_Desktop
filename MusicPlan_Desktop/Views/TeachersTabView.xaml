@@ -14,7 +14,7 @@
         <converters:IntLargerThenZeroConverter x:Key="IntLargerThenZeroConverter" />
     </UserControl.Resources>
 
-    <Grid Background="#FFE5E5E5">
+    <Grid Background="#E7F9E9">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>

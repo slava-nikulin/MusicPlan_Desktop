@@ -85,6 +85,7 @@
         </Style>
 
         <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="Background" Value="#FEF7E7"></Setter>
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate >

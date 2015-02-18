@@ -159,6 +159,9 @@
   <data name="EditInsertTeacher" xml:space="preserve">
     <value>Добавить/редактировать преподавателя</value>
   </data>
+  <data name="ErrorStringFormat" xml:space="preserve">
+    <value>Ошибка: {0}</value>
+  </data>
   <data name="ExportToExcel" xml:space="preserve">
     <value>Экспортировать в Excel для печати</value>
   </data>
@@ -179,6 +182,15 @@
   </data>
   <data name="Instrument" xml:space="preserve">
     <value>Инструмент</value>
+  </data>
+  <data name="InstrumentAdded" xml:space="preserve">
+    <value>Инструмент добавлен</value>
+  </data>
+  <data name="InstrumentDeleted" xml:space="preserve">
+    <value>Инструмент удален</value>
+  </data>
+  <data name="InstrumentEdited" xml:space="preserve">
+    <value>Инструмент отредактирован</value>
   </data>
   <data name="Instruments" xml:space="preserve">
     <value>Инструменты</value>
@@ -210,11 +222,23 @@
   <data name="Schedule" xml:space="preserve">
     <value>Расписание на семестр</value>
   </data>
+  <data name="ScheduleDeleted" xml:space="preserve">
+    <value>Расписание предмета на курс удалено</value>
+  </data>
+  <data name="ScheduleError" xml:space="preserve">
+    <value>Дублирование расписания</value>
+  </data>
+  <data name="ScheduleErrorTitle" xml:space="preserve">
+    <value>Ошибка при добавлении/редактировании расписания</value>
+  </data>
   <data name="ScheduleForSpecificYear" xml:space="preserve">
     <value>Распределение на {0} курс</value>
   </data>
   <data name="Schedules" xml:space="preserve">
     <value>Список расписаний предмета</value>
+  </data>
+  <data name="ScheduleSaved" xml:space="preserve">
+    <value>Распределение сохранено</value>
   </data>
   <data name="SecondSemesterHoursPerWeekCount" xml:space="preserve">
     <value>Часов в неделю(2-й семестр)</value>
@@ -234,6 +258,15 @@
   <data name="Student" xml:space="preserve">
     <value>Студент</value>
   </data>
+  <data name="StudentAdded" xml:space="preserve">
+    <value>Студент добавлен</value>
+  </data>
+  <data name="StudentDeleted" xml:space="preserve">
+    <value>Студент удален</value>
+  </data>
+  <data name="StudentEdited" xml:space="preserve">
+    <value>Студент отредактирован</value>
+  </data>
   <data name="Students" xml:space="preserve">
     <value>Студенты</value>
   </data>
@@ -249,14 +282,29 @@
   <data name="Subject" xml:space="preserve">
     <value>Предмет</value>
   </data>
+  <data name="SubjectAdded" xml:space="preserve">
+    <value>Предмет добавлен</value>
+  </data>
+  <data name="SubjectDeleted" xml:space="preserve">
+    <value>Предмет удален</value>
+  </data>
   <data name="SubjectEdit" xml:space="preserve">
     <value>Редактировать предмет</value>
+  </data>
+  <data name="SubjectEdited" xml:space="preserve">
+    <value>Предмет отредактирован</value>
   </data>
   <data name="SubjectEdit_ParameterEdit" xml:space="preserve">
     <value>Редактировать предмет/Редактировать расписание</value>
   </data>
   <data name="SubjectEdit_ParameterInsert" xml:space="preserve">
     <value>Редактировать предмет/Добавить расписание</value>
+  </data>
+  <data name="SubjectError" xml:space="preserve">
+    <value>Дублирование предмета</value>
+  </data>
+  <data name="SubjectErrorTitle" xml:space="preserve">
+    <value>Ошибка при добавлении/редактировании предмета</value>
   </data>
   <data name="SubjectInsert" xml:space="preserve">
     <value>Добавить предмет</value>
@@ -272,6 +320,15 @@
   </data>
   <data name="Teacher" xml:space="preserve">
     <value>Преподаватель</value>
+  </data>
+  <data name="TeacherAdded" xml:space="preserve">
+    <value>Преподаватель добавлен</value>
+  </data>
+  <data name="TeacherDeleted" xml:space="preserve">
+    <value>Преподаватель удален</value>
+  </data>
+  <data name="TeacherEdited" xml:space="preserve">
+    <value>Преподаватель отредактирован</value>
   </data>
   <data name="TeacherOverLoading" xml:space="preserve">
     <value>Нагрузка</value>
@@ -290,5 +347,14 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>Тип</value>
+  </data>
+  <data name="ScheduleErrorEmptyType" xml:space="preserve">
+    <value>Выберите тип добавляемых параметров</value>
+  </data>
+  <data name="StudentsUpgraded" xml:space="preserve">
+    <value>Все студенты переведены на следующий курс.</value>
+  </data>
+  <data name="UpgradeStudents" xml:space="preserve">
+    <value>Перевести всех студентов на следующий курс</value>
   </data>
 </root>

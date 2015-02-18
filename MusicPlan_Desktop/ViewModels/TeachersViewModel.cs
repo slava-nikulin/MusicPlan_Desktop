@@ -136,6 +136,7 @@ namespace MusicPlan_Desktop.ViewModels
             BindItems();
             UnselectItem();
             _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
+            _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.TeacherDeleted);
         }
 
         public void AddUpdateItem(Teacher item)
@@ -145,10 +146,12 @@ namespace MusicPlan_Desktop.ViewModels
             if (item.Id == 0)
             {
                 rep.Add(item);
+                _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.TeacherAdded);
             }
             else
             {
                 rep.Update(item);
+                _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.TeacherEdited);
             }
             BindItems();
             UnselectItem();

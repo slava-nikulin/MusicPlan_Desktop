@@ -6,8 +6,9 @@
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
         xmlns:prism="http://www.codeplex.com/prism"
         xmlns:consts="clr-namespace:MusicPlan_Desktop;assembly=MusicPlan_Desktop"
-        Title="MainWindow" Height="auto" Width="auto"
-        WindowStartupLocation="CenterScreen" 
+        Title="Программа составления преднагрузок" Height="auto" Width="auto"
+        WindowStartupLocation="CenterScreen"
+        Icon="../Resources/musicnotation.ico"
         WindowState="Maximized">
     <ContentControl x:Name="InstrumentsContent" regions:RegionManager.RegionName="{x:Static consts:Constants.MainRegion}" />
 

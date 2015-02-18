@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GeorgeCloney;
 using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
@@ -39,17 +40,6 @@ namespace MusicPlan_Desktop.ViewModels
         private IEventAggregator _eventAggregator;
         private bool _subitemClicked;
 
-        #endregion
-
-        #region Constructor
-        public SubjectsViewModel(IUnityContainer container)
-        {
-            _subitemClicked = false;
-            _container = container;
-            _eventAggregator = _container.Resolve<IEventAggregator>();
-            _eventAggregator.GetEvent<SyncDataEvent>().Subscribe(ReBindItems, true);
-            PrepareViewModel();
-        }
         #endregion
 
         #region Public properties
@@ -161,6 +151,18 @@ namespace MusicPlan_Desktop.ViewModels
         public ICommand SelectSubItemCommand { get; set; }
         public ICommand ClickItemCommand { get; set; }
         public ICommand ClickSubItemCommand { get; set; }
+        public InteractionRequest<INotification> ErrorPopupViewRequest { get; private set; }
+        #endregion
+
+        #region Constructor
+        public SubjectsViewModel(IUnityContainer container)
+        {
+            _subitemClicked = false;
+            _container = container;
+            _eventAggregator = _container.Resolve<IEventAggregator>();
+            _eventAggregator.GetEvent<SyncDataEvent>().Subscribe(ReBindItems, true);
+            PrepareViewModel();
+        }
         #endregion
 
         #region ViewModel methods
@@ -181,7 +183,8 @@ namespace MusicPlan_Desktop.ViewModels
             CancelSelectionCommand = new DelegateCommand(UnselectItem);
             ClickItemCommand = new DelegateCommand<Subject>(ClickItem);
             ClickSubItemCommand = new DelegateCommand<SubjectParameters>(ClickSubItem);
-            BtnAddButtonContent = ApplicationResources.ResourceManager.GetString("SubjectInsert_ParameterInsert");
+            BtnAddButtonContent = ApplicationResources.SubjectInsert_ParameterInsert;
+            ErrorPopupViewRequest = new InteractionRequest<INotification>();
             PropertyChanged += ChangeProperty;
         }
 
@@ -321,7 +324,7 @@ namespace MusicPlan_Desktop.ViewModels
         }
 
         public void DeleteItem(Subject item)
-        {}
+        { }
 
         public void DeleteItemOrSubItem(object item)
         {
@@ -333,6 +336,7 @@ namespace MusicPlan_Desktop.ViewModels
                 UnselectItem();
                 BindItems();
                 _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
+                _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.SubjectDeleted);
             }
             else
             {
@@ -345,6 +349,7 @@ namespace MusicPlan_Desktop.ViewModels
                     BindItems();
                     _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
                     SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == SelectedItem.Id));
+                    _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.ScheduleDeleted);
                 }
             }
         }
@@ -352,12 +357,47 @@ namespace MusicPlan_Desktop.ViewModels
         public void AddUpdateItem(Subject item)
         {
             var repSubject = new SubjectRepository();
+            var subjects = repSubject.GetAll();
+
+            if (subjects.Any(la => (la.Name == item.Name || item.ShortName == la.ShortName) && (la.Id != item.Id || item.Id == 0)))
+            {
+                ErrorPopupViewRequest.Raise(new Notification
+                {
+                    Content = ApplicationResources.SubjectError,
+                    Title = ApplicationResources.SubjectErrorTitle
+                });
+                return;
+            }
+
+            if (SubItemsInsertUpdateMode)
+            {
+                if (SelectedSubItem.Type.Id == 0)
+                {
+                    ErrorPopupViewRequest.Raise(new Notification
+                    {
+                        Content = ApplicationResources.ScheduleErrorEmptyType,
+                        Title = ApplicationResources.ScheduleErrorTitle
+                    });
+                    return;
+                }
+                if (item.HoursParameters.Any(la => la.Type.Id == SelectedSubItem.Type.Id && ((la.StudyYear == SelectedSubItem.StudyYear && la.Id!=SelectedSubItem.Id) || ApplyForAllStudyYears)))
+                {
+                    ErrorPopupViewRequest.Raise(new Notification
+                    {
+                        Content = ApplicationResources.ScheduleError,
+                        Title = ApplicationResources.ScheduleErrorTitle
+                    });
+                    return;
+                }
+            }
+
             if (item.Id == 0)
             {
                 if (SubItemsInsertUpdateMode)
                 {
                     if (ApplyForAllStudyYears)
                     {
+
                         for (var i = 1; i <= 5; i++)
                         {
                             var paramClone = SelectedSubItem.DeepClone();
@@ -370,11 +410,13 @@ namespace MusicPlan_Desktop.ViewModels
                         item.HoursParameters.Add(SelectedSubItem);
                     }
                 }
+                
                 repSubject.Add(item);
                 BindItems();
                 _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
                 SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == item.Id));
                 UnselectSubItem();
+                _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.SubjectAdded);
                 return;
             }
             if (SubItemsInsertUpdateMode)
@@ -401,12 +443,13 @@ namespace MusicPlan_Desktop.ViewModels
                     }
                 }
             }
+            
             repSubject.Update(item);
             BindItems();
             _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
             SelectedItemIndex = ItemsList.IndexOf(ItemsList.SingleOrDefault(la => la.Id == item.Id));
             UnselectSubItem();
-            
+            _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.SubjectEdited);
         }
 
         public void ReBindItems(object obj)

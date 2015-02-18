@@ -137,6 +137,7 @@ namespace MusicPlan_Desktop.ViewModels
                 studRepo.Update(stud);
             }
             _eventAggregator.GetEvent<SyncDataEvent>().Publish(null);
+            _eventAggregator.GetEvent<ShowStatusMessageEvent>().Publish(ApplicationResources.ScheduleSaved);
         }
 
         private void RebindItems(object obj)
@@ -161,7 +162,7 @@ namespace MusicPlan_Desktop.ViewModels
                     availableSubjectViewModels.Add(new SubjectScheduleViewModel(subject, param));
                 }
             }
-            var rep2 = new ArtCollegeGenericDataRepository<Student>();
+            var rep2 = new StudentRepository();
             var allStudentsByStudyYear = new ObservableCollection<Student>(rep2.GetList(la => la.StudyYear == studyYear, la => la.Instruments));
             var studentsViewModelList = new ObservableCollection<StudentScheduleViewModel>();
             foreach (var student in allStudentsByStudyYear)
