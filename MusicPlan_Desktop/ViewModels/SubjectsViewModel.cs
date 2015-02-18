@@ -190,22 +190,34 @@ namespace MusicPlan_Desktop.ViewModels
 
         private void ClickItem(Subject item)
         {
-            if (item.Id == SelectedItem.Id && !_subitemClicked)
+            if (item != null && item.Id == SelectedItem.Id && !_subitemClicked)
             {
                 UnselectItem();
             }
-            else
+            else if (!_subitemClicked)
             {
-                _subitemClicked = false;
+                UnselectSubItem();
+                SelectedItem = item.DeepClone();
+                BtnAddButtonContent = SubItemsInsertUpdateMode
+                    ? ApplicationResources.SubjectEdit_ParameterInsert
+                    : ApplicationResources.SubjectEdit;
             }
+            _subitemClicked = false;
         }
 
         private void ClickSubItem(SubjectParameters subItem)
         {
-            if (subItem.Id == SelectedSubItem.Id)
+            _subitemClicked = true;
+            if (subItem!= null && subItem.Id == SelectedSubItem.Id)
             {
                 UnselectSubItem();
-                _subitemClicked = true;
+            }
+            else if (subItem != null)
+            {
+                ApplyForAllStudyYears = false;
+                SubItemsInsertUpdateMode = true;
+                SelectedSubItem = subItem.DeepClone();
+                BtnAddButtonContent = ApplicationResources.SubjectEdit_ParameterEdit;
             }
         }
 
@@ -267,10 +279,7 @@ namespace MusicPlan_Desktop.ViewModels
         {
             if (SelectedSubItemIndex != -1 && subItem.Id != SelectedSubItem.Id)
             {
-                ApplyForAllStudyYears = false;
-                SubItemsInsertUpdateMode = true;
-                SelectedSubItem = subItem.DeepClone();
-                BtnAddButtonContent = ApplicationResources.SubjectEdit_ParameterEdit;
+                
             }
         }
 
@@ -298,11 +307,7 @@ namespace MusicPlan_Desktop.ViewModels
         {
             if (SelectedItemIndex != -1 && item.Id != SelectedItem.Id)
             {
-                UnselectSubItem();
-                SelectedItem = item.DeepClone();
-                BtnAddButtonContent = SubItemsInsertUpdateMode
-                    ? ApplicationResources.SubjectEdit_ParameterInsert
-                    : ApplicationResources.SubjectEdit;
+                
             }
         }
 

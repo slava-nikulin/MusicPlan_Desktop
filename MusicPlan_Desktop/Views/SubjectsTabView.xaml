@@ -37,15 +37,15 @@
             <DataGrid 
                 SelectedIndex="{Binding SelectedItemIndex}"
                 ItemsSource="{Binding Path=ItemsList}"                    
-                Margin="5 10 5 10"
+                Margin="5 10 5 10" 
                 RowDetailsVisibilityMode="VisibleWhenSelected">
                 <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
+                    <!--<i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction 
                             Command="{Binding Path=DataContext.SelectItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                             CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseDown">
+                    </i:EventTrigger>-->
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
                         <i:InvokeCommandAction
                             Command="{Binding Path=DataContext.ClickItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                             CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
@@ -69,12 +69,12 @@
                                 </DataGrid.Columns>
 
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
+                                    <!--<i:EventTrigger EventName="SelectionChanged">
                                         <i:InvokeCommandAction
                                             Command="{Binding DataContext.SelectSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                             CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}, AncestorLevel=1}}" />
-                                    </i:EventTrigger>
-                                    <i:EventTrigger EventName="MouseDown">
+                                    </i:EventTrigger>-->
+                                    <i:EventTrigger EventName="MouseLeftButtonUp">
                                         <i:InvokeCommandAction
                                             Command="{Binding DataContext.ClickSubItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                             CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
